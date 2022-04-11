@@ -11,6 +11,7 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
 
 ## Loops
 ### Loops del juego
+* ¿¿Condición de victoria: el jugador gana cuando llega al final del a pantalla y cruza la bandera?? (no viene en el documento del profe, pero creo que es importante ponerlo en algun sitio)
 * Jugador:
    * Puede recoger monedas para convertirlas en vidas
    * Puede saltar para subirse a plataformas o matar enemigos
