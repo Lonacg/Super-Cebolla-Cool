@@ -9,7 +9,7 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
 * Nº jugadores: singleplayer 
 * Estilo gráfico y referencias: New Super Mario Bros para Nintendo DS
 
-![](E:\Code\Unity\EOI\Minigame\PLATAFORMAS.png)
+<img src="PLATAFORMAS.png" style="zoom: 33%;" />
 
 ## Loops
 ### Loop principal
@@ -26,6 +26,9 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
    * Comprobar si toca a un jugador para dañarlo o hacerle perder (según el estado en que se encuentre)
 * Condición de victoria:
    * Comprobar si el jugador cruzó la bandera.
+* Cámara:
+   * Seguir la posición del jugador ignorando los saltos.
+
 
 
 ### Loops secundarios
