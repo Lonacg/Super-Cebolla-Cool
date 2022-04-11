@@ -1,4 +1,4 @@
-﻿# SUPER CEBOLLA COOL
+# SUPER CEBOLLA COOL
 
 ## Resumen
 Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mario. Su sueño es llegar al castillo de Peach y vivir un “felices para siempre” en su huerto. No está dispuesta a compartir espacio con setas y mucho menos permitirá que las tortugas devoren su preciosa melena. Cualquiera que se ponga en su camino… ¡sufrirá las consecuencias de su oloroso superpoder!
@@ -9,17 +9,24 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
 * Nº jugadores: singleplayer 
 * Estilo gráfico y referencias: New Super Mario Bros para Nintendo DS
 
+![](E:\Code\Unity\EOI\Minigame\PLATAFORMAS.png)
+
 ## Loops
-### Loops del juego
-* ¿¿Condición de victoria: el jugador gana cuando llega al final del a pantalla y cruza la bandera?? (no viene en el documento del profe, pero creo que es importante ponerlo en algun sitio)
+### Loop principal
 * Jugador:
-   * Puede recoger monedas para convertirlas en vidas
-   * Puede saltar para subirse a plataformas o matar enemigos
-   * Puede evolucionar, y con ello disparar a los enemigos a distancia
-   * Puede  desplazarse a velocidad constante
+   * Avanzar o retroceder a una velocidad constante tras pulsar una tecla 
+   * Saltar hasta cierta altura tras pulsar una tecla
+   * Recoger monedas cuando la toque, haciendo que el contador de monedas aumente y el objeto moneda se destruya
+   * Verificar si el contador de monedas llegó a una cantidad específica para aumentar una vida
+   * Evolucionar tras tocar un objeto gota de agua
+   * Disparar tras pulsar una tecla y estar en la segunda evolución
+   * El proyectil viajará a una velocidad constante y si impacta contra un enemigo lo destruye
 * Enemigos:
-   * Pueden caminar a velocidad constante
-   * Dañan al jugador si le tocan
+   * Caminar a una velocidad constante en dirección contraria al jugador
+   * Comprobar si toca a un jugador para dañarlo o hacerle perder (según el estado en que se encuentre)
+* Condición de victoria:
+   * Comprobar si el jugador cruzó la bandera.
+
 
 ### Loops secundarios
 * El jugador puede romper bloques saltando debajo de ellos
@@ -61,6 +68,8 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
 
 ## Historia
 ¿?(Breve introducción a la narrativa del juego, fase a fase si las hubiera (que con el tiempo que hay no debería ser mucha))
+
+Una cebolla cobró vida en una huerta y ahora se encuentra avanzando hacia adelante. Esperemos que tenga un buen destino y no hacer llorar a algún humano.
 
 
 
