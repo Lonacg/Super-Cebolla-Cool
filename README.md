@@ -53,3 +53,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - Añadido cuatro materiales dentro de carpeta Materials para usar con el modelo cubo
   - Onion, Mushroom, Water, Turtle
 
+#### 12 - 4 - 22
+
+- Añadido clase Player que contiene el control del movimiento y del salto (incompleto)
+  - Para moverse pulsar las teclas de flecha izquierda y derecha
+  - Para saltar pulsar la tecla de flecha arriba
