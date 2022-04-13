@@ -58,3 +58,20 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - Añadido clase Player que contiene el control del movimiento y del salto (incompleto)
   - Para moverse pulsar las teclas de flecha izquierda y derecha
   - Para saltar pulsar la tecla de flecha arriba
+
+#### 13 - 4 - 22
+
+- Renombrado método PlayerControl() a MovementControl()
+- Añadido componente Box Collider a la malla default del gameObject Onion (Onion → Model → default)
+- Añadido componente RigidBody al gameObject Onion
+- Añadido componente Box Collider al gameObject Floor
+- Añadido restricción en la posición del eje Z para el gameObject Onion
+- Añadido restricción en la rotación del eje X, Y, Z para el gameObject Onion
+- Añadido control de la aceleración pulsando la tecla Shift
+- Los siguientes valores para el Script player han sido establecidos en:
+	- Speed: 5
+	- MaxSpeed: 12
+	- Acceleration: 6
+	- JumpForce: 1000
+	- Gravity: 48
+

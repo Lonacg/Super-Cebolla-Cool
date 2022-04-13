@@ -5,18 +5,45 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Header("Movimiento")]
     public float speed;
+    public float maxSpeed;
+    public float acceleration;
+    private float currSpeed;
+
+    [Header("Salto")]
+    public float jumpForce;
+    public float gravity;
+
+    private new Rigidbody rigidbody;
+
+    void Start() {
+        rigidbody = gameObject.GetComponent<Rigidbody>();
+    }
 
     void Update()
     {
-        Vector3 direction = PlayerControl();
+        Vector3 direction = MovementControl();
+
+        accelerationControl();
         
         transform.Translate(
-            direction * speed * Time.deltaTime
+            direction * currSpeed * Time.deltaTime
         );
     }
 
-    private Vector3 PlayerControl()
+    void FixedUpdate()
+    {
+        JumpControl();
+        SetGravity();
+    }
+
+    private void SetGravity()
+    {
+        rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+    }
+
+    private Vector3 MovementControl()
     {
         Vector3 axis = Vector3.zero;   
 
@@ -25,20 +52,40 @@ public class Player : MonoBehaviour
             axis.x = -1;
         if (Keyboard.current.rightArrowKey.isPressed) 
             axis.x =  1;
+       
+        return axis;
+    }
 
+    private void JumpControl()
+    {
         // Control del salto del jugador en el eje Y
         if (Keyboard.current.upArrowKey.isPressed) 
-            axis.y = 1;
+        {
+            // Este if se asegura que solo podamos pulsar la tecla de salto una vez hasta que caiga al suelo
+            // sin importar la altura de la superficie
+            if (rigidbody.velocity.y == 0)
+                rigidbody.AddForce(
+                    Vector3.up * jumpForce * Time.fixedDeltaTime, 
+                    ForceMode.Impulse
+                );
+        }
+    }
 
+    private void accelerationControl()
+    {
         /*
-            Dos propuestas para el control del salto:
-                - Usar rigidbody junto con AddFoce() para impulsar un salto, 
-                  en ese caso el código iría dentro de FixedUpdate() y debemos
-                  especificar una gravedad (para mí la más sencilla y divertida por el tema de controlar la gravedad).
-
-                - Usar una interpolación.
+            Funciona pero no se ve tan... mario
+            Podríamos inentar que al cambiar de dirección la aceleración sea 0
+            o hacer que tenga alguna inercia
         */
-            
-        return axis;
+
+        // Control de la aceleración al pulsar la tecla Shift
+        if (Keyboard.current.shiftKey.isPressed)
+        {
+            if (currSpeed < maxSpeed)
+                currSpeed += acceleration * Time.deltaTime;
+        }
+        else
+            currSpeed = speed;
     }
 }
