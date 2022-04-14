@@ -9,7 +9,11 @@ public class Player : MonoBehaviour
     public float speed;
     public float maxSpeed;
     public float acceleration;
+    public float drag;
     private float currSpeed;
+
+    private Vector3 lastDirection;
+    
 
     [Header("Salto")]
     public float jumpForce;
@@ -22,15 +26,25 @@ public class Player : MonoBehaviour
     }
 
     void Update()
-    {
-        Vector3 direction = MovementControl();
+    {   
 
+        Vector3 direction = MovementControl();
         accelerationControl();
-        
-        transform.Translate(
-            direction * currSpeed * Time.deltaTime
-        );
+
+        if (direction.x!=0)
+            lastDirection= direction;
+            
+        if(direction.x==0 && !Keyboard.current.shiftKey.isPressed)
+            currSpeed=currSpeed*drag;
+        //currSpeed=Mathf.Clamp(value:currSpeed,min:-maxSpeed,maxSpeed);
+
+        transform.Translate(lastDirection.normalized * currSpeed *Time.deltaTime);
+        if (direction.x==0 && currSpeed<0.1f) //Hay que guardar la direccion que llevaba, porque cuando dejan de pulsar se vuelve 0 y no se moveria
+            lastDirection= Vector3.zero;
+
     }
+
+
 
     void FixedUpdate()
     {
@@ -43,18 +57,26 @@ public class Player : MonoBehaviour
         rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
     }
 
+
     private Vector3 MovementControl()
     {
-        Vector3 axis = Vector3.zero;   
+
+        Vector3 direction = Vector3.zero;   
 
         // Control del movimiento del jugador en el eje X (izquierda a derecha)
         if (Keyboard.current.leftArrowKey.isPressed)  
-            axis.x = -1;
+            {
+                direction.x = -1;
+            }
         if (Keyboard.current.rightArrowKey.isPressed) 
-            axis.x =  1;
+            {
+                direction.x = 1;
+            }
        
-        return axis;
-    }
+        bool isThrusting=direction.x !=0;
+        return direction;
+    }   
+    
 
     private void JumpControl()
     {
@@ -76,16 +98,20 @@ public class Player : MonoBehaviour
         /*
             Funciona pero no se ve tan... mario
             Podríamos inentar que al cambiar de dirección la aceleración sea 0
-            o hacer que tenga alguna inercia
+            o hacer que tenga alguna inercia (HECHO)
         */
 
         // Control de la aceleración al pulsar la tecla Shift
-        if (Keyboard.current.shiftKey.isPressed)
+        var leftPressed=Keyboard.current.leftArrowKey.isPressed;
+        var rightPressed=Keyboard.current.rightArrowKey.isPressed;
+        if ((leftPressed || rightPressed) && Keyboard.current.shiftKey.isPressed)
         {
             if (currSpeed < maxSpeed)
                 currSpeed += acceleration * Time.deltaTime;
         }
-        else
+        if ((leftPressed || rightPressed) && !Keyboard.current.shiftKey.isPressed) 
             currSpeed = speed;
+        
+
     }
 }
