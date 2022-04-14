@@ -44,6 +44,48 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 		// ...
 	```
 
+## Mecanicas de movimiento a velocidad normal:
+Casos: 
+	1- Pulsa un botón "->" y el personaje se mueve, al dejar de presionar ocurre una inercia en su dirección y se detiene
+	2- Pulsa un botón "->" y el personaje se mueve, deja de pulsar y pulsa el botón contrario "<-":
+		- opcion facil: s olvida de la inercia que tuviera e inicia el movimiento de la segunda flecha pulsada como en el caso 1
+		- opcion dificil: cuando inicia el movimiento de la segunda flecha, mantiene la fuerza de inercia que le quedara del primer movimiento, para que le cueste mas arrancar
+	3- Pulsa un boton "->" y sin soltar pulsa "<-":
+		- opcion 1: ignorar la segunda flecha pulsada, solo hace caso a la primera, mantiene igual que llevaba el movimeinto (tal cual esta ahora)
+		- opcion 2: deja de moverse, como si soltaras las 2 flechas
+	4- Pulsar las dos flechas al mismo tiempo: no se mueve
+## Mecanicas de movimiento a velocidad aumentada:
+Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad que llevase en el momento de soltar la tecla de movimiento
+
+## Mecánica del salto
+- Implementar el salto del profe, cuanto mas pulses la tecla para saltar, mas alto salta
+- Extra: opciones de caida:
+	- si estamos en el aire y pulsamos la flecha hacia abajo cae cn mas fuerza a rapida velocidad
+	- si estamos en el aire y pulsamos la flecha cae con aceleracion, y si pulsamos otra tecla impacta en el suelo
+- Si saltas en una direccion y en el aire pulsas la otra direccion cambia de direccion a la segunda que pulsas
+- Incluir la interpolacion en el salto para verlo mas fluido
+
+## Mecanica de la camara
+- La camara se mueve en la direccion x del personaje manteniendolo centrado, independientemente de la velocidad que lleve
+- La camara no se mueve en el eje y, a menos que el personaje alcance cierta altura, en ese caso le seguiria y le centraria
+- La distancia en z es cte durante toda la partida
+
+## Mecanica de enemigos
+- Ambos enemigos, al tocar con una pared se dan la vuelta
+- Seta: si se encuentran con un vacio se caen por el
+- Tortuga: si se encuentra con un vacio se da la vuelta
+- Si se tocan 2 enemigos ambos cambian de direccion
+- Si el enemigo toca al jugador a los lados:
+	- Si esta en el estado 1: se acaba la partida
+	- Si esta en el estado 2: cambia al estado 1 y se vuelve invulnerable X segundos
+- Si el jugador cae encima del enemigo:
+	- Setas: se destruyen
+	- Tortuga: se queda inmovilizada durante x segundos, si el jugador vuelve a caer encima mientras esta inmovilizada, la tortuga se elimina
+
+## Powerups
+
+
+
 ## Log
 
 #### 11 - 4 - 22
@@ -78,5 +120,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 	- JumpForce: 1000
 	- Gravity: 48
 #### 14 - 4 - 22
--Añadida inercia al movimiento horizontal
--Pendiente de corregir: pulsando una flecha+shift acelera, pero si dejas de pulsar la flecha mantiene la aceleracion
+- Añadida inercia al movimiento horizontal
+- Pendiente de corregir: pulsando una flecha+shift acelera, pero si dejas de pulsar la flecha mantiene la aceleracion
+
+

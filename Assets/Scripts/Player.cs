@@ -27,21 +27,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {   
-
-        Vector3 direction = MovementControl();
+        MovementControl();
         accelerationControl();
-
-        if (direction.x!=0)
-            lastDirection= direction;
-            
-        if(direction.x==0 && !Keyboard.current.shiftKey.isPressed)
-            currSpeed=currSpeed*drag;
-        //currSpeed=Mathf.Clamp(value:currSpeed,min:-maxSpeed,maxSpeed);
-
-        transform.Translate(lastDirection.normalized * currSpeed *Time.deltaTime);
-        if (direction.x==0 && currSpeed<0.1f) //Hay que guardar la direccion que llevaba, porque cuando dejan de pulsar se vuelve 0 y no se moveria
-            lastDirection= Vector3.zero;
-
     }
 
 
@@ -58,23 +45,29 @@ public class Player : MonoBehaviour
     }
 
 
-    private Vector3 MovementControl()
+    private void MovementControl()
     {
 
         Vector3 direction = Vector3.zero;   
 
         // Control del movimiento del jugador en el eje X (izquierda a derecha)
         if (Keyboard.current.leftArrowKey.isPressed)  
-            {
                 direction.x = -1;
-            }
         if (Keyboard.current.rightArrowKey.isPressed) 
-            {
                 direction.x = 1;
-            }
        
-        bool isThrusting=direction.x !=0;
-        return direction;
+        if (direction.x!=0)
+            lastDirection= direction;
+            
+        if(direction.x==0 && !Keyboard.current.shiftKey.isPressed)
+            currSpeed=currSpeed*drag;
+        
+        //currSpeed=Mathf.Clamp(value:currSpeed,min:-maxSpeed,maxSpeed);
+        transform.Translate(lastDirection.normalized * currSpeed *Time.deltaTime);
+        if (direction.x==0 && currSpeed<0.1f) //Hay que guardar la direccion que llevaba, porque cuando dejan de pulsar se vuelve 0 y no se moveria
+            lastDirection= Vector3.zero;
+
+
     }   
     
 
