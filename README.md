@@ -69,9 +69,14 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - Añadido restricción en la rotación del eje X, Y, Z para el gameObject Onion
 - Añadido control de la aceleración pulsando la tecla Shift
 - Los siguientes valores para el Script player han sido establecidos en:
+	Movimiento
 	- Speed: 5
 	- MaxSpeed: 12
 	- Acceleration: 6
+	- Drag: 0.975
+	Salto
 	- JumpForce: 1000
 	- Gravity: 48
-
+#### 14 - 4 - 22
+-Añadida inercia al movimiento horizontal
+-Pendiente de corregir: pulsando una flecha+shift acelera, pero si dejas de pulsar la flecha mantiene la aceleracion
