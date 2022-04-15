@@ -62,11 +62,7 @@ public class Player : MonoBehaviour
             }
             // Velocidad normal
             else
-            {
-                // Podmos dejarlo en currSpeed = speed y quitar el if si no queremos inercia al empezar a caminar
-                if (currSpeed < speed)
-                    currSpeed += speed * Time.deltaTime;    
-            }
+                currSpeed = speed;  
             // Inercia al cambiar de dirección
             if (direction != lastDirection)
                 currSpeed *= 0.5f;      // Habría que llamarlo como OnchangeDirectionDragValue o algo así
