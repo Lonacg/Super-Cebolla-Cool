@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
                     currSpeed += acceleration * Time.deltaTime;
             }
             // Velocidad normal
-            else
+            if (!shiftKey)
             {
                 // Podmos dejarlo en currSpeed = speed y quitar el if si no queremos inercia al empezar a caminar
                 if (currSpeed < speed)
