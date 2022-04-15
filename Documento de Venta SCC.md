@@ -68,7 +68,7 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
    * Si el jugador está en Estado 2 saldrá abono.
 * Características:
    * Gota de agua: hace que el personaje cambie del Estado 1 al Estado 2.
-   * Abono: hace que el disparo del personaje alcance más casillas
+   * Abono: hace que el disparo del personaje alcance más casillas.
 
 ## Historia
 
