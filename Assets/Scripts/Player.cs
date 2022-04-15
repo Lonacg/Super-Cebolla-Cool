@@ -26,25 +26,92 @@ public class Player : MonoBehaviour
     }
 
     void Update()
-    {   
+    {
         MovementControl();
-        accelerationControl();
     }
-
-
 
     void FixedUpdate()
     {
-        JumpControl();
-        SetGravity();
+        CustomGravity();
     }
 
-    private void SetGravity()
+    private void CustomGravity()
     {
         rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
     }
 
+    private void MovementControl()
+    {
+        Vector3 direction = GetDirection('x');
+        bool shiftKey = Keyboard.current.shiftKey.isPressed;
 
+        /*
+            Puedes borrar los comentarios que consideres innecesarios o rehacerlos
+
+        */
+
+
+        // Incercia
+        if (direction.x != 0)
+        {
+            // Aceleración
+            if (shiftKey)
+            {
+                if (currSpeed < maxSpeed)
+                    currSpeed += acceleration * Time.deltaTime;
+            }
+            // Velocidad normal
+            else
+            {
+                // Podmos dejarlo en currSpeed = speed y quitar el if si no queremos inercia al empezar a caminar
+                if (currSpeed < speed)
+                    currSpeed += speed * Time.deltaTime;    
+            }
+            // Inercia al cambiar de dirección
+            if (direction != lastDirection)
+                currSpeed *= 0.5f;      // Habría que llamarlo como OnchangeDirectionDragValue o algo así
+
+            // Es un acierto el guardar la dirección anterior al cambio
+            lastDirection = direction;
+        }
+        // Inercia al detenerse
+        else 
+            currSpeed *= drag;
+    
+
+        transform.Translate(lastDirection * currSpeed * Time.deltaTime);
+    }
+
+    private void AccelerationControl()
+    {
+
+    }
+
+    private void JumpControl()
+    {
+
+    }
+
+    private Vector3 GetDirection(char axis)
+    {
+        Vector3 direction = Vector3.zero;
+
+        switch (axis)
+        {
+            case 'x':
+                if (Keyboard.current.leftArrowKey.isPressed)  direction.x = -1;
+                if (Keyboard.current.rightArrowKey.isPressed) direction.x =  1;
+                break;
+            case 'y':
+                if (Keyboard.current.upArrowKey.isPressed)    direction.y =  1;
+                break;
+        }
+
+        return direction;
+    }
+
+
+    /*
     private void MovementControl()
     {
 
@@ -88,12 +155,6 @@ public class Player : MonoBehaviour
 
     private void accelerationControl()
     {
-        /*
-            Funciona pero no se ve tan... mario
-            Podríamos inentar que al cambiar de dirección la aceleración sea 0
-            o hacer que tenga alguna inercia (HECHO)
-        */
-
         // Control de la aceleración al pulsar la tecla Shift
         var leftPressed=Keyboard.current.leftArrowKey.isPressed;
         var rightPressed=Keyboard.current.rightArrowKey.isPressed;
@@ -104,7 +165,6 @@ public class Player : MonoBehaviour
         }
         if ((leftPressed || rightPressed) && !Keyboard.current.shiftKey.isPressed) 
             currSpeed = speed;
-        
-
     }
+    */
 }

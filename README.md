@@ -126,7 +126,13 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 	- Drag: 0.975
 	- JumpForce: 1000
 	- Gravity: 48
+
 #### 14 - 4 - 22
 - Añadida inercia al movimiento horizontal
 - Pendiente de corregir: pulsando una flecha+shift acelera, pero si dejas de pulsar la flecha mantiene la aceleracion
 
+#### 15 - 4 - 22
+- En un intento de reorganizar el código para separar las funciones del personaje por separado se ha llegado a lo siguiente (pendiende de revisión)
+- Añadido método GetDirection(char axis) para obtener directamente la dirección tras pulsar una tecla
+- Deshabilitado temporalmente control del salto
+- El método MovementControl() temporalmente contiene la inercia, aceleración y movimiento
