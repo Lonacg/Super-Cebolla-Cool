@@ -67,6 +67,9 @@ public class Player : MonoBehaviour
                 if (currSpeed < speed)
                     currSpeed += speed * Time.deltaTime;    
             }
+
+ 
+
             // Inercia al cambiar de dirección
             if (direction != lastDirection)
                 currSpeed *= 0.5f;      // Habría que llamarlo como OnchangeDirectionDragValue o algo así
