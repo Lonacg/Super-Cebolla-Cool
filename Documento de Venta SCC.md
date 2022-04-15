@@ -37,13 +37,13 @@ Super Cebolla ha salido de la tierra para recorrer con estilo los mundos de Mari
 
 ## Características del juego
 * Espacio de juego: personajes en 3D con movimiento restringido a 2D.
-* Punto de vista y movimiento de la cámara: la cámara sigue al jugador en el plano horizontal. manteniéndole centrado, pero no le sigue en el plano vertical cuando salta.
+* Punto de vista y movimiento de la cámara: la cámara sigue al jugador en el plano horizontal manteniéndole centrado, pero no le sigue en el plano vertical cuando salta.
 ### Jugador
 * El jugador comienza teniendo x vidas, cuando muere vuelve al comienzo de la pantalla y se resta una.
 * Cada pantalla tiene un cronómetro.
 * El jugador puede saltar y moverse hacia delante o hacia atrás.
 * El jugador puede coger monedas.
-* El jugador puede eliminar enemigos, saltando sobre ellos o disparándolos, según la evolución en la que se encuentre.
+* El jugador puede eliminar enemigos, saltando sobre ellos o disparándoles, según la evolución en la que se encuentre.
 * Hay un contador de monedas, x monedas se convierten en una vida extra.
 * Hay zonas de caída en las que el jugador muere directamente.
 * El jugador tiene 2 estados de evolución equivalentes a vida:
