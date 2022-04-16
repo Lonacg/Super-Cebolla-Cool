@@ -43,6 +43,7 @@ public class Player : MonoBehaviour
     private void MovementControl()
     {
         Vector3 direction = GetDirection('x');
+        //Vector3 direction = GetDirection();
         bool shiftKey = Keyboard.current.shiftKey.isPressed;
 
         // Incercia
@@ -81,23 +82,26 @@ public class Player : MonoBehaviour
 
     }
 
+    
     private Vector3 GetDirection(char axis)
     {
         Vector3 direction = Vector3.zero;
-
+        bool rightPressed= Keyboard.current.rightArrowKey.isPressed;
+        bool leftPressed= Keyboard.current.leftArrowKey.isPressed;
+        bool upPressed= Keyboard.current.upArrowKey.isPressed;
         switch (axis)
         {
             case 'x':
-                if (Keyboard.current.leftArrowKey.isPressed)  direction.x = -1;
-                if (Keyboard.current.rightArrowKey.isPressed) direction.x =  1;
+                if (rightPressed && !leftPressed)   direction.x = 1;
+                if (leftPressed && !rightPressed)   direction.x = -1;
                 break;
             case 'y':
-                if (Keyboard.current.upArrowKey.isPressed)    direction.y =  1;
+                if (upPressed)    direction.y =  1;
                 break;
         }
-
         return direction;
     }
+    
 
 
     /*

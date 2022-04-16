@@ -48,22 +48,20 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ## Mecanicas
 
-### Mecánicas de movimiento a velocidad normal 
+### Mecánicas de movimiento a velocidad normal (Hecho)
 
 1. Pulsa un botón "->" y el personaje se mueve, al dejar de presionar ocurre una inercia en su dirección y se detiene
 2. Pulsa un botón "->" y el personaje se mueve, deja de pulsar y pulsa el botón contrario "<-":
-
-   - opcion facil: s olvida de la inercia que tuviera e inicia el movimiento de la segunda flecha pulsada como en el caso 1
+   - opcion facil(HECHA): s olvida de la inercia que tuviera e inicia el movimiento de la segunda flecha pulsada como en el caso 1
    - opcion dificil: cuando inicia el movimiento de la segunda flecha, mantiene la fuerza de inercia que le quedara del primer movimiento, para que le cueste mas arrancar
 3. Pulsa un boton "->" y sin soltar pulsa "<-":
+     - opcion 1: ignorar la segunda flecha pulsada, solo hace caso a la primera, mantiene igual que llevaba el movimeinto
 
-     - opcion 1: ignorar la segunda flecha pulsada, solo hace caso a la primera, mantiene igual que llevaba el movimeinto (tal cual esta ahora)
-
-     - opcion 2: deja de moverse, como si soltaras las 2 flechas
+     - opcion 2(HECHA): deja de moverse, como si hubieras soltado las 2 flechas
    	4. Pulsar las dos flechas al mismo tiempo: no se mueve
 
 
-### Mecanicas de movimiento a velocidad aumentada
+### Mecanicas de movimiento a velocidad aumentada (Hecho)
 Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad que llevase en el momento de soltar la tecla de movimiento
 
 ### Mecánica del salto
@@ -139,4 +137,4 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 16 - 4 - 22
 - Arreglado el error de que mantenia la acelaracion al soltar el shift (else currSpeed=speed;)
-- Pendiente de arreglar el GetDirection: cuando pulsamos <- y sin soltar pulsamos ->, cambia de direccion a ->. En el caso contrario no lo hace.
+- Corregido getDirection para que cuando pulsamos las 2 flechas no se mueva (antes cuando pulsamos <- y sin soltar pulsamos ->, cambiaba de direccion a ->)
