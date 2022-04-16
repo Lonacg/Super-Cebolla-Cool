@@ -122,8 +122,8 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Los siguientes valores para el Script player han sido establecidos en:
 	- Speed: 5
 	- MaxSpeed: 12
-	- Acceleration: 6
-	- Drag: 0.975
+	- Acceleration: 8
+	- Drag: 0.94
 	- JumpForce: 1000
 	- Gravity: 48
 
@@ -136,3 +136,7 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Añadido método GetDirection(char axis) para obtener directamente la dirección tras pulsar una tecla
 - Deshabilitado temporalmente control del salto
 - El método MovementControl() temporalmente contiene la inercia, aceleración y movimiento
+
+#### 16 - 4 - 22
+- Arreglado el error de que mantenia la acelaracion al soltar el shift (else currSpeed=speed;)
+- Pendiente de arreglar el GetDirection: cuando pulsamos <- y sin soltar pulsamos ->, cambia de direccion a ->. En el caso contrario no lo hace.

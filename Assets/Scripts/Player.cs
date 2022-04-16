@@ -45,12 +45,6 @@ public class Player : MonoBehaviour
         Vector3 direction = GetDirection('x');
         bool shiftKey = Keyboard.current.shiftKey.isPressed;
 
-        /*
-            Puedes borrar los comentarios que consideres innecesarios o rehacerlos
-
-        */
-
-
         // Incercia
         if (direction.x != 0)
         {
@@ -60,28 +54,20 @@ public class Player : MonoBehaviour
                 if (currSpeed < maxSpeed)
                     currSpeed += acceleration * Time.deltaTime;
             }
-            // Velocidad normal
-            if (!shiftKey)
-            {
-                // Podmos dejarlo en currSpeed = speed y quitar el if si no queremos inercia al empezar a caminar
-                if (currSpeed < speed)
-                    currSpeed += speed * Time.deltaTime;    
-            }
+            else 
+                currSpeed = speed;
 
- 
 
             // Inercia al cambiar de dirección
             if (direction != lastDirection)
-                currSpeed *= 0.5f;      // Habría que llamarlo como OnchangeDirectionDragValue o algo así
+                currSpeed *= 0.5f; 
 
-            // Es un acierto el guardar la dirección anterior al cambio
             lastDirection = direction;
         }
         // Inercia al detenerse
         else 
             currSpeed *= drag;
     
-
         transform.Translate(lastDirection * currSpeed * Time.deltaTime);
     }
 
