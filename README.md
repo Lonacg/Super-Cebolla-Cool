@@ -138,3 +138,8 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 16 - 4 - 22
 - Arreglado el error de que mantenia la acelaracion al soltar el shift (else currSpeed=speed;)
 - Corregido getDirection para que cuando pulsamos las 2 flechas no se mueva (antes cuando pulsamos <- y sin soltar pulsamos ->, cambiaba de direccion a ->)
+
+#### 17 - 4 - 22
+- Limpieza de comentarios
+- Se ha vuelto a implementar el control del salto y eliminado un condicional innecesario
+- Implementado nueva variable directionDrag y ahora disponible desde el editor de Unity
