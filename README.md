@@ -142,4 +142,9 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 17 - 4 - 22
 - Limpieza de comentarios
 - Se ha vuelto a implementar el control del salto y eliminado un condicional innecesario
+- Las nuevas implementaciones con el salto están dentro del método `JumpControl()`
 - Implementado nueva variable directionDrag y ahora disponible desde el editor de Unity
+- Implementado dos nuevas variables para el control del salto disponibles desde el editor de Unity:
+	- liftingSpeed: la velocidad de elevación
+		> Es también el control para la altura del salto
+	- fallingSpeed: la velocidad de caída

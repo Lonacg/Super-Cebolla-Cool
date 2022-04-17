@@ -20,6 +20,10 @@ public class Player : MonoBehaviour
     public float jumpForce;
     public float gravity;
 
+    public float liftingSpeed;
+    public float fallingSpeed;
+
+
     private new Rigidbody rigidbody;
 
     void Start() {
@@ -45,6 +49,7 @@ public class Player : MonoBehaviour
     private void MovementControl()
     {
         Vector3 direction = GetDirection('x');
+
         bool shiftKey = Keyboard.current.shiftKey.isPressed;
 
         if (direction.x != 0)
@@ -74,6 +79,16 @@ public class Player : MonoBehaviour
     private void JumpControl()
     {
         Vector3 direction = GetDirection('y');
+
+        // Borra los comentarios que consideres innecesarios o cámbialos 👍
+        // Para la velocidad de caída y la velocidad de salto
+        float verticalForce = 1;
+        if (direction.y == 1)
+            verticalForce = liftingSpeed;
+        if (direction.y == -1)
+            verticalForce = fallingSpeed;
+
+        // El algoritmo que teníamos en un principio
         if (rigidbody.velocity.y == 0)
         {
             rigidbody.AddForce(
@@ -81,6 +96,29 @@ public class Player : MonoBehaviour
                 ForceMode.Impulse
             );
         }
+        else
+        {
+            if (direction.y != 0)
+            {
+                // Si quitamos este condicional, la caída tendrá una resistencia al mentener pulsada
+                // la tecla up
+                if (rigidbody.velocity.y < 0 && direction.y > 0)
+                    return;
+
+                // ForceMode.Acceleration quien impulsa la velocidad de caída o salto (llegar más alto)
+                rigidbody.AddForce(
+                    direction * verticalForce * Time.fixedDeltaTime, ForceMode.Acceleration
+                );  
+            }
+        }
+
+            // if (direction.y == 1)
+            // {
+            //     if (rigidbody.velocity.y > 0)
+            //         rigidbody.AddForce(
+            //         Vector3.up * 1500 * Time.fixedDeltaTime, ForceMode.Acceleration
+            //     );
+            // }
     }
 
     private Vector3 GetDirection(char axis)
@@ -104,4 +142,5 @@ public class Player : MonoBehaviour
         
         return direction;
     }
+
 }
