@@ -138,3 +138,13 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 16 - 4 - 22
 - Arreglado el error de que mantenia la acelaracion al soltar el shift (else currSpeed=speed;)
 - Corregido getDirection para que cuando pulsamos las 2 flechas no se mueva (antes cuando pulsamos <- y sin soltar pulsamos ->, cambiaba de direccion a ->)
+
+#### 17 - 4 - 22
+- Limpieza de comentarios
+- Se ha vuelto a implementar el control del salto y eliminado un condicional innecesario
+- Las nuevas implementaciones con el salto están dentro del método `JumpControl()`
+- Implementado nueva variable directionDrag y ahora disponible desde el editor de Unity
+- Implementado dos nuevas variables para el control del salto disponibles desde el editor de Unity:
+	- liftingSpeed: la velocidad de elevación
+		> Es también el control para la altura del salto
+	- fallingSpeed: la velocidad de caída

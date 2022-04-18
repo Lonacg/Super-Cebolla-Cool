@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     public float gravity;
 
     public float liftingSpeed;
-    public float fallingSpeed;
+    public float fallingSpeed; 
 
 
     private new Rigidbody rigidbody;
@@ -142,5 +142,4 @@ public class Player : MonoBehaviour
         
         return direction;
     }
-
 }
