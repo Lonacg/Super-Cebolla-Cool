@@ -90,8 +90,19 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 	- Tortuga: se queda inmovilizada durante x segundos, si el jugador vuelve a caer encima mientras esta inmovilizada, la tortuga se elimina
 
 ## Powerups
+- La visualizacion  del estado se hace teniendo 2 modelos diferentes, segun el estado se sustituye uno por otro en la posicion que estuviera
+- Cuando se cambia de estado aparece polvo o una nube para disimular la transicion
+- Cuando sale la gota de agua, se va en direccion contraria al jugador, acelerando ligeramente cuando esta muy cerca
+- La gota de agua cambia al personaje del Estado 1 al Estado 2
+- Cuando sale el abono: se queda quieto encima del bloque (opcional:sale disparado con direccion random (izq derecha) cerca del jugador)
+- El abono potencia la distancia de disparo
 
 
+## Backgrounds (fondo)
+- Usando el efecto parallax donde los fondos siguen al personaje pero a una velocidad mas lenta segun mas profunda es la capa
+- La altura de la imagen de cada capa es del tamaño de la pantalla de juego
+- Cada imagen es un objeto (cadena de montañas, nube, conjunto de nubes,...)
+- Cada imagen va en una capa para darle profundidad al fondo (varias cadenas de montañas y varias nubes)
 
 ## Log
 
