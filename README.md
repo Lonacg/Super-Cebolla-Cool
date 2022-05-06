@@ -58,7 +58,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
      - opcion 1: ignorar la segunda flecha pulsada, solo hace caso a la primera, mantiene igual que llevaba el movimeinto
 
      - opcion 2(HECHA): deja de moverse, como si hubieras soltado las 2 flechas
-   	4. Pulsar las dos flechas al mismo tiempo: no se mueve
+      	4. Pulsar las dos flechas al mismo tiempo: no se mueve
 
 
 ### Mecanicas de movimiento a velocidad aumentada (Hecho)
@@ -159,3 +159,7 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 	- liftingSpeed: la velocidad de elevación
 		> Es también el control para la altura del salto
 	- fallingSpeed: la velocidad de caída
+
+#### 6 - 5 -22
+
+- Añadido rotación del modelo con Slerp()

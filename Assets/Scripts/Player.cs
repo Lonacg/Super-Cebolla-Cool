@@ -23,20 +23,27 @@ public class Player : MonoBehaviour
     public float liftingSpeed;
     public float fallingSpeed; 
 
-
     private new Rigidbody rigidbody;
+
+    // Variables nuevas
+    private Transform playerModel;
+    private Vector3 playerModel_oldForward;
+
 
     void Start() {
         rigidbody = gameObject.GetComponent<Rigidbody>();
+        playerModel = transform.GetChild(0).transform;
+
+        playerModel_oldForward = playerModel.forward;
     }
 
     void Update()
-    {
-        MovementControl();
+    {  
     }
 
     void FixedUpdate()
     {
+        MovementControl();
         JumpControl();
         CustomGravity();
     }
@@ -48,47 +55,50 @@ public class Player : MonoBehaviour
 
     private void MovementControl()
     {
+        bool shiftKey = Keyboard.current.shiftKey.isPressed;
         Vector3 direction = GetDirection('x');
 
-        bool shiftKey = Keyboard.current.shiftKey.isPressed;
+        if (direction.magnitude != 0)
+            playerModel_oldForward = direction;
 
         if (direction.x != 0)
         {
             if (shiftKey)
             {
-                // Aceleración
                 if (currSpeed < maxSpeed)
                     currSpeed += acceleration * Time.deltaTime;
             }
             else
                 currSpeed = speed;
 
-            // Inercia al cambio de dirección
             if (direction != lastDirection)
-                currSpeed *= directionDrag; 
+                currSpeed *= directionDrag;
 
             lastDirection = direction;
         }
         else 
-            // Inercia al detenerse
             currSpeed *= drag;
     
+
         transform.Translate(lastDirection * currSpeed * Time.deltaTime);
+        UpdatePlayerModelRotation();
+    }
+
+    private void UpdatePlayerModelRotation()
+    {
+        playerModel.forward = Vector3.Slerp(playerModel.forward, playerModel_oldForward.normalized, Time.deltaTime * 12);
     }
 
     private void JumpControl()
     {
         Vector3 direction = GetDirection('y');
 
-        // Borra los comentarios que consideres innecesarios o cámbialos 👍
-        // Para la velocidad de caída y la velocidad de salto
         float verticalForce = 1;
         if (direction.y == 1)
             verticalForce = liftingSpeed;
         if (direction.y == -1)
             verticalForce = fallingSpeed;
 
-        // El algoritmo que teníamos en un principio
         if (rigidbody.velocity.y == 0)
         {
             rigidbody.AddForce(
@@ -100,25 +110,15 @@ public class Player : MonoBehaviour
         {
             if (direction.y != 0)
             {
-                // Si quitamos este condicional, la caída tendrá una resistencia al mentener pulsada
-                // la tecla up
+                // Si quitamos este condicional, la caída tendrá una resistencia al mentener pulsada la tecla up
                 if (rigidbody.velocity.y < 0 && direction.y > 0)
                     return;
 
-                // ForceMode.Acceleration quien impulsa la velocidad de caída o salto (llegar más alto)
                 rigidbody.AddForce(
                     direction * verticalForce * Time.fixedDeltaTime, ForceMode.Acceleration
                 );  
             }
         }
-
-            // if (direction.y == 1)
-            // {
-            //     if (rigidbody.velocity.y > 0)
-            //         rigidbody.AddForce(
-            //         Vector3.up * 1500 * Time.fixedDeltaTime, ForceMode.Acceleration
-            //     );
-            // }
     }
 
     private Vector3 GetDirection(char axis)
