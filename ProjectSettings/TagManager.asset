@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - RedBlock
+  - SurpriseBlock
+  - IndestructibleBrickBlock
+  - DestructibleBrickBlock
   layers:
   - Default
   - TransparentFX

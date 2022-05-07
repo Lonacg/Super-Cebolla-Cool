@@ -163,3 +163,8 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 6 - 5 -22
 
 - Añadido rotación del modelo con Slerp()
+
+#### 07 - 05 - 22
+- Añadidos prefab de los 4 tipos de bloques
+- Añadida camara virtual de cinemachine, pte limitar el escenario cuando se cree
+- Escala del modelo del personaje reducida para mantener los objetos nuevos a 1
