@@ -8,6 +8,10 @@ TagManager:
   - SurpriseBlock
   - IndestructibleBrickBlock
   - DestructibleBrickBlock
+  - Seta
+  - Tortuga
+  - GotaAgua
+  - Abono
   layers:
   - Default
   - TransparentFX
