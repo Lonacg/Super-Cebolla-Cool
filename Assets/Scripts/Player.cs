@@ -6,140 +6,176 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [Header("Movimiento")]
-    public float speed;
-    public float maxSpeed;
-    public float acceleration;
-    public float drag;
-    public float directionDrag;
-    private float currSpeed;
+    public float normalSpeed;
+    public float normalSpeedAcceleration;
+    public float normalSpeedDeceleration;
 
-    private Vector3 lastDirection;
-    
+    [Header("Movimiento Acelerado")]
+    public float highSpeed;
+    public float highSpeedAcceleration;
+    public float highSpeedDeceleration;
 
     [Header("Salto")]
+    public float jumpTime;
     public float jumpForce;
-    public float gravity;
+    public float jumpForceExtend;
+    public float fallForce;
+    public float gravityForce;
 
-    public float liftingSpeed;
-    public float fallingSpeed; 
+    // Variables privadas
+    private Rigidbody rb;
+    private Vector3 direction;
+    private float currentSpeed;
+    private bool highSpeedKey;
+    private bool jumpKey;
+    private bool isGrounded;
+    private bool isWall;
+    private bool isJumping;
+    private float jumpTimeCounter;
 
-    private new Rigidbody rigidbody;
-
-    // Variables nuevas
-    private Transform playerModel;
-    private Vector3 playerModel_oldForward;
-
-
-    void Start() {
-        rigidbody = gameObject.GetComponent<Rigidbody>();
-        playerModel = transform.GetChild(0).transform;
-
-        playerModel_oldForward = playerModel.forward;
+    void Start()
+    {
+        rb = gameObject.GetComponent<Rigidbody>();
     }
 
     void Update()
-    {  
+    {
+        ListenInputs();
+        // CollisionListener();
+        PlayerMovement();
     }
 
     void FixedUpdate()
     {
-        MovementControl();
-        JumpControl();
-        CustomGravity();
+        PlayerJumping();
     }
 
-    private void CustomGravity()
+    void OnCollisionEnter(Collision collision)
     {
-        rigidbody.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
+        
     }
 
-    private void MovementControl()
+    private void OnCollisionStay(Collision other)
     {
-        bool shiftKey = Keyboard.current.shiftKey.isPressed;
-        Vector3 direction = GetDirection('x');
+        isWall = other.transform.tag == "Wall" ? true : false;
+        isGrounded = true;
+    }
 
-        if (direction.magnitude != 0)
-            playerModel_oldForward = direction;
+    void ListenInputs()
+    {
+        direction = Vector3.zero;
 
-        if (direction.x != 0)
-        {
-            if (shiftKey)
-            {
-                if (currSpeed < maxSpeed)
-                    currSpeed += acceleration * Time.deltaTime;
-            }
-            else
-                currSpeed = speed;
+        if (Keyboard.current.rightArrowKey.isPressed)
+            direction = Vector3.right;
+        if (Keyboard.current.leftArrowKey.isPressed)
+            direction = Vector3.left;
 
-            if (direction != lastDirection)
-                currSpeed *= directionDrag;
-
-            lastDirection = direction;
-        }
-        else 
-            currSpeed *= drag;
+        highSpeedKey = Keyboard.current.shiftKey.isPressed;
+        jumpKey = Keyboard.current.upArrowKey.isPressed;
+    }
     
-
-        transform.Translate(lastDirection * currSpeed * Time.deltaTime);
-        UpdatePlayerModelRotation();
-    }
-
-    private void UpdatePlayerModelRotation()
+    void CollisionListener()
     {
-        playerModel.forward = Vector3.Slerp(playerModel.forward, playerModel_oldForward.normalized, Time.deltaTime * 12);
-    }
+        // PENDIENTE DE TERMINAR 
 
-    private void JumpControl()
-    {
-        Vector3 direction = GetDirection('y');
-
-        float verticalForce = 1;
-        if (direction.y == 1)
-            verticalForce = liftingSpeed;
-        if (direction.y == -1)
-            verticalForce = fallingSpeed;
-
-        if (rigidbody.velocity.y == 0)
+        RaycastHit hit;
+        if ( Physics.Raycast( transform.position, transform.position + (Vector3.down * 2), out hit ) )
         {
-            rigidbody.AddForce(
-                direction * jumpForce * Time.fixedDeltaTime, 
-                ForceMode.Impulse
-            );
+            Debug.DrawLine( transform.position, transform.position + (Vector3.down * 2), Color.white );
         }
         else
         {
-            if (direction.y != 0)
-            {
-                // Si quitamos este condicional, la caída tendrá una resistencia al mentener pulsada la tecla up
-                if (rigidbody.velocity.y < 0 && direction.y > 0)
-                    return;
+            Debug.DrawLine( transform.position, transform.position + (Vector3.down * 2), Color.red );
+        }
+    }
+    
+    private void PlayerMovement()
+    {
+        if (highSpeedKey)
+            MovementDynamic(
+                0, highSpeed, highSpeedAcceleration, highSpeedDeceleration
+            );
+        else
+        {
+            // Desaceleración de alta velocidad a velocidad normal (pero da un bug que se trata abajo)
+            if (Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
+                currentSpeed -= normalSpeedAcceleration * direction.x;
+            // Si da igual la desaceleración, dejar únicamente lo de abajo y borrar el resto
+            else
+                MovementDynamic(
+                    0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration
+                );
+        }
 
-                rigidbody.AddForce(
-                    direction * verticalForce * Time.fixedDeltaTime, ForceMode.Acceleration
-                );  
-            }
+        // Corrección de un bug que hace que se deslice hasta el infinito (funciona, pero quita una característica)
+        if (!highSpeedKey && direction.x == 0 && Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
+            currentSpeed = 0;
+        
+        // PENDIENTE DE TERMINAR
+        if (isWall && !isGrounded) currentSpeed = 0;
+        // transform.Translate( transform.right * currentSpeed * Time.deltaTime );
+
+        rb.velocity = new Vector3(
+            currentSpeed,
+            rb.velocity.y,
+            rb.velocity.z
+        );
+    }
+
+    private void MovementDynamic(
+        float minSpeed,
+        float maxSpeed,
+        float acceleration,
+        float deceleration
+    )
+    {
+        if (direction.x != 0)
+        {
+            currentSpeed += acceleration * direction.x;
+            currentSpeed = Mathf.Abs(currentSpeed) < maxSpeed ? currentSpeed : maxSpeed * direction.x;
+        }
+        else
+        {
+            if ( Mathf.Abs(currentSpeed) > minSpeed)
+                currentSpeed += deceleration * -Mathf.Sign(currentSpeed);
+            if (Mathf.Abs(currentSpeed) < acceleration)
+                currentSpeed = 0;
         }
     }
 
-    private Vector3 GetDirection(char axis)
+    private void PlayerJumping()
     {
-        Vector3 direction = Vector3.zero;
-
-        bool rightPressed= Keyboard.current.rightArrowKey.isPressed;
-        bool leftPressed= Keyboard.current.leftArrowKey.isPressed;
-        bool upPressed= Keyboard.current.upArrowKey.isPressed;
-
-        switch (axis)
+        if (isJumping)
         {
-            case 'x':
-                if (rightPressed && !leftPressed) direction.x = 1;
-                if (leftPressed && !rightPressed) direction.x = -1;
-                break;
-            case 'y':
-                if (upPressed) direction.y =  1;
-                break;
+            if (jumpKey)
+            {
+                if (jumpTimeCounter < jumpTime)
+                    jumpTimeCounter += Time.deltaTime;
+                else
+                {
+                    jumpTimeCounter = 0;
+                    isJumping = false;
+                }
+
+                if (rb.velocity.y >= 0)
+                    rb.AddForce(Vector3.up * jumpForceExtend, ForceMode.Acceleration);
+            }
+        }
+
+        if (jumpKey && isGrounded)
+            Debug.Log("salta");
+
+        if (jumpKey && isGrounded)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isJumping  = true;
+            isGrounded = false;
         }
         
-        return direction;
+        if (rb.velocity.y >= 0)
+            rb.AddForce(Vector3.down * gravityForce, ForceMode.Force);
+
+        if (rb.velocity.y < 0)
+            rb.AddForce(Vector3.down * fallForce, ForceMode.Force);
     }
 }
