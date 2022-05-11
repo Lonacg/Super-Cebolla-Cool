@@ -58,6 +58,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
      - opcion 1: ignorar la segunda flecha pulsada, solo hace caso a la primera, mantiene igual que llevaba el movimeinto
 
      - opcion 2(HECHA): deja de moverse, como si hubieras soltado las 2 flechas
+     
       	4. Pulsar las dos flechas al mismo tiempo: no se mueve
 
 
@@ -168,3 +169,31 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Añadidos prefab de los 4 tipos de bloques
 - Añadida camara virtual de cinemachine, pte limitar el escenario cuando se cree
 - Escala del modelo del personaje reducida para mantener los objetos nuevos a 1
+
+#### 11-5-22
+
+- Reprogramado las mecánicas de movimiento y salto para un control más exacto
+
+- Las nuevas mecánicas de movimiento ahora tienen un modo velocidad normal y otro de alta velocidad.
+  Cada modo tiene tres opciones personalizables:
+
+  - Velocidad
+  - Aceleración
+  - Desaceleración
+
+- Las nuevas mecánicas de salto ahora tienen mayor control y más preciso a diferencia de la anterior versión, incluyendo:
+
+  - Tiempo de salto si se sigue manteniendo pulsado el botón de salto
+  - Fuerza del salto
+  - Fuerza del salto si se sigue mantiendo pulsado el botón de salto
+  - Fuerza de caída una vez la velocidad en Y sea <= 0
+  - Fuerza de gravedad
+
+- Por razones de optimización se ha establecido el Rigidbody de player con los siguientes cambios:
+
+  - Se usa la interpolación para evitar conflicos entre update y fixedupdate
+  - La detección de colisión se ha establecido en Continuo, pero para mejores resultados debería dejarse en Continuo Especulativo.
+
+- El personaje es capaz de rotar mirando hacia el sentido en donde avanza. La velocidad de rotación se ha establecido en 920.
+
+  

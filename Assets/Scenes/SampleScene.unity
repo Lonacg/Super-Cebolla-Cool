@@ -376,6 +376,7 @@ MonoBehaviour:
   jumpForceExtend: 30
   fallForce: 100
   gravityForce: 60
+  rotationSpeed: 920
 --- !u!1 &179794484
 GameObject:
   m_ObjectHideFlags: 0

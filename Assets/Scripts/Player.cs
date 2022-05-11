@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     public float fallForce;
     public float gravityForce;
 
+    [Header("Misc")]
+    public float rotationSpeed;
+
     // Variables privadas
     private Rigidbody rb;
     private Vector3 direction;
@@ -114,6 +117,12 @@ public class Player : MonoBehaviour
         // PENDIENTE DE TERMINAR
         if (isWall && !isGrounded) currentSpeed = 0;
         // transform.Translate( transform.right * currentSpeed * Time.deltaTime );
+
+        if (direction.x != 0)
+        {
+            Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+        }
 
         rb.velocity = new Vector3(
             currentSpeed,
