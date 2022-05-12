@@ -200,3 +200,4 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 12 - 5 - 22
 
 - Implementado intento en evitar quedarse pegado a las paredes o al techo. Si bien funciona aún está pendiente de corregir.
+- Detectado nuevo bug al pulsar la tecla de movimiento en una dirección junto a shift y al dejar de presionarlas al mismo tiempo y pulsar la tecla de movimiento en dirección contraria acelera al personaje al infinito.
