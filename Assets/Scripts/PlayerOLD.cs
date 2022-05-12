@@ -5,17 +5,19 @@ using UnityEngine;
 
 public class PlayerOLD : MonoBehaviour
 {
+    [Header("Movimiento")]
     public float speed;
     public float maxSpeed;
     public float acceleration;
     public float drag;
     public float directionDrag;
+
     private float currSpeed;
 
     private Vector3 lastDirection;
     
 
-    
+    [Header("Salto")]
     public float jumpForce;
     public float gravity;
 

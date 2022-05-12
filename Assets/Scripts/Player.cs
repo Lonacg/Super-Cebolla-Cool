@@ -172,7 +172,7 @@ public class Player : MonoBehaviour
         }
 
         if (jumpKey && isGrounded)
-            Debug.Log("salta");
+            //Debug.Log("salta");
 
         if (jumpKey && isGrounded)
         {
