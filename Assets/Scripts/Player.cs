@@ -28,11 +28,10 @@ public class Player : MonoBehaviour
     // Variables privadas
     private Rigidbody rb;
     private Vector3 direction;
+    private Vector3 HitDirection;
     private float currentSpeed;
     private bool highSpeedKey;
     private bool jumpKey;
-    private bool isGrounded;
-    private bool isWall;
     private bool isJumping;
     private float jumpTimeCounter;
 
@@ -44,8 +43,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         ListenInputs();
-        // CollisionListener();
-        PlayerMovement();
+        PlayerMovement();   
     }
 
     void FixedUpdate()
@@ -53,15 +51,9 @@ public class Player : MonoBehaviour
         PlayerJumping();
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
-        
-    }
-
-    private void OnCollisionStay(Collision other)
-    {
-        isWall = other.transform.tag == "Wall" ? true : false;
-        isGrounded = true;
+    void OnTriggerStay(Collider collider)
+    {   
+        CollisionListener(collider);
     }
 
     void ListenInputs()
@@ -70,6 +62,7 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.rightArrowKey.isPressed)
             direction = Vector3.right;
+            
         if (Keyboard.current.leftArrowKey.isPressed)
             direction = Vector3.left;
 
@@ -77,19 +70,22 @@ public class Player : MonoBehaviour
         jumpKey = Keyboard.current.upArrowKey.isPressed;
     }
     
-    void CollisionListener()
+    void CollisionListener(Collider collider)
     {
-        // PENDIENTE DE TERMINAR 
+        // 0.7f es para ajustar la cápsula de colisión al movelo, eso no me gusta. el modelo debería ser 0 y nos ahorramos
+        // el multiplicarlo por ese valor.     
+        Debug.DrawLine( transform.position + Vector3.up * 0.7f, collider.ClosestPoint( transform.position ) );
 
-        RaycastHit hit;
-        if ( Physics.Raycast( transform.position, transform.position + (Vector3.down * 2), out hit ) )
-        {
-            Debug.DrawLine( transform.position, transform.position + (Vector3.down * 2), Color.white );
-        }
-        else
-        {
-            Debug.DrawLine( transform.position, transform.position + (Vector3.down * 2), Color.red );
-        }
+        Vector3 point = collider.ClosestPoint( transform.position );
+        Vector3 dir = (transform.position  + Vector3.up * 0.7f) - point;
+        dir.Normalize();
+        dir = Vector3Int.RoundToInt(dir) * -1;
+
+        // if (rb.velocity.y > 0 || rb.velocity.y < 0)
+        if (rb.velocity.y != 0)
+            dir = new Vector3(dir.x, 0, dir.z);
+
+        HitDirection = dir;
     }
     
     private void PlayerMovement()
@@ -113,10 +109,10 @@ public class Player : MonoBehaviour
         // Corrección de un bug que hace que se deslice hasta el infinito (funciona, pero quita una característica)
         if (!highSpeedKey && direction.x == 0 && Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
             currentSpeed = 0;
-        
-        // PENDIENTE DE TERMINAR
-        if (isWall && !isGrounded) currentSpeed = 0;
-        // transform.Translate( transform.right * currentSpeed * Time.deltaTime );
+
+        // PENDIENTE DE CORRECCIÓN
+        if (HitDirection.x != 0)
+            currentSpeed = 0;
 
         if (direction.x != 0)
         {
@@ -171,14 +167,12 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (jumpKey && isGrounded)
-            //Debug.Log("salta");
+        Debug.Log(HitDirection);
 
-        if (jumpKey && isGrounded)
+        if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping  = true;
-            isGrounded = false;
         }
         
         if (rb.velocity.y >= 0)

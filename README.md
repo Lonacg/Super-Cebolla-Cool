@@ -170,7 +170,7 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Añadida camara virtual de cinemachine, pte limitar el escenario cuando se cree
 - Escala del modelo del personaje reducida para mantener los objetos nuevos a 1
 
-#### 11-5-22
+#### 11 - 5 - 22
 
 - Reprogramado las mecánicas de movimiento y salto para un control más exacto
 
@@ -196,4 +196,7 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - El personaje es capaz de rotar mirando hacia el sentido en donde avanza. La velocidad de rotación se ha establecido en 920.
 
-  
+
+#### 12 - 5 - 22
+
+- Implementado intento en evitar quedarse pegado a las paredes o al techo. Si bien funciona aún está pendiente de corregir.
