@@ -81,7 +81,6 @@ public class Player : MonoBehaviour
         dir.Normalize();
         dir = Vector3Int.RoundToInt(dir) * -1;
 
-        // if (rb.velocity.y > 0 || rb.velocity.y < 0)
         if (rb.velocity.y != 0)
             dir = new Vector3(dir.x, 0, dir.z);
 
@@ -110,9 +109,6 @@ public class Player : MonoBehaviour
         if (!highSpeedKey && direction.x == 0 && Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
             currentSpeed = 0;
 
-        // PENDIENTE DE CORRECCIÓN
-        if (HitDirection.x != 0)
-            currentSpeed = 0;
 
         if (direction.x != 0)
         {

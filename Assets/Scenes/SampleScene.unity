@@ -1854,9 +1854,23 @@ BoxCollider:
   m_GameObject: {fileID: 883260367}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 2, y: 2.815368, z: 2}
+  m_Center: {x: 0, y: 1.4065, z: 0}
+--- !u!136 &883260375
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 883260367}
+  m_Material: {fileID: 13400000, guid: 2e6f7390db04f8b418048876f1c1483f, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1
+  m_Height: 2.8
+  m_Direction: 1
   m_Center: {x: 0, y: 1.4065, z: 0}
 --- !u!4 &899881723 stripped
 Transform:
