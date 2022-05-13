@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
     public float normalSpeedAcceleration;
     public float normalSpeedDeceleration;
 
+
+
     [Header("Movimiento Acelerado")]
     public float highSpeed;
     public float highSpeedAcceleration;
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour
     public float rotationSpeed;
 
     // Variables privadas
+    private GameObject onionModel;
     private Rigidbody rb;
     private Vector3 direction;
     private Vector3 HitDirection;
@@ -38,6 +41,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        onionModel= GameObject.Find("OnionModel");
     }
 
     void Update()
@@ -60,10 +64,10 @@ public class Player : MonoBehaviour
     {
         direction = Vector3.zero;
 
-        if (Keyboard.current.rightArrowKey.isPressed)
+        if (Keyboard.current.rightArrowKey.isPressed && !Keyboard.current.leftArrowKey.isPressed)
             direction = Vector3.right;
             
-        if (Keyboard.current.leftArrowKey.isPressed)
+        if (Keyboard.current.leftArrowKey.isPressed && !Keyboard.current.rightArrowKey.isPressed)
             direction = Vector3.left;
 
         highSpeedKey = Keyboard.current.shiftKey.isPressed;
@@ -113,7 +117,7 @@ public class Player : MonoBehaviour
         if (direction.x != 0)
         {
             Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed * Time.deltaTime);
+            onionModel.transform.rotation = Quaternion.RotateTowards(onionModel.transform.rotation, rotation, rotationSpeed * Time.deltaTime);
         }
 
         rb.velocity = new Vector3(
@@ -163,7 +167,7 @@ public class Player : MonoBehaviour
             }
         }
 
-        Debug.Log(HitDirection);
+        //Debug.Log(HitDirection);
 
         if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
         {

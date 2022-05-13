@@ -1,67 +1,145 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Camera : MonoBehaviour
 {
-    public Transform player;
-    public new Rigidbody rigidbody;
+
 
     public float cameraHeight=4.5f;
     public float cameraWidth=-17f;
-    public int playerDirection;
+    public int playerDirection=0;
+    public int lastPlayerDirection;
     public float playerPosition;
+    public int playerRotation;
     public float lastPlayerPosition;
-    public float cameraPosition=0;
-    public float lastCameraPosition=0;
+    public Vector3 cameraPosition;
+    private Rigidbody rb;
+    private GameObject onion;
+    private GameObject onionModel;
+    private float offset;
+    public bool directionChanged;
+    public float timeSaved;
 
-    private Vector3 oldPosition;
-    private Vector3 newPosition;
+    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineFramingTransposer framingTransposer;
+
+
+
+    void Start()
+    {
+        onion=GameObject.Find("Onion");
+        rb=onion.GetComponent<Rigidbody>();
+        onionModel=GameObject.Find("OnionModel");
+    
+        framingTransposer=virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        offset=framingTransposer.m_TrackedObjectOffset.x;
+
+        cameraPosition.x= framingTransposer.m_TrackedObjectOffset.x;
+        cameraPosition.y= cameraHeight;
+        cameraPosition.z= cameraWidth;
+
+
+    }
 
     void FixedUpdate()
     {
-        playerDirection= GetPlayerDirection();
-        playerPosition= GetPlayerPosition();
+        playerRotation= GetPlayerRotation();   
+        (playerDirection,lastPlayerDirection)= GetPlayerDirection(playerDirection);
+        (directionChanged,timeSaved)= CheckDirectionsChanges(playerDirection,lastPlayerDirection);
 
-        CameraMovement();
-
-        lastPlayerPosition=playerPosition;
-        lastCameraPosition=cameraPosition;
-    }
+        //Debug.Log(directionChanged);
+        //Debug.Log(timeSaved);
 
 
-
-    public void CameraMovement()
-    {
-        cameraPosition= playerPosition;
-
-        oldPosition=new Vector3(lastCameraPosition,cameraHeight, cameraWidth);
-        newPosition=new Vector3(cameraPosition,cameraHeight, cameraWidth);
-
-        transform.position=Vector3.Lerp(oldPosition,newPosition, Time.fixedDeltaTime);
+        ChangeCameraPosition(playerRotation, cameraPosition, directionChanged, timeSaved); 
 
 
     }
 
 
-    public int GetPlayerDirection()
+
+    public void ChangeCameraPosition(float plaRotation, Vector3 camPosition, bool dirChanged, float tiSaved) //se cambia el Tracked Object Offset de la camara virtual
     {
-        if (rigidbody.velocity.x>0)
-            playerDirection=1;
-        else if (rigidbody.velocity.x<0)
-            playerDirection=-1;
+
+        //Debug.Log("rotacion: " + pRotation);
+        if ((plaRotation!= 90 && plaRotation!= 270) || (rb.velocity.x<=0.05f && rb.velocity.x>=-0.05f))
+            return;
+        
+                
+        if (rb.velocity.x>0.05f)
+        {
+            //if(dirChanged)
+
+            if(offset<3.99)
+            {
+                offset=(rb.velocity.x*(Time.time-tiSaved))*2;
+                //Debug.Log(offset);
+            }
+            else
+                offset=4;
+
+        }
+        else if (rb.velocity.x<-0.05f) //el if no haria falta, es eso directamente 
+        {
+            if(offset>-3.99)
+            {
+                offset=-(rb.velocity.x*(Time.time-tiSaved))*2;
+                //Debug.Log(offset);
+            }
+            else
+                offset=4;
+        }
+
+
+
+    }
+
+
+
+
+    public (int, int) GetPlayerDirection(int pDirection)
+    {
+        lastPlayerDirection=pDirection;
+        if (rb.velocity.x>0)
+            pDirection=1;
+        else if (rb.velocity.x<0)
+            pDirection=-1;
         else 
-            playerDirection=0;    
+            pDirection=0;    
 
-        return playerDirection;
+        return (pDirection, lastPlayerDirection);
     }
+
+    public (bool, float) CheckDirectionsChanges(int pDirection, int lastPDirection)
+    {
+        if(pDirection!=lastPDirection)
+        {
+            directionChanged=true;
+            timeSaved=Time.time;
+        }
+        else
+        {
+            directionChanged=false;
+            timeSaved=0;
+        }
+
+        return (directionChanged, timeSaved);
+    }
+
+
 
     public float GetPlayerPosition()
     {
-        playerPosition=rigidbody.worldCenterOfMass.x;
+        playerPosition=rb.position.x;
         return playerPosition;
     }
-
+    public int GetPlayerRotation()
+    {
+        playerRotation=Mathf.RoundToInt(onionModel.transform.eulerAngles.y);
+        return playerRotation;
+    }
 
 
 }

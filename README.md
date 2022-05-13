@@ -201,3 +201,9 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - Implementado intento en evitar quedarse pegado a las paredes o al techo. Si bien funciona aún está pendiente de corregir.
 - Detectado nuevo bug al pulsar la tecla de movimiento en una dirección junto a shift y al dejar de presionarlas al mismo tiempo y pulsar la tecla de movimiento en dirección contraria acelera al personaje al infinito.
+
+#### 13 - 05- 22
+
+- Scrip de camara creado gestionado en conjunto con cinemachine, pte de terminar.
+- Puesta la rotacion del personaje en el hijo.
+- Condiciones de movimiento modificadas (lineas67 y 70) para que player no se mueva cuando se pulsen las 2 flechas
