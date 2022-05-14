@@ -204,6 +204,11 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 13 - 05- 22
 
-- Scrip de camara creado gestionado en conjunto con cinemachine, pte de terminar.
+- Script de camara creado gestionado en conjunto con cinemachine, pte de terminar.
 - Puesta la rotacion del personaje en el hijo.
-- Condiciones de movimiento modificadas (lineas67 y 70) para que player no se mueva cuando se pulsen las 2 flechas
+- Condiciones de movimiento modificadas (lineas 67 y 70) para que player no se mueva cuando se pulsen las 2 flechas
+
+#### 14 - 05 - 22
+
+- Completado el correcto funcionamiento de la camara.
+- Bug encontrado, cuando el jugador se choca con una pared  y sigue pulsando en esa direccion, la camara sigue avanzando porque la velocidad del jugador es positiva aunque no se mueva.

@@ -1,193 +1,186 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class CameraManager : MonoBehaviour
 {
-    public Transform player;
-    public float cameraHeight=4.5f;
-    public float cameraWidth=-17f;
+    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineFramingTransposer framingTransposer;
+    private Rigidbody rb;
+    private GameObject onion;
+    private GameObject onionModel;
+    private int playerRotation;
+    private float offset=0;
 
-    private float playerPositionX;
-
-    private float playerDirection;
-    private float lastPlayerDirection;
-    //private float lastPlayerPositionX;
-    private float playerPositionXSaved;
-    private bool directionChanged=false;
-
-    private float moveAwayPosition=0; //posicion de la camara segun se mueve el personaje 
+    void Start()
+    {
+        onion=GameObject.Find("Onion");
+        rb=onion.GetComponent<Rigidbody>();
+        onionModel=GameObject.Find("OnionModel");
+    
+        framingTransposer=virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+    }
 
     void FixedUpdate()
     {
-
-        CambioDireccion();
-        playerPositionX= player.transform.position.x;
-        //Debug.Log(lastPlayerPositionX);
-        //Debug.Log(playerPositionX);
-        //Debug.Log("playerDirection: "+playerDirection);
-        //Debug.Log("playerPositionX: "+playerPositionX);
-
-        //Debug.Log("lastPlayerDirection: "+lastPlayerDirection);
-        //Debug.Log("lastPlayerPositionX: "+lastPlayerPositionX);
-
-
-        //Debug.Log("moveAwayPosition: "+ moveAwayPosition);
-        //Debug.Log("newTargetPositionX: "+ newTargetPositionX);
-        //Debug.Log("lastTargetPositionX: "+ lastTargetPositionX);
-        
-        //Debug.Log("newTargetPositionX/2: "+ newTargetPositionX/2);
-        if(playerDirection==-1)
-        {
-
-            if(lastPlayerDirection==1)
-            {
-                directionChanged=true;
-                playerPositionXSaved=playerPositionX; //bien
-            }
-            //Debug.Log("DE 1 A -1: " + directionChanged);
-            if (directionChanged)
-            {
-                //Debug.Log("hola?");
-                Debug.Log(moveAwayPosition);
-                if(moveAwayPosition>playerPositionX-0.5)
-                {
-                    Debug.Log("hola");
-                    //Debug.Log("ANTERIOR moveAwayPosition: "+ moveAwayPosition);
-
-                    moveAwayPosition=moveAwayPosition-(playerPositionXSaved-playerPositionX)/2;
-                    //Debug.Log("NUEVO moveAwayPosition: "+ moveAwayPosition);
-
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-                }
-                else
-                    directionChanged=false;
-                
-            }
-            else
-            {
-                //Debug.Log(moveAwayPosition>playerPositionX-3.8);
-                if(moveAwayPosition>playerPositionX-3.8)
-                {
-                    //Debug.Log("hola?");                    
-                    moveAwayPosition=playerPositionX-(playerPositionX/2);
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-
-                }
-                else
-                {
-                    //Debug.Log("hola?");
-                    //Debug.Log(moveAwayPosition);
-                    moveAwayPosition=playerPositionX-4;
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-                }
-            }
-        }
-        if (playerDirection==1)
-        {
-            if (lastPlayerDirection==-1)
-            {
-                directionChanged=true;
-                playerPositionXSaved=playerPositionX;
-            }
-            //Debug.Log("DE -1 A 1: " + directionChanged);
-
-            if(directionChanged)
-            {
-                if(moveAwayPosition<playerPositionX+0.5f)
-                {
-                    moveAwayPosition=moveAwayPosition+(playerPositionXSaved-playerPositionX)/2;
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-                }
-                else
-                    directionChanged=false;
-              
-            }
-            else
-            {
-                if(moveAwayPosition<playerPositionX+3.8f)
-                {
-                    moveAwayPosition=playerPositionX+(playerPositionX/2);
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-
-                }
-                else
-                {
-                    //Debug.Log(moveAwayPosition);
-                    moveAwayPosition=playerPositionX+4;
-                    transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-                }
-            }
-        }
-
-
-
-        /*
-        else if(lastPlayerDirection==-1 && playerDirection==1)
-        {
-            moveAwayPosition=playerPositionX+4;
-            transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-
-        }
-        if (playerDirection==1)
-        {
-            
-            if(moveAwayPosition<playerPositionX+4)
-            {
-                moveAwayPosition=playerPositionX+(playerPositionX/2);
-                transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-            }
-            else
-            {
-                moveAwayPosition=playerPositionX+4;
-                transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-            }
-
-        }
-
-        else if (playerDirection==-1)
-        {
-            //Debug.Log(moveAwayPosition);
-            if(moveAwayPosition>playerPositionX-4)
-            {
-                moveAwayPosition=playerPositionX+(playerPositionX/2);
-                transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-
-            }    
-            else
-            {
-                moveAwayPosition=playerPositionX-4;
-                transform.position=new Vector3(moveAwayPosition,cameraHeight, cameraWidth);
-
-            }
-
-        }*/
-        
-        
-        
-        //lastPlayerPositionX=player.transform.position.x;
-
+        playerRotation= GetPlayerRotation();   
+        ChangeCameraPosition(playerRotation); 
     }
 
 
-    void CambioDireccion()
+    public void ChangeCameraPosition(float plaRotation) //se cambia el Tracked Object Offset de la camara virtual
     {
-        lastPlayerDirection=playerDirection;
-        if (Keyboard.current.rightArrowKey.isPressed)
+        if ((plaRotation!= 90 && plaRotation!= 270) || (rb.velocity.x<=0.05f && rb.velocity.x>=-0.05f)) //Mientras se gira y no se mueve, la camara no se mueve
+            return;
+                
+        if (rb.velocity.x>0.05f)
         {
-            playerDirection=1;
+            if(offset<3.49)
+            {
+                //offset+=((rb.velocity.x/150)*(tiSaved2-tiSaved1)); //Codigo para que el movimiento de la camara sea expoencial (ligado al tiempo transcurrido)
+                offset+=(rb.velocity.x/100);
+            }
+            else
+                offset=3.5f;
         }
-        else if (Keyboard.current.leftArrowKey.isPressed)
+        else if (rb.velocity.x<-0.05f) //el if no haria falta, es eso directamente 
         {
-            playerDirection=-1;
+            if(offset>-3.49)
+            {
+                //offset+=((rb.velocity.x/150)*(tiSaved2-tiSaved1)); //Codigo para que el movimiento de la camara sea expoencial (ligado al tiempo transcurrido)
+                offset+=(rb.velocity.x/100);
+            }
+            else
+                offset=-3.5f;
+        }
+        framingTransposer.m_TrackedObjectOffset.x=offset;
+    }
+
+    
+    public int GetPlayerRotation()
+    {
+        playerRotation=Mathf.RoundToInt(onionModel.transform.eulerAngles.y);
+        return playerRotation;
+    }
+}
+
+/*  CLASE CON EL MOVIMIENTO DE LA CAMARA EN FUNCION DEL TIEMPO Y PREPARADO PARA SACAR LAS POSICIONES DE PLAYER
+public class Camera : MonoBehaviour
+{
+    public float cameraHeight=4.5f;
+    public float cameraWidth=-17f;
+    public CinemachineVirtualCamera virtualCamera;
+    public CinemachineFramingTransposer framingTransposer;
+    private Rigidbody rb;
+    private GameObject onion;
+    private GameObject onionModel;
+    private int playerDirection=0; 
+    private int lastPlayerDirection; 
+    private float playerPosition;
+    private float lastPlayerPosition;
+    private int playerRotation;
+    private Vector3 cameraPosition;
+
+    private float offset=0;
+    private bool directionChanged; 
+    private float timeSaved1; 
+    private float timeSaved2; 
+
+
+    void Start()
+    {
+        onion=GameObject.Find("Onion");
+        rb=onion.GetComponent<Rigidbody>();
+        onionModel=GameObject.Find("OnionModel");
+    
+        framingTransposer=virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+
+        cameraPosition.x= framingTransposer.m_TrackedObjectOffset.x;
+        cameraPosition.y= cameraHeight;
+        cameraPosition.z= cameraWidth;
+    }
+
+    void FixedUpdate()
+    {
+        playerRotation= GetPlayerRotation();   
+        (playerDirection,lastPlayerDirection)= GetPlayerDirection(playerDirection);
+        (directionChanged,timeSaved1,timeSaved2)= CheckDirectionsChanges(playerDirection,lastPlayerDirection,timeSaved1,timeSaved2);
+
+        ChangeCameraPosition(playerRotation, cameraPosition, directionChanged, timeSaved1, timeSaved2); 
+    }
+
+
+    public void ChangeCameraPosition(float plaRotation, Vector3 camPosition, bool dirChanged, float tiSaved1, float tiSaved2) //se cambia el Tracked Object Offset de la camara virtual
+    {
+        if ((plaRotation!= 90 && plaRotation!= 270) || (rb.velocity.x<=0.05f && rb.velocity.x>=-0.05f))
+            return;
+                
+        if (rb.velocity.x>0.05f)
+        {
+            if(offset<3.49)
+            {
+                //offset+=((rb.velocity.x/150)*(tiSaved2-tiSaved1)); //Codigo para que el movimiento de la camara sea expoencial (ligado al tiempo transcurrido)
+                offset+=(rb.velocity.x/100);
+            }
+            else
+                offset=3.5f;
+        }
+        else if (rb.velocity.x<-0.05f) //el if no haria falta, es eso directamente 
+        {
+            if(offset>-3.49)
+            {
+                //offset+=((rb.velocity.x/150)*(tiSaved2-tiSaved1)); //Codigo para que el movimiento de la camara sea expoencial (ligado al tiempo transcurrido)
+                offset+=(rb.velocity.x/100);
+            }
+            else
+                offset=-3.5f;
+        }
+        framingTransposer.m_TrackedObjectOffset.x=offset;
+    }
+
+
+    public (int, int) GetPlayerDirection(int pDirection)
+    {
+        lastPlayerDirection=pDirection;
+        if (rb.velocity.x>0)
+            pDirection=1;
+        else if (rb.velocity.x<0)
+            pDirection=-1;
+        else 
+            pDirection=0;    
+
+        return (pDirection, lastPlayerDirection);
+    }
+
+    public (bool, float, float) CheckDirectionsChanges(int pDirection, int lastPDirection, float tiSaved1, float tiSaved2)
+    {
+        if(pDirection!=lastPDirection)
+        {
+            directionChanged=true;
+            tiSaved1=tiSaved2;
+            tiSaved2=Time.time;
         }
         else
-            playerDirection=0;
+        {
+            directionChanged=false;
+            tiSaved2=Time.time;
+        }
 
+        return (directionChanged, tiSaved1, tiSaved2);
     }
 
 
-
-
+    public float GetPlayerPosition()
+    {
+        //Calculo de la ultima posicion del jugador iria aqui
+        playerPosition=rb.position.x;
+        return playerPosition;
+    }
+    public int GetPlayerRotation()
+    {
+        playerRotation=Mathf.RoundToInt(onionModel.transform.eulerAngles.y);
+        return playerRotation;
+    }
 }
+*/
