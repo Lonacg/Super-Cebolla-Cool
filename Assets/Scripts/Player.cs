@@ -10,8 +10,6 @@ public class Player : MonoBehaviour
     public float normalSpeedAcceleration;
     public float normalSpeedDeceleration;
 
-
-
     [Header("Movimiento Acelerado")]
     public float highSpeed;
     public float highSpeedAcceleration;
@@ -47,7 +45,17 @@ public class Player : MonoBehaviour
     void Update()
     {
         ListenInputs();
-        PlayerMovement();   
+        PlayerMovement();
+
+        // Error de Unity 
+        if (rb.velocity.y == -9.536743e-06f ||
+            rb.velocity.y == -2.861023e-05f
+        )
+            rb.velocity = new Vector3(
+                rb.velocity.x,
+                0,
+                rb.velocity.z
+            );
     }
 
     void FixedUpdate()
@@ -81,12 +89,16 @@ public class Player : MonoBehaviour
         Debug.DrawLine( transform.position + Vector3.up * 0.7f, collider.ClosestPoint( transform.position ) );
 
         Vector3 point = collider.ClosestPoint( transform.position );
+
         Vector3 dir = (transform.position  + Vector3.up * 0.7f) - point;
         dir.Normalize();
-        dir = Vector3Int.RoundToInt(dir) * -1;
+        dir *= -1;  //reemplaza debajo
+        // dir = Vector3Int.RoundToInt(dir) * -1;
 
-        if (rb.velocity.y != 0)
-            dir = new Vector3(dir.x, 0, dir.z);
+        // if (rb.velocity.y != 0)
+            // dir = new Vector3(dir.x, 0, dir.z);
+
+        Debug.Log(dir);
 
         HitDirection = dir;
     }
@@ -113,6 +125,13 @@ public class Player : MonoBehaviour
         if (!highSpeedKey && direction.x == 0 && Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
             currentSpeed = 0;
 
+        // Error de Unity
+        // if (HitDirection.x != 0)
+        //     rb.velocity = new Vector3(
+        //     0,
+        //     rb.velocity.y,
+        //     rb.velocity.z
+        // );
 
         if (direction.x != 0)
         {
@@ -166,8 +185,6 @@ public class Player : MonoBehaviour
                     rb.AddForce(Vector3.up * jumpForceExtend, ForceMode.Acceleration);
             }
         }
-
-        //Debug.Log(HitDirection);
 
         if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
         {
