@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     [Header("Misc")]
     public float rotationSpeed;
+    public GameObject projectile;
 
     // Variables privadas
     private GameObject onionModel;
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     private bool jumpKey;
     private bool isJumping;
     private float jumpTimeCounter;
+    private bool shootKey;
 
     void Start()
     {
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
     {
         ListenInputs();
         PlayerMovement();
+        PlayerShooting();
 
         // Error de Unity 
         if (rb.velocity.y == -9.536743e-06f ||
@@ -79,7 +82,8 @@ public class Player : MonoBehaviour
             direction = Vector3.left;
 
         highSpeedKey = Keyboard.current.shiftKey.isPressed;
-        jumpKey = Keyboard.current.upArrowKey.isPressed;
+        jumpKey  = Keyboard.current.upArrowKey.isPressed;
+        shootKey = Keyboard.current.spaceKey.wasPressedThisFrame;
     }
     
     void CollisionListener(Collider collider)
@@ -197,5 +201,15 @@ public class Player : MonoBehaviour
 
         if (rb.velocity.y < 0)
             rb.AddForce(Vector3.down * fallForce, ForceMode.Force);
+    }
+
+    void PlayerShooting()
+    {
+        // FALTA TERMINAR
+        if (shootKey)
+        {
+            GameObject bullet = Instantiate(projectile, transform.position + Vector3.up * 0.7f, Quaternion.identity);
+            bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * 1200);
+        }
     }
 }
