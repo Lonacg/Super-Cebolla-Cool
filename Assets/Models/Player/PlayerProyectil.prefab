@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 194885962719068567}
   - component: {fileID: 1232311521091521393}
-  - component: {fileID: 2289247820847716763}
   - component: {fileID: 7997544062475420498}
+  - component: {fileID: 7068343900728467260}
   m_Layer: 0
   m_Name: PlayerProyectil
   m_TagString: Untagged
@@ -51,19 +51,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &2289247820847716763
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194885962719068564}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.14
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7997544062475420498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +63,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de49163de2e829941b084839fd112e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &7068343900728467260
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194885962719068564}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.14
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &194885964235604502
 GameObject:
   m_ObjectHideFlags: 0
@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 194885964235604521}
   - component: {fileID: 194885964235604522}
   - component: {fileID: 194885964235604523}
-  - component: {fileID: 194885964235604520}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -160,16 +159,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &194885964235604520
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 194885964235604502}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}

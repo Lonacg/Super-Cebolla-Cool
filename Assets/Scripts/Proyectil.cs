@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Proyectil : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private int counter;
+
     void Start()
+    {
+    }
+
+    void Update()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    void OnCollisionEnter(Collision collision)
     {
-        
+        // Numero rebotes off
+        if (counter < 0)
+        {
+            counter++;
+            return;
+        }
+
+        Destroy(gameObject);
     }
 }

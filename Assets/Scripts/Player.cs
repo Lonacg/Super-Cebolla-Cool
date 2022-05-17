@@ -206,10 +206,24 @@ public class Player : MonoBehaviour
     void PlayerShooting()
     {
         // FALTA TERMINAR
+        // Un poco guarro (por limpiar)
         if (shootKey)
         {
-            GameObject bullet = Instantiate(projectile, transform.position + Vector3.up * 0.7f, Quaternion.identity);
-            bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * 1200);
+            float eua = onionModel.transform.rotation.eulerAngles.y;
+            if (eua == 90 || eua == 270)
+            {
+                GameObject bullet = Instantiate(
+                projectile,
+                new Vector3(
+                    transform.localPosition.x + 1 * -Mathf.Sign(onionModel.transform.forward.x),
+                    transform.localPosition.y + 0.7f,
+                    transform.position.z
+                ),
+                Quaternion.identity,
+                transform
+                );
+                bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * 1200);
+            }
         }
     }
 }
