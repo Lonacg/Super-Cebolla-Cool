@@ -212,3 +212,17 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - Completado el correcto funcionamiento de la camara.
 - Bug encontrado, cuando el jugador se choca con una pared  y sigue pulsando en esa direccion, la camara sigue avanzando porque la velocidad del jugador es positiva aunque no se mueva.
+
+#### 18 - 05 - 22
+
+- Ahora el personaje no se queda pegado en las paredes, suelo o bloques
+- Implementado el disparo con proyectiles con los siguientes parámetros:
+  - Tiempo entre disparos
+  - Impulso horizontal del proyectil
+  - Impulso vertical del proyectil
+  - Tiempo de vida del proyectil (dentro del prefab proyectil)
+  - Número de rebotes del proyectil (dentro del prefab proyectil)
+- Detectado cierta vibración en los proyectiles (cuando el jugador salta y dispara). Dejado como está porque me gusta.
+- Implementado el prefab monedas
+- Añadido nuevas etiquetasbullet y coin
+- Implementado vidas del jugador, contador de monedas y máximo número de monedas.

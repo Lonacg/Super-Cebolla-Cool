@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
     public float gravityForce;
 
     [Header("Misc")]
+    public int lives;
+    public int coins;
+    public int maxCoins;
     public float rotationSpeed;
     public GameObject projectile;
     public float timeBetweenShots;
@@ -75,6 +78,21 @@ public class Player : MonoBehaviour
     void OnTriggerStay(Collider collider)
     {   
         CollisionListener(collider);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.parent.tag == "Coin")
+        {
+            coins += 1;
+            Destroy(collision.gameObject);
+
+            if (coins >= maxCoins)
+            {
+                lives += 1;
+                coins = 0;
+            }
+        }
     }
 
     void ListenInputs()
