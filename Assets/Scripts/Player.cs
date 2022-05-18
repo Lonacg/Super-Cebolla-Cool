@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     [Header("Misc")]
     public float rotationSpeed;
     public GameObject projectile;
+    public float timeBetweenShots;
+    public float projectileHorizontalForce;
+    public float projectileVerticalForce;
 
     // Variables privadas
     private GameObject onionModel;
@@ -36,7 +39,10 @@ public class Player : MonoBehaviour
     private bool jumpKey;
     private bool isJumping;
     private float jumpTimeCounter;
+    private float timeBetweenShotsCounter;
+    private bool shotAvailable;
     private bool shootKey;
+    
 
     void Start()
     {
@@ -83,7 +89,7 @@ public class Player : MonoBehaviour
 
         highSpeedKey = Keyboard.current.shiftKey.isPressed;
         jumpKey  = Keyboard.current.upArrowKey.isPressed;
-        shootKey = Keyboard.current.spaceKey.wasPressedThisFrame;
+        shootKey = Keyboard.current.spaceKey.isPressed;
     }
     
     void CollisionListener(Collider collider)
@@ -102,7 +108,7 @@ public class Player : MonoBehaviour
         // if (rb.velocity.y != 0)
             // dir = new Vector3(dir.x, 0, dir.z);
 
-        Debug.Log(dir);
+        // Debug.Log(dir);
 
         HitDirection = dir;
     }
@@ -207,22 +213,46 @@ public class Player : MonoBehaviour
     {
         // FALTA TERMINAR
         // Un poco guarro (por limpiar)
+        if (!shotAvailable)
+        {
+            if (timeBetweenShotsCounter < timeBetweenShots)
+            {
+                timeBetweenShotsCounter += Time.deltaTime;
+                return;
+            }
+            else
+                shotAvailable = true;
+        }
+
         if (shootKey)
         {
-            float eua = onionModel.transform.rotation.eulerAngles.y;
-            if (eua == 90 || eua == 270)
+            if (shotAvailable)
             {
-                GameObject bullet = Instantiate(
-                projectile,
-                new Vector3(
-                    transform.localPosition.x + 1 * -Mathf.Sign(onionModel.transform.forward.x),
-                    transform.localPosition.y + 0.7f,
-                    transform.position.z
-                ),
-                Quaternion.identity,
-                transform
-                );
-                bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * 1200);
+                float eua = onionModel.transform.rotation.eulerAngles.y;
+                if (eua == 90 || eua == 270)
+                {
+                    GameObject bullet = Instantiate(
+                    projectile,
+                    new Vector3(
+                        transform.localPosition.x + 1 * -Mathf.Sign(onionModel.transform.forward.x),
+                        transform.localPosition.y + 0.83f,
+                        transform.position.z
+                    ),
+                    Quaternion.identity,
+                    transform
+                    );
+                    Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
+                    bullet.GetComponent<Rigidbody>().velocity = new Vector3(
+                        rb.velocity.x,
+                        0,
+                        0
+                    );
+                    bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * projectileHorizontalForce); // 380
+                    bullet.GetComponent<Rigidbody>().AddForce(onionModel.transform.up * projectileVerticalForce); // 220
+                }
+
+                shotAvailable = false;
+                timeBetweenShotsCounter = 0;
             }
         }
     }
