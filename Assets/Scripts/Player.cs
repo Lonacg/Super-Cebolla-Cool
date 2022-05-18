@@ -82,17 +82,8 @@ public class Player : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.parent.tag == "Coin")
-        {
-            coins += 1;
-            Destroy(collision.gameObject);
-
-            if (coins >= maxCoins)
-            {
-                lives += 1;
-                coins = 0;
-            }
-        }
+        CoinCollisionListener(collision);
+        BrickCollisionListener(collision);
     }
 
     void ListenInputs()
@@ -229,7 +220,6 @@ public class Player : MonoBehaviour
 
     void PlayerShooting()
     {
-        // FALTA TERMINAR
         // Un poco guarro (por limpiar)
         if (!shotAvailable)
         {
@@ -271,6 +261,32 @@ public class Player : MonoBehaviour
 
                 shotAvailable = false;
                 timeBetweenShotsCounter = 0;
+            }
+        }
+    }
+
+    void CoinCollisionListener(Collision collision)
+    {
+        if (collision.transform.parent.tag == "Coin")
+        {
+            coins += 1;
+            Destroy(collision.gameObject);
+
+            if (coins >= maxCoins)
+            {
+                lives += 1;
+                coins = 0;
+            }
+        }
+    }
+
+    void BrickCollisionListener(Collision collision)
+    {
+        if (collision.transform.tag == "BrickBlock")
+        {
+            if (HitDirection.y > 0)
+            {
+                collision.gameObject.GetComponent<Block>().ChangeBrickState(gameObject);
             }
         }
     }

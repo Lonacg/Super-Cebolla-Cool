@@ -226,3 +226,4 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Implementado el prefab monedas
 - Añadido nuevas etiquetasbullet y coin
 - Implementado vidas del jugador, contador de monedas y máximo número de monedas.
+- Implementado colisión con los bloques desde abajo  e identificación del tipo de bloque golpeado.
