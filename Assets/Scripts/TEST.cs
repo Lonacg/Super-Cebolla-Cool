@@ -5,200 +5,274 @@ using UnityEngine;
 
 public class TEST : MonoBehaviour
 {
-    [Header("Movimiento normal")]
+    /*
+        Parámetros
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+   [Header("Movimiento")]
     public float normalSpeed;
     public float normalSpeedAcceleration;
     public float normalSpeedDeceleration;
-    public float normalSpeedCDR; // CDR = Change Direction Resistance
+   
+   [Header("Movimiento Acelerado")]
+    public float highSpeed;
+    public float highSpeedAcceleration;
+    public float highSpeedDeceleration;
 
-    [Header("Movimiento acelerado")]
-    public float maxSpeed;
-    public float maxSpeedAcceleration;
-    public float maxSpeedDeceleration;
-    public float maxSpeedCDR;
+    [Header("Rotación del personaje")]
+    public float rotationSpeed;
 
+    [Header("Salto")]
+    public float jumpTime;
+    public float jumpForce;
+    public float jumpForceExtra;
+    public float fallForce;
+    public float gravityForce;
+
+    [Header("Disparo")]
+    public GameObject bulletPrefab;
+    public float bulletLifeTime;
+    public float bulletMaxBounces;
+    public float bulletFallForce;
+    public float bulletGravityForce;
+    public float fireRate;
+    public float firePower;
+    public float fireElevation;
     
-    // Private variables
-    private Rigidbody rb;
-    private float direction;
-    private float currSpeed;
 
-    void Awake()
+    /*
+        Variables de control
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private Rigidbody rb;
+    private Transform onionModel;
+    private Vector3 MovementDirection;
+    private Vector3 HitDirection;
+
+    private float currentSpeed;
+
+    private bool isJumping;
+    private float jumpTimeCounter;
+
+    private bool bulletAvailable;
+    private float fireRateCounter;
+    
+    /*
+        Inputs
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private bool highSpeedKey;
+    private bool jumpKey;
+    private bool fireKey;
+
+
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
+        onionModel = transform.GetChild(0);
     }
 
-    void Update()
+    private void Update()
     {
-        direction = MovementDirection();
+        InputListener();
+        PlayerMovement();
+        PlayerRotation();
+
+        Debug.Log( HitDirection );
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        playerMovement();
+        PlayerJumping();
+        PlayerFiring();
     }
 
-    float MovementDirection()
+    private void OnCollisionStay(Collision collision)
     {
-        float direction = 0;
-
-        if (Keyboard.current.rightArrowKey.isPressed)
-            direction = 1;
-        if (Keyboard.current.leftArrowKey.isPressed)
-            direction = -1;
-
-        return direction;
+        CollisionListener(collision.collider);
     }
 
-    // void playerMovement()
-    // {
-    //     if (direction > 0)
-    //     {
-    //         if (currSpeed < normalSpeed)
-    //         {
-    //             currSpeed += normalSpeedAcceleration;
-    //             if (currSpeed < 0)
-    //                 currSpeed += normalSpeedAcceleration * normalSpeedCDR;
-    //         }            
-    //     }
-    //     if (direction < 0)
-    //     {
-    //         if (currSpeed > -normalSpeed)
-    //         {
-    //             currSpeed -= normalSpeedAcceleration;
-    //             if (currSpeed > 0)
-    //                 currSpeed += normalSpeedAcceleration * normalSpeedCDR;
-    //         }
-    //     }
-    //     if ( direction == 0 )
-    //     {
-    //         if (currSpeed > 0)
-    //             currSpeed -= normalSpeedDeceleration;
-    //         if (currSpeed < 0)
-    //             currSpeed += normalSpeedDeceleration;
-    //         if (Mathf.Abs(currSpeed) < normalSpeedAcceleration)
-    //             currSpeed = 0;
-    //     }
-
-
-    //     rb.velocity = new Vector3(
-    //         currSpeed,
-    //         rb.velocity.y,
-    //         rb.velocity.z
-    //     );
-
-
-    // }
-
-    void playerMovement()
+    private void OnCollisionExit(Collision collision)
     {
-        // if (direction != 0)
-        // {
-        //     float drag = 1;
-        //     if ( Mathf.Abs(currSpeed) > 0 && Mathf.Sign(currSpeed) != direction )
-        //         drag = changeDirectionDrag;
+        HitDirection = Vector3.zero;
+    }
 
-        //     currSpeed += normalSpeedAcceleration * direction * drag;
-        //     currSpeed = Mathf.Abs(currSpeed) < normalSpeed ? currSpeed : normalSpeed * direction;            
-        // }
-        
-        // if (direction == 0)
-        // {
-        //     if ( Mathf.Abs(currSpeed) > 0 )
-        //         currSpeed += normalSpeedDeceleration * -Mathf.Sign(currSpeed);
-        //     // 0.1f valor mínimo para cambiar a 0 y detenerse
-        //     if (Mathf.Abs(currSpeed) < 0.1f)
-        //         currSpeed = 0;
-        // }
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private void InputListener()
+    {
+         MovementDirection = Vector3.zero;
 
-        bool shiftKey = Keyboard.current.shiftKey.isPressed;
+        if (Keyboard.current.rightArrowKey.isPressed && !Keyboard.current.leftArrowKey.isPressed)
+            MovementDirection = Vector3.right;
+        if (Keyboard.current.leftArrowKey.isPressed && !Keyboard.current.rightArrowKey.isPressed)
+            MovementDirection = Vector3.left;
 
-        Vector3 playerMovement = Vector3.zero;
+        highSpeedKey = Keyboard.current.shiftKey.isPressed;
+        jumpKey      = Keyboard.current.upArrowKey.isPressed;
+        fireKey      = Keyboard.current.spaceKey.isPressed;
+    }
 
-        if ( !shiftKey )
+    private void CollisionListener(Collider collider)
+    {
+        Vector3 point = collider.ClosestPointOnBounds( transform.position );
+        Vector3 dir = (transform.position - point).normalized * -1;
+        HitDirection += dir;
+        HitDirection.Normalize();
+        HitDirection = Vector3Int.RoundToInt(HitDirection);
+
+        // DEBUG
+        Debug.DrawLine( transform.position, collider.ClosestPointOnBounds( transform.position ) );
+    }
+
+    private void PlayerRotation()
+    {
+        if (MovementDirection != Vector3.zero)
         {
-            playerMovement.x = movementAcceleration( 
-                0, 
-                normalSpeed, 
-                normalSpeedAcceleration, 
-                normalSpeedDeceleration, 
-                normalSpeedCDR
-            );
+            Quaternion rotation = Quaternion.LookRotation(-MovementDirection, Vector3.up);
+            onionModel.rotation = Quaternion.RotateTowards(onionModel.rotation, rotation, rotationSpeed * Time.deltaTime);
         }
         else
         {
-            playerMovement.x = movementAcceleration(
-                0,
-                maxSpeed,
-                maxSpeedAcceleration,
-                maxSpeedDeceleration,
-                maxSpeedCDR
-            );
+            if (
+                onionModel.rotation.eulerAngles.y != 90 &&
+                onionModel.rotation.eulerAngles.y != 270
+            )
+            {
+                if (Mathf.Abs(currentSpeed) > 0)
+                {
+                    if (currentSpeed > normalSpeed)
+                        currentSpeed += normalSpeedDeceleration * -Mathf.Sign(currentSpeed);
+                    if (currentSpeed > highSpeed)
+                        currentSpeed += highSpeedDeceleration * -Mathf.Sign(currentSpeed);
+                }
+                else
+                    currentSpeed = 0;
+
+                rb.velocity = new Vector3(
+                    currentSpeed,
+                    rb.velocity.y,
+                    rb.velocity.z
+                );
+            }
         }
+    }
+
+    private void PlayerMovement()
+    {
+        if (!highSpeedKey)
+            MovementDynamic(
+                0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration
+            );
+        else
+            MovementDynamic(
+                0, highSpeed, highSpeedAcceleration, highSpeedDeceleration
+            );
+
+        if (HitDirection.x < 0 && currentSpeed < 0)
+            currentSpeed = 0;
+        if (HitDirection.x > 0 && currentSpeed > 0)
+            currentSpeed = 0;
 
         rb.velocity = new Vector3(
-            playerMovement.x,
+            currentSpeed,
             rb.velocity.y,
             rb.velocity.z
         );
     }
 
-    float movementAcceleration(
-        float minSpeed, 
-        float maxSpeed, 
-        float acceleration, 
-        float deceleration, 
-        float changeDirectionResistance)
+    private void MovementDynamic(
+        float minSpeed,
+        float maxSpeed,
+        float acceleration,
+        float deceleration
+    )
     {
-        if (direction != 0)
+        if (MovementDirection != Vector3.zero)
         {
-            float drag = 1;
-            // if ( Mathf.Abs(currSpeed) > minSpeed && Mathf.Sign(currSpeed) != direction )
-            //     drag = changeDirectionResistance;
-            currSpeed += acceleration * direction * drag;
-            currSpeed = Mathf.Abs(currSpeed) < maxSpeed ? currSpeed : maxSpeed * direction;            
+            if (Mathf.Abs(currentSpeed) <= maxSpeed)
+            {
+                currentSpeed += acceleration * MovementDirection.x;
+                currentSpeed = Mathf.Abs(currentSpeed) < maxSpeed ? currentSpeed : maxSpeed * MovementDirection.x;
+            }
+            else
+                currentSpeed -= acceleration * Mathf.Sign(currentSpeed);
         }
         else
         {
-            if ( Mathf.Abs(currSpeed) > minSpeed)
-                currSpeed += deceleration * -Mathf.Sign(currSpeed);
-            if (Mathf.Abs(currSpeed) < acceleration)
-                currSpeed = 0;
+            if ( Mathf.Abs(currentSpeed) > minSpeed)
+                currentSpeed += deceleration * -Mathf.Sign(currentSpeed);
+            if (Mathf.Abs(currentSpeed) < acceleration)
+                currentSpeed = 0;
+        }
+    }
+    
+    private void PlayerJumping()
+    {
+        if (isJumping)
+        {
+            if (jumpKey)
+            {
+                if (jumpTimeCounter < jumpTime)
+                    jumpTimeCounter += Time.deltaTime;
+                else
+                {
+                    jumpTimeCounter = 0;
+                    isJumping = false;
+                }
+
+                if (rb.velocity.y >= 0)
+                    rb.AddForce(Vector3.up * jumpForceExtra, ForceMode.Acceleration);
+            }
         }
 
-        return currSpeed;
+        if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            isJumping  = true;
+        }
+        
+        if (rb.velocity.y >= 0)
+            rb.AddForce(Vector3.down * gravityForce, ForceMode.Force);
+
+        if (rb.velocity.y < 0)
+            rb.AddForce(Vector3.down * fallForce, ForceMode.Force);
     }
 
-    // float aaa()
-    // {
-    //      Si se mueve a laderecha
-    //     if (direction > 0)
-    //     {
-    //         if (numeroMagico < 5)
-    //             numeroMagico += 0.1f;
-    //     }
-    //      Si se meuve a la izuqierda
-    //     if (direction < 0)
-    //     {
-    //         if (numeroMagico > -5)
-    //             numeroMagico -= 0.1f;
-    //     }
+    private void PlayerFiring()
+    {
+        if (!bulletAvailable)
+        {
+            if (fireRateCounter < fireRate)
+                fireRateCounter += Time.deltaTime;
+            else
+                bulletAvailable = true;
+        }
+        else
+        {
+            if (fireKey)
+            {
+                if (
+                    onionModel.rotation.eulerAngles.y == 90 ||
+                    onionModel.rotation.eulerAngles.y == 270
+                )
+                {
+                    Vector3 respawn = new Vector3(
+                        transform.position.x - onionModel.transform.forward.x,
+                        transform.position.y,
+                        transform.position.z
+                    );
+                    GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity, transform);
+                    Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
+                }
 
-    //      Si deja de moverse
-    //     if ( direction == 0 )
-    //     {
-    //         if (numeroMagico > 0)
-    //             numeroMagico -= 0.1f;
+                bulletAvailable = false;
+                fireRateCounter = 0;
+            }
+        }
+    }
 
-    //         if (numeroMagico < 0)
-    //             numeroMagico += 0.1f;
 
-    //          corrección si no es 0 el valor de descanso (lo fuerza a 0)
-    //         if (Mathf.Abs(numeroMagico) < 0.1f)
-    //             numeroMagico = 0;
-    //     }
-
-    //     return numeroMagico;
-    // }
-
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    public Transform getOnionModel()
+    {
+        return onionModel;
+    }
 }
