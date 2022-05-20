@@ -20,7 +20,10 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        player = transform.parent.GetComponent<TEST>();
+        // player = transform.parent.GetComponent<TEST>();
+        player = GameObject.FindWithTag("Player").GetComponent<TEST>();
+
+        // parentGameObject
 
         bulletLifeTime     = player.bulletLifeTime;
         bulletMaxBounces   = player.bulletMaxBounces;
@@ -33,11 +36,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        rb.velocity = new Vector3(
-            player.GetComponent<Rigidbody>().velocity.x + 2 * Mathf.Sign(player.GetComponent<Rigidbody>().velocity.x),
-            rb.velocity.y,
-            rb.velocity.z
-        );
+        rb.velocity = player.GetComponent<Rigidbody>().velocity;
 
         rb.AddForce(-player.getOnionModel().transform.forward * firePower);
         rb.AddForce( player.getOnionModel().transform.up      * fireElevation);

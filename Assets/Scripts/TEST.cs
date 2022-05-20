@@ -259,7 +259,7 @@ public class TEST : MonoBehaviour
                         transform.position.y,
                         transform.position.z
                     );
-                    GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity, transform);
+                    GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity);
                     Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
                 }
 
