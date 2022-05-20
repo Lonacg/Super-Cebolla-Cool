@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.4724177, g: 0.5430931, b: 0.5451241, a: 1}
+  m_IndirectSpecularColor: {r: 0.20907378, g: 0.21950242, b: 0.2126813, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -403,7 +403,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1.54
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!1 &179794484
 GameObject:
   m_ObjectHideFlags: 0
@@ -3151,7 +3151,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.1276252, y: 1}
+    m_SensorSize: {x: 1.7748344, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -3568,7 +3568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1160163888552147090, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1160163888552147090, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3641,7 +3641,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8095669167996704555, guid: 28c3bc97a96cb8f45a02dac1b8c1f955, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.4
+      value: 1.4
       objectReference: {fileID: 0}
     - target: {fileID: 8095669167996704555, guid: 28c3bc97a96cb8f45a02dac1b8c1f955, type: 3}
       propertyPath: m_LocalPosition.z
