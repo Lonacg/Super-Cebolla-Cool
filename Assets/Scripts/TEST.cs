@@ -76,7 +76,7 @@ public class TEST : MonoBehaviour
         PlayerMovement();
         PlayerRotation();
 
-        Debug.Log( HitDirection );
+        //Debug.Log( HitDirection );
     }
 
     private void FixedUpdate()
