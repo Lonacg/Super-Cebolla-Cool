@@ -223,7 +223,7 @@ public class TEST : MonoBehaviour
             }
         }
 
-        if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
+        if (jumpKey && HitDirection.y < 0 && rb.velocity.y <= 0)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping  = true;
@@ -271,8 +271,5 @@ public class TEST : MonoBehaviour
 
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    public Transform getOnionModel()
-    {
-        return onionModel;
-    }
+    public Transform GetOnionModel()    { return onionModel; }
 }
