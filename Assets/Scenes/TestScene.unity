@@ -1136,7 +1136,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.3385214, y: 1}
+    m_SensorSize: {x: 1.8599222, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -1303,16 +1303,36 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
+      propertyPath: bulletFireRate
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
       propertyPath: bulletLifeTime
-      value: 0
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
+      propertyPath: bulletVelocity
+      value: 0.001
       objectReference: {fileID: 0}
     - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
       propertyPath: bulletFallForce
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
+      propertyPath: bulletMaxBounces
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
+      propertyPath: bulletBounceForce
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
       propertyPath: bulletGravityForce
-      value: 0
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 6511180170130541779, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
+      propertyPath: bulletInitialElevation
+      value: 16.8
       objectReference: {fileID: 0}
     - target: {fileID: 6511180170130541780, guid: 586dd98a80fbd2a4ca0b14a56e531bf1, type: 3}
       propertyPath: m_Name

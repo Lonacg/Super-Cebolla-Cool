@@ -30,14 +30,14 @@ public class TEST : MonoBehaviour
 
     [Header("Disparo")]
     public GameObject bulletPrefab;
+    public float bulletFireRate;
     public float bulletLifeTime;
-    public float bulletMaxBounces;
-    public float bulletFallForce;
+    public int bulletMaxBounces;
+    public float bulletVelocity;
+    public float bulletInitialElevation;
     public float bulletGravityForce;
-    public float fireRate;
-    public float firePower;
-    public float fireElevation;
-    
+    public float bulletBounceForce;
+
 
     /*
         Variables de control
@@ -240,7 +240,7 @@ public class TEST : MonoBehaviour
     {
         if (!bulletAvailable)
         {
-            if (fireRateCounter < fireRate)
+            if (fireRateCounter < bulletFireRate)
                 fireRateCounter += Time.deltaTime;
             else
                 bulletAvailable = true;
