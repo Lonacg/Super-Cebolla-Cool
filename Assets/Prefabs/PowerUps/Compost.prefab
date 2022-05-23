@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5596181466562883160}
   - component: {fileID: 3374270187548469875}
   m_Layer: 0
-  m_Name: Abono
+  m_Name: Compost
   m_TagString: Abono
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

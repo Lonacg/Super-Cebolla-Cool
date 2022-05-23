@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5859207061464903753}
   - component: {fileID: 7900670800873910893}
   m_Layer: 0
-  m_Name: GotaAgua
+  m_Name: WaterDrop
   m_TagString: GotaAgua
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
