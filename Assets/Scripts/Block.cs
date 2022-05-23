@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public enum BrickTypes {
-        DestructibleBrickBlock,
-        SurpriseBlock,
-        IndestructibleBrickBlock
+    public enum BlockTypes {
+        DestructibleBlock,
+        IndestructibleBlock,
+        SurpriseBlock
     };
-    public BrickTypes brickType;
+    public BlockTypes blockType;
     private GameObject player;
 
     void Start()
@@ -22,25 +22,25 @@ public class Block : MonoBehaviour
         
     }
 
-    public void ChangeBrickState(GameObject player)
+    public void ChangeBlockState(GameObject player)
     {
         this.player = player;
 
-        switch (brickType)
+        switch (blockType)
         {
-            case BrickTypes.DestructibleBrickBlock:
-                OnDestructibleBrickBlock();
+            case BlockTypes.DestructibleBlock:
+                OnDestructibleBlock();
                 break;
-            case BrickTypes.SurpriseBlock:
+            case BlockTypes.IndestructibleBlock:
+                OnIndestructibleBlock();
+                break;
+            case BlockTypes.SurpriseBlock:
                 OnSurpriseBlock();
-                break;
-            case BrickTypes.IndestructibleBrickBlock:
-                OnIndestructibleBrickBlock();
                 break;
         }
     }
 
-    void OnDestructibleBrickBlock()
+    void OnDestructibleBlock()
     {
         Debug.Log("Choque contra un bloque destructible");
     }
@@ -50,7 +50,7 @@ public class Block : MonoBehaviour
         Debug.Log("Choque contra un bloque sorpresa");
     }
 
-    void OnIndestructibleBrickBlock()
+    void OnIndestructibleBlock()
     {
         Debug.Log("Choque contra un bloque indestructible");
     }

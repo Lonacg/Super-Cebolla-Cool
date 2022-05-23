@@ -8,12 +8,17 @@ public class TEST : MonoBehaviour
     /*
         Parámetros
     - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-   [Header("Movimiento")]
+    [Header("Parámetros")]
+    public int lives;
+    public int coins;
+    public int maxCoins;
+
+    [Header("Movimiento")]
     public float normalSpeed;
     public float normalSpeedAcceleration;
     public float normalSpeedDeceleration;
    
-   [Header("Movimiento Acelerado")]
+    [Header("Movimiento Acelerado")]
     public float highSpeed;
     public float highSpeedAcceleration;
     public float highSpeedDeceleration;
@@ -75,8 +80,6 @@ public class TEST : MonoBehaviour
         InputListener();
         PlayerMovement();
         PlayerRotation();
-
-        //Debug.Log( HitDirection );
     }
 
     private void FixedUpdate()
@@ -85,14 +88,16 @@ public class TEST : MonoBehaviour
         PlayerFiring();
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        CollisionListener(collision.collider);
-    }
-
     private void OnCollisionExit(Collision collision)
     {
         HitDirection = Vector3.zero;
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        CollisionListener(collision.collider);
+        BlockCollisionListener(collision);
+        CoinCollisionListener(collision);
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -269,7 +274,32 @@ public class TEST : MonoBehaviour
         }
     }
 
+    void BlockCollisionListener(Collision collision)
+    {
+        if (collision.transform.tag == "Block")
+        {
+            if (HitDirection.y > 0)
+            {
+                collision.gameObject.GetComponent<Block>().ChangeBlockState(gameObject);
+            }
+        }
+    }
+
+    void CoinCollisionListener(Collision collision)
+    {
+        if (collision.transform.tag == "Coin")
+        {
+            coins += 1;
+            Destroy(collision.gameObject);
+
+            if (coins >= maxCoins)
+            {
+                lives += 1;
+                coins = 0;
+            }
+        }
+    }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    public Transform GetOnionModel()    { return onionModel; }
+    public Transform GetOnionModel() { return onionModel; }
 }

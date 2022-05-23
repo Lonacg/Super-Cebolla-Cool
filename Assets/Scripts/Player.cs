@@ -282,11 +282,11 @@ public class Player : MonoBehaviour
 
     void BrickCollisionListener(Collision collision)
     {
-        if (collision.transform.tag == "BrickBlock")
+        if (collision.transform.tag == "Block")
         {
             if (HitDirection.y > 0)
             {
-                collision.gameObject.GetComponent<Block>().ChangeBrickState(gameObject);
+                collision.gameObject.GetComponent<Block>().ChangeBlockState(gameObject);
             }
         }
     }

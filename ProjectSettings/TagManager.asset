@@ -17,6 +17,7 @@ TagManager:
   - Coin
   - Bullet
   - BrickBlock
+  - Block
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ public class Bullet : MonoBehaviour
 {
     private Rigidbody rb;
     private TEST player;
+    private Vector3 HitDirection;
 
     private float lifeTime;
     private int maxBounces;
@@ -36,7 +37,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        rb.AddForce(Vector3.up * initialElevation, ForceMode.Impulse);
+        rb.AddForce(Vector3.up * initialElevation, ForceMode.Force);
     }
 
     void Update()
@@ -51,12 +52,22 @@ public class Bullet : MonoBehaviour
         // IGNORE
         if (collision.collider.tag == "Player" || collision.collider.tag == "Bullet") return;
 
+        // COLLISION
+        CollisionListener(collision.collider);
+        if (HitDirection.x != 0)
+            Destroy(gameObject);
+
         // BOUNCES COUNTER
         BulletBounces();
 
         // BOUNCE FORCE
         rb.AddForce(Vector3.up * bounceForce, ForceMode.Impulse);
-    } 
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        HitDirection = Vector3.zero;
+    }
 
     private void Gravity()
     {
@@ -90,5 +101,17 @@ public class Bullet : MonoBehaviour
             bouncesCounter++;
         else
             Destroy(gameObject);
+    }
+
+    private void CollisionListener(Collider collider)
+    {
+        Vector3 point = collider.ClosestPointOnBounds( transform.position );
+        Vector3 dir = (transform.position - point).normalized * -1;
+        HitDirection += dir;
+        HitDirection.Normalize();
+        HitDirection = Vector3Int.RoundToInt(HitDirection);
+
+        // DEBUG
+        Debug.DrawLine( transform.position, collider.ClosestPointOnBounds( transform.position ) );
     }
 }
