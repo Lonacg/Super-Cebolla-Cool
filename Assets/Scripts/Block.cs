@@ -5,9 +5,10 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public enum BlockTypes {
-        DestructibleBlock,
-        IndestructibleBlock,
-        SurpriseBlock
+        Destructible,
+        Indestructible,
+        Surprise,
+        Struct
     };
     public BlockTypes blockType;
     private GameObject player;
@@ -28,14 +29,17 @@ public class Block : MonoBehaviour
 
         switch (blockType)
         {
-            case BlockTypes.DestructibleBlock:
+            case BlockTypes.Destructible:
                 OnDestructibleBlock();
                 break;
-            case BlockTypes.IndestructibleBlock:
+            case BlockTypes.Indestructible:
                 OnIndestructibleBlock();
                 break;
-            case BlockTypes.SurpriseBlock:
+            case BlockTypes.Surprise:
                 OnSurpriseBlock();
+                break;
+            case BlockTypes.Struct:
+                OnStructBlock();
                 break;
         }
     }
@@ -53,5 +57,10 @@ public class Block : MonoBehaviour
     void OnIndestructibleBlock()
     {
         Debug.Log("Choque contra un bloque indestructible");
+    }
+
+    void OnStructBlock()
+    {
+        Debug.Log("Choque contra un bloque indestructible golpeado");
     }
 }
