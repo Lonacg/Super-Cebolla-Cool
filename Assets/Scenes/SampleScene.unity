@@ -5298,8 +5298,8 @@ Transform:
   m_Children:
   - {fileID: 342078667}
   - {fileID: 2100077743}
-  - {fileID: 1134071010}
   - {fileID: 1358203672}
+  - {fileID: 1134071010}
   - {fileID: 426232679}
   - {fileID: 1968665711}
   - {fileID: 334147069}
@@ -7314,7 +7314,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.1625433
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7491,7 +7491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7503,7 +7503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5145025
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -8687,7 +8687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8699,7 +8699,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.013869286
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3501974024949612283, guid: 113c7d39615fffe42a880a8d53f9ccbf, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13729,7 +13729,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.768116, y: 1}
+    m_SensorSize: {x: 1.7788944, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
