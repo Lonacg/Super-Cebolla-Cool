@@ -227,3 +227,9 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Añadido nuevas etiquetasbullet y coin
 - Implementado vidas del jugador, contador de monedas y máximo número de monedas.
 - Implementado colisión con los bloques desde abajo  e identificación del tipo de bloque golpeado.
+
+#### 28 - 05 - 22
+- Creados prefabs de bloques, monedas, enemigos y objetos del escenario
+- Montada escena con el escenario final, falta poner vegetacion en z=1
+- Ajustada la altura de Player y Turtle a 2 para que todo sea proporcional, y cambiado el Jump Force de Player de 30 a 28 para ajustar la altura del salto respecto a la escena montada.
+-Compartidos bugs encontrados por discord

@@ -5,9 +5,10 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     private Transform enemyModel;
-    private float speed;
+    public float speed=3;
     private int direction;
     private Vector3 desiredForward;
+    private Vector3 rayOrigin;
     private float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
     private float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
     //public bool beingTurtle;
@@ -19,13 +20,11 @@ public class Enemy : MonoBehaviour
         if(gameObject.tag=="Turtle") //Datos caracteristicos de la tortuga
         {
             //beingTurtle=true;
-            speed=4;
             enemyWidth=0.5f;
-            enemyHeight=0.8f;
+            enemyHeight=1f;
         }
         if(gameObject.tag=="Carapace") //Datos caracteristicos de la tortuga en estado caparazon
         {
-            
             //enemyModel.transform.Rotate(new Vector3(90,90,180));
             //beingTurtle=true;
             speed=0;
@@ -35,7 +34,6 @@ public class Enemy : MonoBehaviour
         if(gameObject.tag=="Mushroom") //Datos caracteristicos de la seta
         {
             //beingTurtle=false;
-            speed=3;
             enemyWidth=0.5f;
             enemyHeight=0.5f;
         }
@@ -44,15 +42,12 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        direction=CheckForwardsCollisionsAndChangeDirection(direction);
+        direction=CheckBackwardCollisionWithPlayer(direction);
+        CheckUpwardsCollisionWithPlayer();
         if(gameObject.tag=="Turtle" || gameObject.tag=="Mushroom")
-        {
-            direction=CheckForwardsCollisionsAndChangeDirection(direction);
-            direction=CheckBackwardCollisionWithPlayer(direction);
-            CheckUpwardsCollisionWithPlayer();
             UpdateBodyRotation(direction);
-            transform.Translate(Vector3.right*direction*speed*Time.deltaTime);
-        }
-
+        transform.Translate(Vector3.right*direction*speed*Time.deltaTime);   
     }
 
     private void UpdateBodyRotation(int dir)
@@ -63,7 +58,15 @@ public class Enemy : MonoBehaviour
 
     public int CheckForwardsCollisionsAndChangeDirection(int dir) // colisiones por delante
     {
-        Vector3 rayOrigin=transform.position-Vector3.up*0.3f;
+        if(gameObject.tag=="Turtle")
+        {
+            rayOrigin=transform.position-Vector3.up*0.1f;
+        }
+        else
+        {
+            rayOrigin=transform.position+Vector3.up*0.4f;
+        }
+
         Vector3 rayDirection=Vector3.right*dir;
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.blue);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) //Colision por delante
@@ -79,7 +82,14 @@ public class Enemy : MonoBehaviour
 
     public int CheckBackwardCollisionWithPlayer(int dir) //Colisiones por detras
     {
-        Vector3 rayOrigin=transform.position-Vector3.up*0.3f;
+        if(gameObject.tag=="Turtle")
+        {
+            rayOrigin=transform.position-Vector3.up*0.1f;
+        }
+        else
+        {
+            rayOrigin=transform.position+Vector3.up*0.4f;
+        }
         Vector3 rayDirection=-Vector3.right*dir;
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.magenta);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) //Colision por delante
