@@ -97,7 +97,11 @@ public class TEST : MonoBehaviour
     {
         CollisionListener(collision.collider);
         BlockCollisionListener(collision);
-        CoinCollisionListener(collision);
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        CoinCollisionListener(collider);
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -285,12 +289,12 @@ public class TEST : MonoBehaviour
         }
     }
 
-    void CoinCollisionListener(Collision collision)
+    void CoinCollisionListener(Collider collider)
     {
-        if (collision.transform.tag == "Coin")
+        if (collider.transform.tag == "Coin")
         {
             coins += 1;
-            Destroy(collision.gameObject);
+            Destroy(collider.gameObject);
 
             if (coins >= maxCoins)
             {
