@@ -228,8 +228,13 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Implementado vidas del jugador, contador de monedas y máximo número de monedas.
 - Implementado colisión con los bloques desde abajo  e identificación del tipo de bloque golpeado.
 
+#### 23 - 05 - 22
+- Implementado movimiento de enemigos. Se mueven a velocidad cte y cuando se chocan con un objeto u otro enemigo se dan la vuelta.
+- Si el jugador se choca con ellos por delante, siguen su camino, si se choca con ellos por detras cambian de direccion para mirar al jugador y siguen andando.
+- Detectan cuando el jugador salta encima suya, pte hacer que el champi y el caparazon se destruyan y la tortuga cambie de estado.
+
 #### 28 - 05 - 22
-- Creados prefabs de bloques, monedas, enemigos y objetos del escenario
-- Montada escena con el escenario final, falta poner vegetacion en z=1
+- Creados prefabs de bloques, monedas, enemigos y objetos del escenario.
+- Montada escena con el escenario final, falta poner vegetacion en z=1.
 - Ajustada la altura de Player y Turtle a 2 para que todo sea proporcional, y cambiado el Jump Force de Player de 30 a 28 para ajustar la altura del salto respecto a la escena montada.
--Compartidos bugs encontrados por discord
+-Compartidos bugs encontrados por discord.
