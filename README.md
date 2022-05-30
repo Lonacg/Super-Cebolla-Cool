@@ -238,3 +238,6 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Montada escena con el escenario final, falta poner vegetacion en z=1.
 - Ajustada la altura de Player y Turtle a 2 para que todo sea proporcional, y cambiado el Jump Force de Player de 30 a 28 para ajustar la altura del salto respecto a la escena montada.
 -Compartidos bugs encontrados por discord.
+
+#### 30 - 05 - 22
+- Los enemigos estan quietos en su posicion origen hasta que player se acerca lo suficiente y empiezan a andar. Cuando se aleja, y despues vuelve a acercarse, los enemigos comenzarán a moverse desde su posicion origen en direccion al jugador.

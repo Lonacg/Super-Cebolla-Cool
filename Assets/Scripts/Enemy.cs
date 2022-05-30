@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private GameObject onion;
     private Transform enemyModel;
     public float speed=3;
     private int direction;
@@ -12,10 +13,15 @@ public class Enemy : MonoBehaviour
     private float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
     private float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
     //public bool beingTurtle;
+    private Vector3 originalPosition;
+    private float currentDistanceWithPlayer;
+    private float distanceFromOriginToPlayer;
 
     void Start()
     {
+        onion=GameObject.Find("Onion");
         enemyModel = transform.GetChild(0);
+        originalPosition=transform.position;
         direction=-1;
         if(gameObject.tag=="Turtle") //Datos caracteristicos de la tortuga
         {
@@ -47,7 +53,20 @@ public class Enemy : MonoBehaviour
         CheckUpwardsCollisionWithPlayer();
         if(gameObject.tag=="Turtle" || gameObject.tag=="Mushroom")
             UpdateBodyRotation(direction);
-        transform.Translate(Vector3.right*direction*speed*Time.deltaTime);   
+
+        currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);
+        distanceFromOriginToPlayer= Vector3.Magnitude(originalPosition-onion.transform.position);
+        
+        if(currentDistanceWithPlayer<=20 ||distanceFromOriginToPlayer<=20) 
+                transform.Translate(Vector3.right*direction*speed*Time.deltaTime); //si player esta cerca del enemigo, este se mueve
+        else 
+        {
+            transform.position=originalPosition; //si player se ha alejado, el enemigo vuelve a su posicion
+            if (onion.transform.position.x>transform.position.x) //cuando vuelva a aparecer player, el enemigo se movera desde su psicion origen con direccion hacia player
+                direction=1;
+            else
+                direction=-1;
+        }
     }
 
     private void UpdateBodyRotation(int dir)
