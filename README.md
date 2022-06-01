@@ -246,3 +246,4 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - Añadido detección de colisiones de player con enemigos, el vacío, powerUps y monedas
 - Añadido condiciones para evolucionar, game over, muerte, contador de monedas y de vidas y gestor de evolución.
+- -aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
