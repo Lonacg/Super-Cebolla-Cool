@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5636649191275882017}
   - component: {fileID: 5636649191275882019}
   - component: {fileID: 5636649191275882022}
-  - component: {fileID: 5636649191275882016}
+  - component: {fileID: 5729932009204616030}
   m_Layer: 0
   m_Name: Onion
   m_TagString: Player
@@ -65,7 +65,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5636649191275882016
+--- !u!114 &5729932009204616030
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,30 +74,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 5636649191275882023}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c8b89a7ae0f52a4f94fc3dc20e77109, type: 3}
+  m_Script: {fileID: 11500000, guid: 2de91a5784d42c5498e64d601d3b7b89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lives: 0
   coins: 0
-  maxCoins: 3
-  state: 0
-  normalSpeed: 5
-  normalSpeedAcceleration: 0.5
-  normalSpeedDeceleration: 0.5
-  highSpeed: 12
-  highSpeedAcceleration: 0.3
-  highSpeedDeceleration: 0.3
-  rotationSpeed: 920
-  jumpTime: 0.2
-  jumpForce: 30
-  jumpForceExtra: 32
-  fallForce: 100
-  gravityForce: 100
-  bulletPrefab: {fileID: 194885962719068564, guid: 6f792544859bdd74e82f19448c9230a9, type: 3}
-  bulletFireRate: 0.3
-  bulletLifeTime: 2
+  maxCoins: 0
+  playerState: 0
+  normalSpeed: 0
+  normalSpeedAcceleration: 0
+  normalSpeedDeceleration: 0
+  highSpeed: 0
+  highSpeedAcceleration: 0
+  highSpeedDeceleration: 0
+  rotationSpeed: 0
+  jumpTime: 0
+  jumpForce: 0
+  jumpForceExtra: 0
+  fallForce: 0
+  gravityForce: 0
+  bulletPrefab: {fileID: 0}
+  bulletFireRate: 0
+  bulletLifeTime: 0
   bulletMaxBounces: 0
-  bulletVelocity: 3
+  bulletVelocity: 0
   bulletInitialElevation: 0
   bulletGravityForce: 0
   bulletBounceForce: 0
