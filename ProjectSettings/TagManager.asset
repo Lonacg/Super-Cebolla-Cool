@@ -19,6 +19,7 @@ TagManager:
   - Mushroom
   - Turtle
   - Carapace
+  - Hole
   layers:
   - Default
   - TransparentFX

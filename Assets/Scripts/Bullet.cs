@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     private Rigidbody rb;
-    private TEST player;
+    private Player player;
     private Vector3 HitDirection;
 
     private float lifeTime;
@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
     void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        player = GameObject.FindWithTag("Player").GetComponent<TEST>();
+        player = GameObject.FindWithTag("Player").GetComponent<Player>();
 
         lifeTime         = player.bulletLifeTime;
         maxBounces       = player.bulletMaxBounces;

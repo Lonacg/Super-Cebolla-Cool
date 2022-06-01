@@ -5,158 +5,191 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    /*
+        Parámetros
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    [Header("Parámetros")]
+    public int lives;
+    public int coins;
+    public int maxCoins;
+    public enum State {
+        normal,
+        big,
+        super,
+        dead
+    }
+    public State playerState;
+
     [Header("Movimiento")]
     public float normalSpeed;
     public float normalSpeedAcceleration;
     public float normalSpeedDeceleration;
-
+   
     [Header("Movimiento Acelerado")]
     public float highSpeed;
     public float highSpeedAcceleration;
     public float highSpeedDeceleration;
 
+    [Header("Rotación del personaje")]
+    public float rotationSpeed;
+
     [Header("Salto")]
     public float jumpTime;
     public float jumpForce;
-    public float jumpForceExtend;
+    public float jumpForceExtra;
     public float fallForce;
     public float gravityForce;
 
-    [Header("Misc")]
-    public int lives;
-    public int coins;
-    public int maxCoins;
-    public float rotationSpeed;
-    public GameObject projectile;
-    public float timeBetweenShots;
-    public float projectileHorizontalForce;
-    public float projectileVerticalForce;
+    [Header("Disparo")]
+    public GameObject bulletPrefab;
+    public float bulletFireRate;
+    public float bulletLifeTime;
+    public int bulletMaxBounces;
+    public float bulletVelocity;
+    public float bulletInitialElevation;
+    public float bulletGravityForce;
+    public float bulletBounceForce;
 
-    // Variables privadas
-    private GameObject onionModel;
+
+    /*
+        Variables de control
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
     private Rigidbody rb;
-    private Vector3 direction;
+    private Transform onionModel;
+    private Vector3 MovementDirection;
     private Vector3 HitDirection;
+
     private float currentSpeed;
-    private bool highSpeedKey;
-    private bool jumpKey;
+
     private bool isJumping;
     private float jumpTimeCounter;
-    private float timeBetweenShotsCounter;
-    private bool shotAvailable;
-    private bool shootKey;
-    
 
-    void Start()
+    private bool bulletAvailable;
+    private float fireRateCounter;
+    
+    /*
+        Inputs
+    - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private bool highSpeedKey;
+    private bool jumpKey;
+    private bool fireKey;
+
+
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        onionModel= GameObject.Find("OnionModel");
+        onionModel = transform.GetChild(0);
+        playerState = State.normal;
     }
 
-    void Update()
+    private void Update()
     {
-        ListenInputs();
+        InputListener();
         PlayerMovement();
-        PlayerShooting();
-
-        // Error de Unity 
-        if (rb.velocity.y == -9.536743e-06f ||
-            rb.velocity.y == -2.861023e-05f
-        )
-            rb.velocity = new Vector3(
-                rb.velocity.x,
-                0,
-                rb.velocity.z
-            );
+        PlayerRotation();
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         PlayerJumping();
+        PlayerFiring();
     }
 
-    void OnTriggerStay(Collider collider)
-    {   
-        CollisionListener(collider);
-    }
-
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionExit(Collision collision)
     {
-        CoinCollisionListener(collision);
-        BrickCollisionListener(collision);
+        HitDirection = Vector3.zero;
     }
 
-    void ListenInputs()
+    private void OnCollisionStay(Collision collision)
     {
-        direction = Vector3.zero;
+        CollisionListener(collision.collider);
+        BlockCollisionListener(collision);
+        EnemyCollisionListener(collision);
+    }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        CoinCollisionListener(collider);
+        HoleCollisionListener(collider);
+        PowerUpCollisionListener(collider);
+    }
+
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    private void InputListener()
+    {
+         MovementDirection = Vector3.zero;
 
         if (Keyboard.current.rightArrowKey.isPressed && !Keyboard.current.leftArrowKey.isPressed)
-            direction = Vector3.right;
-            
+            MovementDirection = Vector3.right;
         if (Keyboard.current.leftArrowKey.isPressed && !Keyboard.current.rightArrowKey.isPressed)
-            direction = Vector3.left;
+            MovementDirection = Vector3.left;
 
         highSpeedKey = Keyboard.current.shiftKey.isPressed;
-        jumpKey  = Keyboard.current.upArrowKey.isPressed;
-        shootKey = Keyboard.current.spaceKey.isPressed;
+        jumpKey      = Keyboard.current.upArrowKey.isPressed;
+        fireKey      = Keyboard.current.spaceKey.isPressed;
     }
-    
-    void CollisionListener(Collider collider)
+
+    private void CollisionListener(Collider collider)
     {
-        // 0.7f es para ajustar la cápsula de colisión al movelo, eso no me gusta. el modelo debería ser 0 y nos ahorramos
-        // el multiplicarlo por ese valor.     
-        Debug.DrawLine( transform.position + Vector3.up * 0.7f, collider.ClosestPoint( transform.position ) );
+        Vector3 point = collider.ClosestPointOnBounds( transform.position );
+        Vector3 dir = (transform.position - point).normalized * -1;
+        HitDirection += dir;
+        HitDirection.Normalize();
+        HitDirection = Vector3Int.RoundToInt(HitDirection);
 
-        Vector3 point = collider.ClosestPoint( transform.position );
-
-        Vector3 dir = (transform.position  + Vector3.up * 0.7f) - point;
-        dir.Normalize();
-        dir *= -1;  //reemplaza debajo
-        // dir = Vector3Int.RoundToInt(dir) * -1;
-
-        // if (rb.velocity.y != 0)
-            // dir = new Vector3(dir.x, 0, dir.z);
-
-        // Debug.Log(dir);
-
-        HitDirection = dir;
+        // DEBUG
+        Debug.DrawLine( transform.position, collider.ClosestPointOnBounds( transform.position ) );
     }
-    
+
+    private void PlayerRotation()
+    {
+        if (MovementDirection != Vector3.zero)
+        {
+            Quaternion rotation = Quaternion.LookRotation(-MovementDirection, Vector3.up);
+            onionModel.rotation = Quaternion.RotateTowards(onionModel.rotation, rotation, rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            if (
+                onionModel.rotation.eulerAngles.y != 90 &&
+                onionModel.rotation.eulerAngles.y != 270
+            )
+            {
+                if (Mathf.Abs(currentSpeed) > 0)
+                {
+                    if (currentSpeed > normalSpeed)
+                        currentSpeed += normalSpeedDeceleration * -Mathf.Sign(currentSpeed);
+                    if (currentSpeed > highSpeed)
+                        currentSpeed += highSpeedDeceleration * -Mathf.Sign(currentSpeed);
+                }
+                else
+                    currentSpeed = 0;
+
+                rb.velocity = new Vector3(
+                    currentSpeed,
+                    rb.velocity.y,
+                    rb.velocity.z
+                );
+            }
+        }
+    }
+
     private void PlayerMovement()
     {
-        if (highSpeedKey)
+        if (!highSpeedKey)
+            MovementDynamic(
+                0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration
+            );
+        else
             MovementDynamic(
                 0, highSpeed, highSpeedAcceleration, highSpeedDeceleration
             );
-        else
-        {
-            // Desaceleración de alta velocidad a velocidad normal (pero da un bug que se trata abajo)
-            if (Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
-                currentSpeed -= normalSpeedAcceleration * direction.x;
-            // Si da igual la desaceleración, dejar únicamente lo de abajo y borrar el resto
-            else
-                MovementDynamic(
-                    0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration
-                );
-        }
 
-        // Corrección de un bug que hace que se deslice hasta el infinito (funciona, pero quita una característica)
-        if (!highSpeedKey && direction.x == 0 && Mathf.Abs(currentSpeed) > normalSpeed + normalSpeedAcceleration)
+        if (HitDirection.x < 0 && currentSpeed < 0)
             currentSpeed = 0;
-
-        // Error de Unity
-        // if (HitDirection.x != 0)
-        //     rb.velocity = new Vector3(
-        //     0,
-        //     rb.velocity.y,
-        //     rb.velocity.z
-        // );
-
-        if (direction.x != 0)
-        {
-            Quaternion rotation = Quaternion.LookRotation(-direction, Vector3.up);
-            onionModel.transform.rotation = Quaternion.RotateTowards(onionModel.transform.rotation, rotation, rotationSpeed * Time.deltaTime);
-        }
+        if (HitDirection.x > 0 && currentSpeed > 0)
+            currentSpeed = 0;
 
         rb.velocity = new Vector3(
             currentSpeed,
@@ -172,10 +205,15 @@ public class Player : MonoBehaviour
         float deceleration
     )
     {
-        if (direction.x != 0)
+        if (MovementDirection != Vector3.zero)
         {
-            currentSpeed += acceleration * direction.x;
-            currentSpeed = Mathf.Abs(currentSpeed) < maxSpeed ? currentSpeed : maxSpeed * direction.x;
+            if (Mathf.Abs(currentSpeed) <= maxSpeed)
+            {
+                currentSpeed += acceleration * MovementDirection.x;
+                currentSpeed = Mathf.Abs(currentSpeed) < maxSpeed ? currentSpeed : maxSpeed * MovementDirection.x;
+            }
+            else
+                currentSpeed -= acceleration * Mathf.Sign(currentSpeed);
         }
         else
         {
@@ -185,7 +223,7 @@ public class Player : MonoBehaviour
                 currentSpeed = 0;
         }
     }
-
+    
     private void PlayerJumping()
     {
         if (isJumping)
@@ -201,11 +239,11 @@ public class Player : MonoBehaviour
                 }
 
                 if (rb.velocity.y >= 0)
-                    rb.AddForce(Vector3.up * jumpForceExtend, ForceMode.Acceleration);
+                    rb.AddForce(Vector3.up * jumpForceExtra, ForceMode.Acceleration);
             }
         }
 
-        if (jumpKey && HitDirection.y < 0 && rb.velocity.y == 0)
+        if (jumpKey && HitDirection.y < 0 && rb.velocity.y <= 0)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isJumping  = true;
@@ -218,69 +256,44 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.down * fallForce, ForceMode.Force);
     }
 
-    void PlayerShooting()
+    private void PlayerFiring()
     {
-        // Un poco guarro (por limpiar)
-        if (!shotAvailable)
-        {
-            if (timeBetweenShotsCounter < timeBetweenShots)
-            {
-                timeBetweenShotsCounter += Time.deltaTime;
-                return;
-            }
-            else
-                shotAvailable = true;
-        }
+        if (playerState == State.normal)
+            return;
 
-        if (shootKey)
+        if (!bulletAvailable)
         {
-            if (shotAvailable)
+            if (fireRateCounter < bulletFireRate)
+                fireRateCounter += Time.deltaTime;
+            else
+                bulletAvailable = true;
+        }
+        else
+        {
+            if (fireKey)
             {
-                float eua = onionModel.transform.rotation.eulerAngles.y;
-                if (eua == 90 || eua == 270)
+                if (
+                    onionModel.rotation.eulerAngles.y == 90 ||
+                    onionModel.rotation.eulerAngles.y == 270
+                )
                 {
-                    GameObject bullet = Instantiate(
-                    projectile,
-                    new Vector3(
-                        transform.localPosition.x + 1 * -Mathf.Sign(onionModel.transform.forward.x),
-                        transform.localPosition.y + 0.83f,
+                    Vector3 respawn = new Vector3(
+                        transform.position.x - onionModel.transform.forward.x,
+                        transform.position.y,
                         transform.position.z
-                    ),
-                    Quaternion.identity,
-                    transform
                     );
+                    GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity);
                     Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
-                    bullet.GetComponent<Rigidbody>().velocity = new Vector3(
-                        rb.velocity.x,
-                        0,
-                        0
-                    );
-                    bullet.GetComponent<Rigidbody>().AddForce(-onionModel.transform.forward * projectileHorizontalForce); // 380
-                    bullet.GetComponent<Rigidbody>().AddForce(onionModel.transform.up * projectileVerticalForce); // 220
                 }
 
-                shotAvailable = false;
-                timeBetweenShotsCounter = 0;
+                bulletAvailable = false;
+                fireRateCounter = 0;
             }
         }
     }
 
-    void CoinCollisionListener(Collision collision)
-    {
-        if (collision.transform.parent.tag == "Coin")
-        {
-            coins += 1;
-            Destroy(collision.gameObject);
-
-            if (coins >= maxCoins)
-            {
-                lives += 1;
-                coins = 0;
-            }
-        }
-    }
-
-    void BrickCollisionListener(Collision collision)
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    void BlockCollisionListener(Collision collision)
     {
         if (collision.transform.tag == "Block")
         {
@@ -290,4 +303,96 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    void CoinCollisionListener(Collider collider)
+    {
+        if (collider.transform.tag == "Coin")
+        {
+            coins += 1;
+            if (coins >= maxCoins)
+            {
+                lives += 1;
+                coins = 0;
+            }
+        }
+    }
+
+    void HoleCollisionListener(Collider collider)
+    {
+        if (collider.transform.tag == "Hole")
+            PlayerIsDead();
+    }
+
+    void EnemyCollisionListener(Collision collision)
+    {
+        if (collision.transform.tag != "Enemy")
+            return;
+
+        if (HitDirection.x != 0 || HitDirection.y > 0)
+        {
+            if (playerState == State.normal)
+                PlayerIsDead();
+
+            if (playerState == State.big)
+                PlayerIsNormal();
+
+            if (playerState == State.super)
+                PlayerIsBig(true);
+
+            return;
+        }
+
+        if (HitDirection.y < 0)
+            Debug.Log("El jugador toca la cabeza del enemigo y acaba con el...");
+    }
+
+    void PowerUpCollisionListener(Collider collider)
+    {
+        if (playerState == State.normal)
+            PlayerIsBig();
+        if (playerState == State.big)
+            PlayerIsSuper();
+    }
+
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    void PlayerIsDead()
+    {
+        lives -= 1;
+        if (lives == 0)
+            Debug.Log("Game Over");
+        else
+        {
+            playerState = State.dead;
+            Debug.Log("El jugador está muerto...");
+        }
+    }
+
+    void PlayerIsNormal()
+    {
+        playerState = State.normal;
+        Debug.Log("El jugador ha vuelto al estado normal...");
+    }
+
+    void PlayerIsBig(bool returning = false)
+    {
+        playerState = State.big;
+
+        // Parameters (if there are)
+        bulletMaxBounces = 1;
+        bulletVelocity   = 3;
+
+        if (returning)
+            Debug.Log("El jugador ha vuelto al modo grande...");
+        else
+            Debug.Log("El jugador evoluciona al modo grande...");
+    }
+
+    void PlayerIsSuper()
+    {
+        playerState = State.super;
+        Debug.Log("El jugador evoluciona al modo abono...");
+    }
+
+    /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
+    public Transform GetOnionModel() { return onionModel; }
 }
