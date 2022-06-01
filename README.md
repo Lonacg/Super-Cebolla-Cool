@@ -241,3 +241,8 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 30 - 05 - 22
 - Los enemigos estan quietos en su posicion origen hasta que player se acerca lo suficiente y empiezan a andar. Cuando se aleja, y despues vuelve a acercarse, los enemigos comenzarán a moverse desde su posicion origen en direccion al jugador.
+
+#### 01 - 06 - 22
+
+- Añadido detección de colisiones de player con enemigos, el vacío, powerUps y monedas
+- Añadido condiciones para evolucionar, game over, muerte, contador de monedas y de vidas y gestor de evolución.
