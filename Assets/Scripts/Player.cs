@@ -258,8 +258,8 @@ public class Player : MonoBehaviour
 
     private void PlayerFiring()
     {
-        if (playerState == State.normal)
-            return;
+        // if (playerState == State.normal)
+        //     return;
 
         if (!bulletAvailable)
         {
