@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 5038769684317219785}
   - component: {fileID: 6897762681191807238}
   - component: {fileID: 8396698269412669858}
-  - component: {fileID: 4770856948650044284}
+  - component: {fileID: -6246344117856820178}
   m_Layer: 0
   m_Name: Carapace
   m_TagString: Carapace
@@ -96,7 +96,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9, y: 0.505, z: 0.8}
   m_Center: {x: 0, y: 0.1459, z: 0}
---- !u!114 &4770856948650044284
+--- !u!114 &-6246344117856820178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,9 +105,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1593605529647368544}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad4d2ef68bcf46b4583643b0090847ed, type: 3}
+  m_Script: {fileID: 11500000, guid: e98c34b2ed9ca4541a4f883c593dddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 1.5
 --- !u!1 &2892724384247588909
 GameObject:
   m_ObjectHideFlags: 0

@@ -237,7 +237,11 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Creados prefabs de bloques, monedas, enemigos y objetos del escenario.
 - Montada escena con el escenario final, falta poner vegetacion en z=1.
 - Ajustada la altura de Player y Turtle a 2 para que todo sea proporcional, y cambiado el Jump Force de Player de 30 a 28 para ajustar la altura del salto respecto a la escena montada.
--Compartidos bugs encontrados por discord.
+- Compartidos bugs encontrados por discord:
+	- No puede saltar si no esta tocando el suelo (Hace saltos encadenados si vuelves a pulsar el salto mientras esta en el aire)
+	- Opcional: pulsar la tecla de salto una vez hace que solo salte una vez (manteniendo pulsadado la tecla ahora vuelve a saltar cuando llega al suelo). A mi me gustaria mas asi, pero como quieras
+	- Las monedas no deben parar el movimiento que llevara Player cuando las toca
+	- El disparo no se ve bien. He visto que en el juego limitan el maximo de bolas disparadas vivas en la escena a 2, por si quieres ponerlo asi, a mi me da igual
 
 #### 30 - 05 - 22
 - Los enemigos estan quietos en su posicion origen hasta que player se acerca lo suficiente y empiezan a andar. Cuando se aleja, y despues vuelve a acercarse, los enemigos comenzarán a moverse desde su posicion origen en direccion al jugador.
@@ -248,8 +252,19 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 05 - 06 - 22
 - Añadido sistema de partículas invocadas al tocar monedas
-- Cuando el jugador muere tras tocar el abismo hace respawn a la ubicación original
-- Detectado problema de cámara con los movimientos en vertical, no se desplaza con suavidad
-- Detectado problema de cámara cuando el jugador hace respawn, no se alinea correctamente
-- Detectado problema de cámara al inicio del juego, un breve parpadeo ocurre
+- Cuando el jugador muere tras tocar el abismo hace respawn a la ubicación original -> No debe hacer respawn, si no llamar al menu de la UI que aun no esta hecho
+- Detectado problema de cámara con los movimientos en vertical, no se desplaza con suavidad ->La camara no se desplaza nunca en los movimientos en vertical, solo sigue en horizontal
+- Detectado problema de cámara cuando el jugador hace respawn, no se alinea correctamente -> No debe hacer respawn directamente, recargando la escena desde la UI al pulsar "retry" deberia salir bien
+- Detectado problema de cámara al inicio del juego, un breve parpadeo ocurre -> solucionado
 - Ajustados parámetros de los proyectiles
+
+#### 06 - 06 - 22
+- Mecanicas de enemigos actualizada: creados scripts de Turtle y Mushroom que heredan de Enemy.
+- Empiezan a moverse cuando el jugador esta cerca
+- Cuando el jugador esta lejos los enemigos vuelven a su posicion original, orientandose hacia donde este el jugador
+- El enemigo tortuga se da la vuelta cuando no hay suelo por el que seguir
+- Solucionado error en la camara y matices en los que no son errores
+
+
+
+

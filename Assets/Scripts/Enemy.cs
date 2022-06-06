@@ -4,76 +4,54 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    private GameObject onion;
-    private Transform enemyModel;
-    public float speed=3;
-    private int direction;
-    private Vector3 desiredForward;
-    private Vector3 rayOrigin;
-    private float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
-    private float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
-    //public bool beingTurtle;
-    private Vector3 originalPosition;
-    private float currentDistanceWithPlayer;
-    private float distanceFromOriginToPlayer;
+    protected GameObject onion;
+    protected Transform enemyModel;
+    public float speed=2;
+    protected int direction;
+    protected int lastDirection;
+    protected Vector3 desiredForward;
+    protected Vector3 rayOrigin;
+    protected float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
+    protected float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
+    protected Vector3 originalPosition;
 
-    void Start()
+
+    public void StartMovement()
     {
         onion=GameObject.Find("Onion");
         enemyModel = transform.GetChild(0);
         originalPosition=transform.position;
         direction=-1;
+        lastDirection=-1;
         if(gameObject.tag=="Turtle") //Datos caracteristicos de la tortuga
         {
-            //beingTurtle=true;
             enemyWidth=0.5f;
             enemyHeight=1f;
         }
         if(gameObject.tag=="Carapace") //Datos caracteristicos de la tortuga en estado caparazon
         {
             //enemyModel.transform.Rotate(new Vector3(90,90,180));
-            //beingTurtle=true;
             speed=0;
             enemyWidth=0.45f;
             enemyHeight=0.2525f;
         }
         if(gameObject.tag=="Mushroom") //Datos caracteristicos de la seta
         {
-            //beingTurtle=false;
             enemyWidth=0.5f;
             enemyHeight=0.5f;
         }
-
     }
 
-    void FixedUpdate()
+    public void FixedUpdateMovement()
     {
         direction=CheckForwardsCollisionsAndChangeDirection(direction);
         direction=CheckBackwardCollisionWithPlayer(direction);
         CheckUpwardsCollisionWithPlayer();
-        if(gameObject.tag=="Turtle" || gameObject.tag=="Mushroom")
-            UpdateBodyRotation(direction);
-
-        currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);
-        distanceFromOriginToPlayer= Vector3.Magnitude(originalPosition-onion.transform.position);
-        
-        if(currentDistanceWithPlayer<=20 ||distanceFromOriginToPlayer<=20) 
-                transform.Translate(Vector3.right*direction*speed*Time.deltaTime); //si player esta cerca del enemigo, este se mueve
-        else 
-        {
-            transform.position=originalPosition; //si player se ha alejado, el enemigo vuelve a su posicion
-            if (onion.transform.position.x>transform.position.x) //cuando vuelva a aparecer player, el enemigo se movera desde su psicion origen con direccion hacia player
-                direction=1;
-            else
-                direction=-1;
-        }
+        UpdateBodyRotation(direction);
+        direction= ActiveAndRecolocateEnemy(direction);
     }
 
-    private void UpdateBodyRotation(int dir)
-    {
-        desiredForward= new Vector3(0,0,-dir);
-        enemyModel.forward=Vector3.Slerp(enemyModel.forward, desiredForward.normalized,Time.deltaTime*20);
-    }
+
 
     public int CheckForwardsCollisionsAndChangeDirection(int dir) // colisiones por delante
     {
@@ -88,7 +66,7 @@ public class Enemy : MonoBehaviour
 
         Vector3 rayDirection=Vector3.right*dir;
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.blue);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) //Colision por delante
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) 
         {
             if (hitInfo.transform.tag!="Player")
             {
@@ -111,7 +89,7 @@ public class Enemy : MonoBehaviour
         }
         Vector3 rayDirection=-Vector3.right*dir;
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.magenta);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) //Colision por delante
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) 
         {
             if (hitInfo.transform.tag =="Player")
             {
@@ -123,12 +101,12 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void CheckUpwardsCollisionWithPlayer() //Colisiones por arriba
+    public void CheckUpwardsCollisionWithPlayer() //Colisiones por arriba 
     {
         Vector3 rayOrigin=transform.position;
         Vector3 rayDirection=Vector3.up;       
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHeight, Color.yellow);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight )) //Colision por delante
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight )) 
         {
             if (hitInfo.transform.tag =="Player")
             {
@@ -136,9 +114,49 @@ public class Enemy : MonoBehaviour
                 //LANZAR AQUI EL CODIGO EN EL QUE EL ENEMIGO SE MUERE SI ES CHAMPI O TORTUGA1
             }
         }
-        
+    }
+
+    public void UpdateBodyRotation(int dir)
+    {
+        if(gameObject.tag=="Turtle" || gameObject.tag=="Mushroom")
+        {
+            if(lastDirection!=dir)
+            {
+                StartCoroutine(TurnSlowly(dir));
+            }
+            lastDirection=dir;
+        }
+    }
+    IEnumerator TurnSlowly(int dir)
+    {
+        float elapsedTime=0;
+        float TimeToTurn=0.8f;
+        desiredForward= new Vector3(0,0,-dir);
+        while(elapsedTime<TimeToTurn)
+        {
+            enemyModel.forward=Vector3.Slerp(enemyModel.forward, desiredForward,elapsedTime/1.25f*TimeToTurn);
+            elapsedTime+=Time.deltaTime;
+            yield return 0;
+        }
+    }
+
+    public int ActiveAndRecolocateEnemy(int dir)
+    {
+        float currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);
+        float distanceFromOriginToPlayer= Vector3.Magnitude(originalPosition-onion.transform.position);        
+        if(currentDistanceWithPlayer<=20 ||distanceFromOriginToPlayer<=20) 
+        {
+            transform.Translate(Vector3.right*dir*speed*Time.deltaTime); //si player esta cerca del enemigo, este se mueve
+        }
+        else 
+        {
+            transform.position=originalPosition; //si player se ha alejado, el enemigo vuelve a su posicion
+            if (onion.transform.position.x>transform.position.x) //cuando vuelva a aparecer player, el enemigo se movera desde su psicion origen con direccion hacia player 
+                dir=1;   
+            else
+                dir=-1;
+        }
+        return dir;
     }
 
 }
-
-
