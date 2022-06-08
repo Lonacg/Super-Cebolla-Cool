@@ -265,6 +265,8 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - El enemigo tortuga se da la vuelta cuando no hay suelo por el que seguir
 - Solucionado error en la camara y matices en los que no son errores
 
+#### 08 - 06 - 22
 
-
-
+- Añadido recobe de bloques sorpresa tras golpearlos por debajo
+- Añadido rebote del jugador tras saltar sobre la cabeza de un enemigo
+- Problema de pestañeo con la cámara al inicio del juego sigue persistente

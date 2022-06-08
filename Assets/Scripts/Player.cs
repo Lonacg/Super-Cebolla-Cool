@@ -298,9 +298,7 @@ public class Player : MonoBehaviour
         if (collision.transform.tag == "Block")
         {
             if (HitDirection.y > 0)
-            {
                 collision.gameObject.GetComponent<Block>().ChangeBlockState(gameObject);
-            }
         }
     }
 
@@ -343,18 +341,18 @@ public class Player : MonoBehaviour
         }
 
         if (HitDirection.y < 0)
-        {
             rb.AddForce(Vector3.up * jumpForce / 2.5f, ForceMode.Impulse);
-            Debug.Log("El jugador toca la cabeza del enemigo y acaba con el...");
-        }
     }
 
     void PowerUpCollisionListener(Collider collider)
     {
-        if (playerState == State.normal)
-            PlayerIsBig();
-        if (playerState == State.big)
-            PlayerIsSuper();
+        if (collider.CompareTag("Powerup"))
+        {
+            if (playerState == State.normal)
+                PlayerIsBig();
+            if (playerState == State.big)
+                PlayerIsSuper();
+        }
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
