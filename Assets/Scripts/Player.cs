@@ -297,7 +297,7 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.tag == "Block")
         {
-            if (HitDirection.y > 0)
+            if (HitDirection.y > 0 && HitDirection.x == 0)
                 collision.gameObject.GetComponent<Block>().ChangeBlockState(gameObject);
         }
     }

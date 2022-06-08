@@ -60,6 +60,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 3
+  structMaterial: {fileID: 0}
+  brickPrefab: {fileID: 0}
 --- !u!1 &2622083850294677828
 GameObject:
   m_ObjectHideFlags: 0

@@ -143,3 +143,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockType: 2
+  structMaterial: {fileID: 2100000, guid: b60d908ab8c4f3348af7cf8bbf7b651a, type: 2}
+  brickPrefab: {fileID: 0}

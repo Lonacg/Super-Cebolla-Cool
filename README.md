@@ -267,6 +267,11 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 08 - 06 - 22
 
-- Añadido recobe de bloques sorpresa tras golpearlos por debajo
+- Añadido rebote de bloques sorpresa tras golpearlos por debajo
 - Añadido rebote del jugador tras saltar sobre la cabeza de un enemigo
 - Problema de pestañeo con la cámara al inicio del juego sigue persistente
+- Añadido cambio de material de bloque sorpresa tras ser golpeado
+- Bloques destructibles, rebotan y se parten en dos al ser golpeados y se destruyen
+- Necesario reestructurar script bloques con instancias, será tratado después
+- Detectado error con enemigos al quedarse atrapados en la esquina de un bloque, se vuelven epilépticos
+
