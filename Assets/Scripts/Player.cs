@@ -343,7 +343,10 @@ public class Player : MonoBehaviour
         }
 
         if (HitDirection.y < 0)
+        {
+            rb.AddForce(Vector3.up * jumpForce / 2.5f, ForceMode.Impulse);
             Debug.Log("El jugador toca la cabeza del enemigo y acaba con el...");
+        }
     }
 
     void PowerUpCollisionListener(Collider collider)
