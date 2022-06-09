@@ -13,16 +13,16 @@ public class Block : MonoBehaviour
     public BlockTypes blockType;
     private GameObject player;
     
-    // Ya se que esto es una chapuza
-    // ---------
+    public GameObject coinPrefab;
+    public GameObject niordoPrefab;
     public Material structMaterial;
     public GameObject brickPrefab;
+    public GameObject coinParticles;
+    public GameObject waterPrefab;
     private bool destroy;
-    // ---------
 
     void Update()
     {
-        // Otra chapuuuzaaaaaa
         if (destroy)
             Destroy(gameObject);
     }
@@ -50,12 +50,31 @@ public class Block : MonoBehaviour
 
     void OnDestructibleBlock()
     {
+        Player p = player.GetComponent<Player>();
+        if (p.playerState == Player.State.normal)
+            return;
+            
         StartCoroutine( OnDestroying() );
     }
 
     void OnSurpriseBlock()
     {
         StartCoroutine( OnBouncing() );
+
+        switch (Random.Range(0, 3))
+        {
+            case 0:
+                StartCoroutine(CoinLauncher());
+                break;
+            case 1:
+                GameObject water = Instantiate(waterPrefab, 
+                new Vector3(transform.position.x, transform.position.y + 1.0f, transform.position.z), 
+                Quaternion.identity);
+                break;
+            case 2:
+                StartCoroutine(NiordoLauncher());
+                break;
+        }
     }
 
     void OnIndestructibleBlock()
@@ -66,6 +85,60 @@ public class Block : MonoBehaviour
     void OnStructBlock()
     {
         Debug.Log("Choque contra un bloque indestructible golpeado");
+    }
+
+    IEnumerator NiordoLauncher()
+    {
+        GameObject niordo = Instantiate(niordoPrefab, transform.position, Quaternion.identity);
+
+        float mass = 1;
+        float gravity = -1.2f;
+        float force = 14;
+        float speedY = 0;
+        float gAccel = gravity / mass;
+        float acceleration;
+
+        while (speedY >= -0.1f)
+        {
+            acceleration = force / mass;
+            speedY += (gAccel + acceleration) * Time.deltaTime;
+            niordo.transform.Translate(Vector3.up * speedY);
+            force = 0;
+
+            yield return null;
+        }
+
+        while (true)
+        {
+            niordo.transform.Rotate(Vector3.up * Time.deltaTime * 62.8f);
+            yield return null;
+        }
+    }
+
+    IEnumerator CoinLauncher()
+    {
+        GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
+
+        float mass = 1;
+        float gravity = -1.8f;
+        float force = 16;
+        float speedY = 0;
+        float gAccel = gravity / mass;
+        float acceleration;
+
+        while (speedY >= -0.1f)
+        {
+            acceleration = force / mass;
+            speedY += (gAccel + acceleration) * Time.deltaTime;
+            coin.transform.Translate(Vector3.up * speedY);
+            force = 0;
+
+            yield return null;
+        }
+
+        player.GetComponent<Player>().coins++;
+        Instantiate(coinParticles, coin.transform.position, Quaternion.identity);
+        Destroy(coin);
     }
 
     IEnumerator OnBouncing()

@@ -289,3 +289,9 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - El raycast del enemigo detecta la caida de player antes de lo que player detecta la caida sobre el enemigo, luego no se activa el rebote
 - Pendiente subirles la masa y el drag a los enemigos (ajustando velocidad) para que no salgan despedidos al chocar con player
 
+- Añadido animaciones y respawn de monedas, gota de agua y abono para los bloques sorpresa
+- Jugador puede evolucionar y cambiar parámetros al tocar gota de agua o abono
+- Jugador se vuelve inmortal durante 2 segundos al tocar a un enemigo a los lados o las bombas
+- Gota de agua se mueve por el suelo y cambia de dirección al tocar una pared
+- Abono rota levitando
+- Moneda se eleva en el cielo y tras expirar aumenta el contador en +1

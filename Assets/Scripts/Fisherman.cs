@@ -28,6 +28,9 @@ public class Fisherman : MonoBehaviour
 
     void Update()
     {
+        if (player.GetComponent<Player>().playerState == Player.State.dead)
+            return;
+        
         // Sigue al jugador
         Vector3 lookAt = (transform.position - player.transform.position).normalized;
         Vector3 cPos = new Vector3(lookAt.x, 0, 0);
@@ -60,9 +63,7 @@ public class Fisherman : MonoBehaviour
 
             bombAvailable = false;
             fireRateCounter = 0;
-        }
-        
-            // Instantiate(bombPrefab, transform.position, Quaternion.identity);
+        }   
     }
 
     IEnumerator OnPropulsion(float horizontal = 1)
@@ -91,7 +92,7 @@ public class Fisherman : MonoBehaviour
             yield return null;
         }
 
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(2.8f);
         Destroy(bomb);
     }
 }
