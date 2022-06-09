@@ -7,6 +7,11 @@ public class Coin : MonoBehaviour
     // public ParticleSystem particles;
     public GameObject particles;
 
+    void Update()
+    {
+        transform.Rotate(Vector3.up * Time.deltaTime * 120.8f);
+    }
+
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Player")
