@@ -33,7 +33,7 @@ public class Fisherman : MonoBehaviour
         
         // Sigue al jugador
         Vector3 lookAt = (transform.position - player.transform.position).normalized;
-        Vector3 cPos = new Vector3(lookAt.x, 0, 0);
+        Vector3 cPos = new Vector3(lookAt.x , 0, 0);
         transform.Translate(-cPos * (Time.deltaTime + moveSpeed) );
 
         // Movimiento oscilante
@@ -69,8 +69,8 @@ public class Fisherman : MonoBehaviour
     IEnumerator OnPropulsion(float horizontal = 1)
     {
         float mass = 1;
-        float gravity = -1.2f;
-        float force = 21;
+        float gravity = -36.2f;
+        float force = 1500;
         float speedY = 0;
         float gAccel = gravity / mass;
         float acceleration;
@@ -84,11 +84,11 @@ public class Fisherman : MonoBehaviour
             speedY += (gAccel + acceleration) * Time.deltaTime;
             bomb.transform.Translate(new Vector3(
                 speedX * Time.deltaTime,
-                speedY
+                speedY * Time.deltaTime
             ));
 
             force = 0;
-            bomb.GetComponent<Rigidbody>().AddForce(Vector3.down * 3.4f, ForceMode.Impulse);
+            bomb.GetComponent<Rigidbody>().AddForce(Vector3.down * 1, ForceMode.Impulse);
             yield return null;
         }
 

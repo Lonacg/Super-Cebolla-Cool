@@ -92,8 +92,8 @@ public class Block : MonoBehaviour
         GameObject niordo = Instantiate(niordoPrefab, transform.position, Quaternion.identity);
 
         float mass = 1;
-        float gravity = -1.2f;
-        float force = 14;
+        float gravity = -2.0f;
+        float force = 140;
         float speedY = 0;
         float gAccel = gravity / mass;
         float acceleration;
@@ -102,7 +102,7 @@ public class Block : MonoBehaviour
         {
             acceleration = force / mass;
             speedY += (gAccel + acceleration) * Time.deltaTime;
-            niordo.transform.Translate(Vector3.up * speedY);
+            niordo.transform.Translate(Vector3.up * speedY * Time.deltaTime);
             force = 0;
 
             yield return null;
@@ -120,8 +120,8 @@ public class Block : MonoBehaviour
         GameObject coin = Instantiate(coinPrefab, transform.position, Quaternion.identity);
 
         float mass = 1;
-        float gravity = -1.8f;
-        float force = 16;
+        float gravity = -78.2f;
+        float force = 960;
         float speedY = 0;
         float gAccel = gravity / mass;
         float acceleration;
@@ -130,7 +130,7 @@ public class Block : MonoBehaviour
         {
             acceleration = force / mass;
             speedY += (gAccel + acceleration) * Time.deltaTime;
-            coin.transform.Translate(Vector3.up * speedY);
+            coin.transform.Translate(Vector3.up * speedY * Time.deltaTime);
             force = 0;
 
             yield return null;
@@ -169,8 +169,8 @@ public class Block : MonoBehaviour
     IEnumerator OnDestroying()
     {
         float mass = 1;
-        float gravity = -2.8f;
-        float force = 11;
+        float gravity = -1.8f;
+        float force = 9;
         float speedY = 0;
         float gAccel = gravity / mass;
         float acceleration;
@@ -186,6 +186,7 @@ public class Block : MonoBehaviour
         }
 
         transform.localScale = Vector3.zero;
+        transform.GetComponent<Collider>().enabled = false;
         StartCoroutine( OnPropulsion() );
         StartCoroutine( OnPropulsion(-1) );
     }
@@ -193,24 +194,25 @@ public class Block : MonoBehaviour
     IEnumerator OnPropulsion(float horizontal = 1)
     {
         float mass = 1;
-        float gravity = -1.2f;
-        float force = 21;
+        float gravity = -28.2f;
+        float force = 590;
         float speedY = 0;
         float gAccel = gravity / mass;
         float acceleration;
-        float speedX = 12 * horizontal;
+        float speedX = 5.4f * horizontal;
 
         GameObject brick = Instantiate(brickPrefab, transform.position, Quaternion.identity);
+        brick.GetComponent<Collider>().enabled = false;
 
-        while (speedY >= -0.1f)
+        while (speedY >= -3.5f)
         {
             acceleration = force / mass;
             speedY += (gAccel + acceleration) * Time.deltaTime;
             brick.transform.Translate(new Vector3(
                 speedX * Time.deltaTime,
-                speedY
+                speedY * Time.deltaTime
             ));
-            brick.transform.localScale += Vector3.one * -0.05f;
+            brick.transform.localScale += Vector3.one * 2.2f * Time.deltaTime;
             force = 0;
 
             yield return null;
