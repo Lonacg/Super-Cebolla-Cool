@@ -5,6 +5,7 @@ using UnityEngine;
 public class StageManager : MonoBehaviour
 {
     public GameObject playerGameObject;
+    public GameObject fishermanGo;
     public float timeToRespawn; 
 
     private Player player;
@@ -12,6 +13,7 @@ public class StageManager : MonoBehaviour
     void Start()
     {
         player = playerGameObject.GetComponent<Player>();
+        StartCoroutine( FishermanRespawn() );
     }
 
     void Update()
@@ -25,5 +27,11 @@ public class StageManager : MonoBehaviour
         yield return new WaitForSeconds(timeToRespawn);
         player.playerState = Player.State.normal;
         playerGameObject.transform.position = new Vector3(-5.5f, 4, 0);
+    }
+
+    IEnumerator FishermanRespawn()
+    {
+        yield return new WaitForSeconds(5.2f);
+        Instantiate(fishermanGo);
     }
 }

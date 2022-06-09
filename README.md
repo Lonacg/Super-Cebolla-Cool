@@ -275,3 +275,7 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Necesario reestructurar script bloques con instancias, será tratado después
 - Detectado error con enemigos al quedarse atrapados en la esquina de un bloque, se vuelven epilépticos
 
+#### 09 - 06 - 22
+
+- Añadido enemigo Fisherman que persigue al jugador desde arriba con movimientos en ola
+- Enemigo Fisherman dispara bombas (pendiende de mejorar la física)
