@@ -5,133 +5,79 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     protected GameObject onion;
+    
     protected Transform enemyModel;
-    public float speed=2;
+    public float speed=1.5f;
     protected int direction;
     protected int lastDirection;
-    protected Vector3 desiredForward;
-    protected Vector3 rayOrigin;
+    protected Vector3 rayOffset;
     protected float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
     protected float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
     protected Vector3 originalPosition;
+    protected bool enemyDamaged;
 
-
-    public void StartMovement()
+    public virtual void StartEnemy()
     {
         onion=GameObject.Find("Onion");
         enemyModel = transform.GetChild(0);
         originalPosition=transform.position;
         direction=-1;
         lastDirection=-1;
-        if(gameObject.tag=="Turtle") //Datos caracteristicos de la tortuga
-        {
-            enemyWidth=0.5f;
-            enemyHeight=1f;
-        }
-        if(gameObject.tag=="Carapace") //Datos caracteristicos de la tortuga en estado caparazon
-        {
-            //enemyModel.transform.Rotate(new Vector3(90,90,180));
-            speed=0;
-            enemyWidth=0.45f;
-            enemyHeight=0.2525f;
-        }
-        if(gameObject.tag=="Mushroom") //Datos caracteristicos de la seta
-        {
-            enemyWidth=0.5f;
-            enemyHeight=0.5f;
-        }
+        enemyDamaged=false;
     }
 
-    public void FixedUpdateMovement()
+    public (int, bool) FixedUpdateMovement(int direction, bool enemyDamaged, Vector3 originalPosition)
     {
-        direction=CheckForwardsCollisionsAndChangeDirection(direction);
-        direction=CheckBackwardCollisionWithPlayer(direction);
-        CheckUpwardsCollisionWithPlayer();
+        direction=CheckCollisions(direction, true); //colisiones por detras
+        direction=CheckCollisions(direction, false); //coliiones por delante
         UpdateBodyRotation(direction);
-        direction= ActiveAndRecolocateEnemy(direction);
+ 
+        enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged);
+        direction= ActiveAndRecolocateEnemy(direction, enemyDamaged, originalPosition);
+        return (direction,enemyDamaged);
     }
 
-
-
-    public int CheckForwardsCollisionsAndChangeDirection(int dir) // colisiones por delante
+    public int CheckCollisions(int dir, bool backward=false) //=false es que si no le damos el valor de entrada lo one como false
     {
-        if(gameObject.tag=="Turtle")
-        {
-            rayOrigin=transform.position-Vector3.up*0.1f;
-        }
+        Vector3 rayOrigin= transform.position+rayOffset;
+        Vector3 rayDirection= Vector3.zero;
+        if(!backward)         
+            rayDirection=Vector3.right*dir;
         else
-        {
-            rayOrigin=transform.position+Vector3.up*0.4f;
-        }
-
-        Vector3 rayDirection=Vector3.right*dir;
-        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.blue);
+            rayDirection=-Vector3.right*dir;
+        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.magenta);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) 
         {
             if (hitInfo.transform.tag!="Player")
             {
-                dir= dir*-1;            
+                dir= dir*-1;      
             }
-            else Debug.Log("Ataque hecho a player");
-        }
-        return dir;
-    }
-
-    public int CheckBackwardCollisionWithPlayer(int dir) //Colisiones por detras
-    {
-        if(gameObject.tag=="Turtle")
-        {
-            rayOrigin=transform.position-Vector3.up*0.1f;
-        }
-        else
-        {
-            rayOrigin=transform.position+Vector3.up*0.4f;
-        }
-        Vector3 rayDirection=-Vector3.right*dir;
-        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.magenta);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) 
-        {
-            if (hitInfo.transform.tag =="Player")
+            else
             {
-                Debug.Log("Ataque hecho a player");
-                dir= dir*-1;
+                if(backward)
+                {
+                    dir= dir*-1; //cambio de direccion si player le toca por detras
+                }
+                Debug.Log("Ataque hecho a player");                
             }
         }
         return dir;
-    }
-
-
-    public void CheckUpwardsCollisionWithPlayer() //Colisiones por arriba 
-    {
-        Vector3 rayOrigin=transform.position;
-        Vector3 rayDirection=Vector3.up;       
-        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHeight, Color.yellow);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight )) 
-        {
-            if (hitInfo.transform.tag =="Player")
-            {
-                Debug.Log("Enemigo muerto!");
-                //LANZAR AQUI EL CODIGO EN EL QUE EL ENEMIGO SE MUERE SI ES CHAMPI O TORTUGA1
-            }
-        }
     }
 
     public void UpdateBodyRotation(int dir)
     {
-        if(gameObject.tag=="Turtle" || gameObject.tag=="Mushroom")
+        if(lastDirection!=dir)
         {
-            if(lastDirection!=dir)
-            {
-                StartCoroutine(TurnSlowly(dir));
-            }
-            lastDirection=dir;
+            StartCoroutine(TurnSlowly(dir));
         }
+        lastDirection=dir;
+        
     }
     IEnumerator TurnSlowly(int dir)
     {
         float elapsedTime=0;
         float TimeToTurn=0.8f;
-        desiredForward= new Vector3(0,0,-dir);
+        Vector3 desiredForward= new Vector3(0,0,-dir);
         while(elapsedTime<TimeToTurn)
         {
             enemyModel.forward=Vector3.Slerp(enemyModel.forward, desiredForward,elapsedTime/1.25f*TimeToTurn);
@@ -140,16 +86,33 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public int ActiveAndRecolocateEnemy(int dir)
+    public bool CheckUpwardsCollisionWithPlayer(bool eDamaged) //Colisiones por arriba 
+    {        
+        Vector3 rayOrigin=transform.position;
+        Vector3 rayDirection=Vector3.up;       
+        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHeight, Color.yellow);
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight)) 
+        {
+            if (hitInfo.transform.tag =="Player")
+            {
+                eDamaged=true;
+            }
+        }
+        else 
+            eDamaged=false;        
+        return eDamaged;
+    }
+
+    public int ActiveAndRecolocateEnemy(int dir, bool eDamaged, Vector3 oPosition)
     {
         float currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);
         float distanceFromOriginToPlayer= Vector3.Magnitude(originalPosition-onion.transform.position);        
-        if(currentDistanceWithPlayer<=20 ||distanceFromOriginToPlayer<=20) 
+        if(currentDistanceWithPlayer<=20 || distanceFromOriginToPlayer<=20) 
         {
             transform.Translate(Vector3.right*dir*speed*Time.deltaTime); //si player esta cerca del enemigo, este se mueve
         }
         else 
-        {
+        {            
             transform.position=originalPosition; //si player se ha alejado, el enemigo vuelve a su posicion
             if (onion.transform.position.x>transform.position.x) //cuando vuelva a aparecer player, el enemigo se movera desde su psicion origen con direccion hacia player 
                 dir=1;   
@@ -158,5 +121,4 @@ public class Enemy : MonoBehaviour
         }
         return dir;
     }
-
 }

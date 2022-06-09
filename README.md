@@ -279,3 +279,13 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - Añadido enemigo Fisherman que persigue al jugador desde arriba con movimientos en ola
 - Enemigo Fisherman dispara bombas (pendiende de mejorar la física)
+
+#### 09 - 06 - 22
+
+- Actualizados enemigos. 
+- Cuando saltan en la tortuga cambia a caparazon durante 8 segundos. Si saltan en caparazon se "destruye" y si no se reactiva la tortuga.
+- Seta muere cuando saltan encima. Pte de mejorar, porque al destruir el objeto ya no se recarga en la escena.
+- Raycast de enemigos de colisiones por arriba pte de cambiar de rayo vertical a rayo horizontal, para que detecte la caida sobre toda la cabeza.
+- El raycast del enemigo detecta la caida de player antes de lo que player detecta la caida sobre el enemigo, luego no se activa el rebote
+- Pendiente subirles la masa y el drag a los enemigos (ajustando velocidad) para que no salgan despedidos al chocar con player
+
