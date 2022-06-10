@@ -451,7 +451,7 @@ public class Player : MonoBehaviour
     {
         float counter = 0;
 
-        while (counter < 2)
+        while (counter < 3)
         {
             Physics.IgnoreCollision(enemy.GetComponent<Collider>(), GetComponent<Collider>());
             counter += Time.deltaTime;

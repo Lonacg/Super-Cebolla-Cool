@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 3261099755146489302}
   m_Layer: 0
   m_Name: Carapace
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -917,7 +917,7 @@ GameObject:
   - component: {fileID: 5763356839159826048}
   m_Layer: 0
   m_Name: TurtleModel
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

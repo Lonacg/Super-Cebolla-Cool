@@ -19,12 +19,17 @@ public class Turtle : Enemy
         base.StartEnemy();        
         enemyWidth=0.5f;
         enemyHeight=1f;
-        rayOffset=-Vector3.up*0.5f;
+        enemyHead=0.5f;
+        rayOffsetOriginSides=-Vector3.up*0.5f;
+        rayOffsetOriginUpwards= new Vector3(0,enemyHeight,0);
+        rayOffsetDirUpw=Vector3.right*direction;
     }
     void FixedUpdate()
     { 
+        
         direction=AvoidHoles(direction);
-        (direction, enemyDamaged)= FixedUpdateMovement(direction, enemyDamaged, originalPosition);
+        rayOffsetDirUpw=Vector3.right*direction;
+        (direction, enemyDamaged)= FixedUpdateMovement(direction, enemyDamaged, originalPosition, rayOffsetDirUpw);
         if (enemyDamaged==true)
         {
             Vector3 carapacePosition=turtle.transform.position;

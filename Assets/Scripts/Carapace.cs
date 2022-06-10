@@ -18,6 +18,7 @@ public class Carapace : MonoBehaviour
         elapsedTime=0; 
         carapaceInitialScale=carapace.transform.GetChild(0).localScale;
         carapaceHeight=0.4f;
+        
     }
 
     void Update()
@@ -35,7 +36,7 @@ public class Carapace : MonoBehaviour
                 StartCoroutine(ShakingCarapace(enemyDamaged));
             }
             eTime+=Time.deltaTime;
-            if(enemyDamaged) // Muerte parcial
+            if(enemyDamaged&& eTime>1) // Muerte parcial
             {         
                 eTime=0;
                 ParcialDeath(carap, turt);       
