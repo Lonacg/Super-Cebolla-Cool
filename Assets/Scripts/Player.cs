@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
         HitDirection = Vector3Int.RoundToInt(HitDirection);
 
         // DEBUG
-        Debug.DrawLine( transform.position, collider.ClosestPointOnBounds( transform.position ) );
+        Debug.DrawLine( transform.position, collider.ClosestPointOnBounds( transform.position ), Color.red );
     }
 
     private void PlayerRotation()
