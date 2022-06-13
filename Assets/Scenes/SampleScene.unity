@@ -26956,7 +26956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: playerState
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletPrefab
@@ -26972,7 +26972,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletFireRate
-      value: 0.3
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletLifeTime
@@ -26980,7 +26980,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletVelocity
-      value: 1.5
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: jumpForceExtra
@@ -26988,15 +26988,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletMaxBounces
-      value: 4
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletBounceForce
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletGravityForce
-      value: 0.8
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: highSpeedAcceleration
@@ -27008,7 +27008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: bulletInitialElevation
-      value: 740
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5729932009204616030, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
       propertyPath: normalSpeedAcceleration

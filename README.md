@@ -295,3 +295,10 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 - Gota de agua se mueve por el suelo y cambia de dirección al tocar una pared
 - Abono rota levitando
 - Moneda se eleva en el cielo y tras expirar aumenta el contador en +1
+
+
+#### 10 - 06 - 22
+- Implementado rayo horizontal en la cabeza de enemigos
+
+#### 13 - 06 - 22
+- Implementada la muerte de enemigos por disparo

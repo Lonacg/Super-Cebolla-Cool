@@ -228,7 +228,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e98c34b2ed9ca4541a4f883c593dddd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinPrefab: {fileID: 4467207352088894866, guid: 4a13e7bc53abf9945a2181aff9b07b3d, type: 3}
   speed: 1.5
+  coinCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5003462
+      value: 0.5018103
+      inSlope: 0.04173223
+      outSlope: 0.04173223
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.19289918
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.996521
+      value: -0.0010681152
+      inSlope: -2.1002247
+      outSlope: -2.1002247
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.09812261
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enemyCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   turtle: {fileID: 5289209898625024726}
   carapace: {fileID: 5754280551504600340}
 --- !u!54 &3349332964190116457

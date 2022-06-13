@@ -7,17 +7,17 @@ public class Enemy : MonoBehaviour
     protected GameObject onion;
     
     protected Transform enemyModel;
+    public GameObject coinPrefab;
     public float speed=1.5f;
     protected int direction;
     protected int lastDirection;
-    protected Vector3 rayOffsetOriginSides;
-    protected Vector3 rayOffsetOriginUpwards;
-    protected Vector3 rayOffsetDirUpw;
+    protected Vector3 rayOffset;
     protected float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
     protected float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
-    protected float enemyHead;
     protected Vector3 originalPosition;
     protected bool enemyDamaged;
+    public AnimationCurve coinCurve;
+    public AnimationCurve enemyCurve;
 
     public virtual void StartEnemy()
     {
@@ -29,20 +29,21 @@ public class Enemy : MonoBehaviour
         enemyDamaged=false;
     }
 
-    public (int, bool) FixedUpdateMovement(int direction, bool enemyDamaged, Vector3 originalPosition, Vector3 rayOffsetDirUpw)
+    public (int, bool) FixedUpdateMovement(int direction, bool enemyDamaged, Vector3 originalPosition)
     {
+
         direction=CheckCollisions(direction, true); //colisiones por detras
         direction=CheckCollisions(direction, false); //coliiones por delante
         UpdateBodyRotation(direction);
  
-        enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged,rayOffsetDirUpw);
+        enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged);
         direction= ActiveAndRecolocateEnemy(direction, enemyDamaged, originalPosition);
         return (direction,enemyDamaged);
     }
 
     public int CheckCollisions(int dir, bool backward=false) //=false es que si no le damos el valor de entrada lo one como false
     {
-        Vector3 rayOrigin= transform.position+rayOffsetOriginSides;
+        Vector3 rayOrigin= transform.position+rayOffset;
         Vector3 rayDirection= Vector3.zero;
         if(!backward)         
             rayDirection=Vector3.right*dir;
@@ -89,14 +90,12 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public bool CheckUpwardsCollisionWithPlayer(bool eDamaged, Vector3 rayOffsetDirUpw) //Colisiones por arriba 
+    public bool CheckUpwardsCollisionWithPlayer(bool eDamaged) //Colisiones por arriba 
     {        
-        Vector3 rayOrigin=transform.position+rayOffsetOriginUpwards;
-        Vector3 rayDirection=Vector3.zero+rayOffsetDirUpw;
-         
-        
-        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHead, Color.yellow);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHead)) 
+        Vector3 rayOrigin=transform.position;
+        Vector3 rayDirection=Vector3.up;       
+        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHeight, Color.yellow);
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight)) 
         {
             if (hitInfo.transform.tag =="Player")
             {
@@ -126,4 +125,95 @@ public class Enemy : MonoBehaviour
         }
         return dir;
     }
+
+    //----------------------------
+
+
+
+    public void OnCollisionEnter(Collision other)
+    {
+        if(other.gameObject.tag=="Bullet")
+        { 
+            StartCoroutine(GiveCoin());
+        }
+    }
+
+    IEnumerator GiveCoin()
+    {
+        gameObject.GetComponent<Collider>().enabled=false;
+        GameObject coin=Instantiate(coinPrefab, transform.position,Quaternion.identity);
+        Vector3 coinOriginalPosition=coin.transform.position;
+        Vector3 coinDesiredPosition=coin.transform.position+Vector3.up*2;
+        Vector3 enemyOriginalPosition=transform.position;
+
+        float elapsedTime=0;
+        float animationTime=1;
+        bool coinGoingDown=false;
+        while(elapsedTime<animationTime)
+        {
+            float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
+            if(coin.transform.position.y<coinDesiredPosition.y && coinGoingDown==false)
+                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,tCoin);
+            else
+            {
+                coinGoingDown=true;
+                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinOriginalPosition,tCoin);
+            }
+            //transform.position=Vector3.Lerp(transform.position,enemyOriginalPosition+new Vector3(2,1,0),elapsedTime/animationTime);
+            transform.Rotate(Vector3.forward * Time.deltaTime*3 * 120.8f);
+
+            elapsedTime+=Time.deltaTime;
+            yield return 0;
+        }
+
+        
+        Destroy(transform.gameObject);
+        yield return 0;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    /*IEnumerator GiveCoin()
+    {
+        gameObject.GetComponent<Collider>().isTrigger=true;
+        GameObject coin=Instantiate(coinPrefab, transform.position,Quaternion.identity);
+        float elapsedTime=0;
+        float animationTime=1;
+        Vector3 coinPosition=coin.transform.position;
+        Vector3 enemyStartPosition=transform.position;
+        Vector3 enemyDesiredPosition=transform.position+new Vector3(1,-2,0); //EN EL VECTOR QUE RESTA ES EN EL QUE INFLUYE LA DIRECCION DEL DISPARO
+
+        while(elapsedTime<animationTime)
+        {
+            float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
+            float tEnemy=enemyCurve.Evaluate(elapsedTime/animationTime);
+            coin.transform.position= Vector3.Lerp(coinPosition,coinPosition,tCoin);
+            transform.position=Vector3.Lerp(enemyStartPosition,enemyDesiredPosition,tEnemy);
+            elapsedTime+=Time.deltaTime;
+            yield return 0;        
+        }
+        Destroy(transform.gameObject);
+        yield return 0;
+    }*/
+
+
+
+
+
+
+
+
+
+
+
+
 }
