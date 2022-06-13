@@ -302,3 +302,11 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 #### 13 - 06 - 22
 - Implementada la muerte de enemigos por disparo
+- Valores de disparo actualizados:
+ Fire Rate: 0.1
+ Life Rate: 2
+ Max Bouncines:15
+ Velocity: 0.01
+ Initial elevation:0
+ Gravity Force:1
+ Bounce Force: 15
