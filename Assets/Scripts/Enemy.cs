@@ -126,9 +126,6 @@ public class Enemy : MonoBehaviour
         return dir;
     }
 
-    //----------------------------
-
-
 
     public void OnCollisionEnter(Collision other)
     {

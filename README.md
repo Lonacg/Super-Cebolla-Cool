@@ -284,10 +284,9 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 
 - Actualizados enemigos. 
 - Cuando saltan en la tortuga cambia a caparazon durante 8 segundos. Si saltan en caparazon se "destruye" y si no se reactiva la tortuga.
-- Seta muere cuando saltan encima. Pte de mejorar, porque al destruir el objeto ya no se recarga en la escena.
+- Seta muere cuando saltan encima. 
 - Raycast de enemigos de colisiones por arriba pte de cambiar de rayo vertical a rayo horizontal, para que detecte la caida sobre toda la cabeza.
 - El raycast del enemigo detecta la caida de player antes de lo que player detecta la caida sobre el enemigo, luego no se activa el rebote
-- Pendiente subirles la masa y el drag a los enemigos (ajustando velocidad) para que no salgan despedidos al chocar con player
 
 - Añadido animaciones y respawn de monedas, gota de agua y abono para los bloques sorpresa
 - Jugador puede evolucionar y cambiar parámetros al tocar gota de agua o abono
@@ -303,10 +302,14 @@ Mismos casos que a velocidad normal, la inercia es proporcional a la velocidad q
 #### 13 - 06 - 22
 - Implementada la muerte de enemigos por disparo
 - Valores de disparo actualizados:
- Fire Rate: 0.1
+Fire Rate: 0.1
  Life Rate: 2
  Max Bouncines:15
  Velocity: 0.01
  Initial elevation:0
  Gravity Force:1
  Bounce Force: 15
+- Limites de la camara añadidos
+
+#### 14 - 06 - 22
+- Inicio de la animacion final
