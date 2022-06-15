@@ -313,3 +313,6 @@ Fire Rate: 0.1
 
 #### 14 - 06 - 22
 - Inicio de la animacion final
+
+#### 15 - 06 - 22
+- Condicion de victoria y animacion final acabadas.

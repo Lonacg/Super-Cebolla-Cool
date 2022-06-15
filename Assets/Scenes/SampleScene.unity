@@ -27658,6 +27658,11 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
+--- !u!1 &1469648262408848838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5636649192056751079, guid: 0818f0a4c0bd76848844f7bd03371cab, type: 3}
+  m_PrefabInstance: {fileID: 1469648262408848837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1751501169508816856
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27730,6 +27735,14 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1211774619}
+    - target: {fileID: 1024241214872802940, guid: 8d8e2b8d4da33044dbf23b9d75b2f45b, type: 3}
+      propertyPath: playerModel
+      value: 
+      objectReference: {fileID: 1469648262408848838}
+    - target: {fileID: 1024241214872802940, guid: 8d8e2b8d4da33044dbf23b9d75b2f45b, type: 3}
+      propertyPath: confetiParticlesPrefab
+      value: 
+      objectReference: {fileID: 3214434034595576570, guid: 8e269ec91b1625446bf19d6af8919a41, type: 3}
     - target: {fileID: 1998519890889624617, guid: 8d8e2b8d4da33044dbf23b9d75b2f45b, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.5
