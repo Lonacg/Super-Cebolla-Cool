@@ -11,9 +11,13 @@ public class Enemy : MonoBehaviour
     public float speed=1.5f;
     protected int direction;
     protected int lastDirection;
-    protected Vector3 rayOffset;
+    //protected Vector3 rayOffset;
+    protected Vector3 rayOffsetOriginSides;
+    protected Vector3 rayOffsetOriginUpwards;
+    protected Vector3 rayOffsetDirUpw;
     protected float enemyWidth; //radio del ancho del modelo de enemigo, para ajustar la longitud del raycast
     protected float enemyHeight; //radio de la altura del modelo de enemigo, para ajustar la longitud del raycast
+    protected float enemyHead;
     protected Vector3 originalPosition;
     protected bool enemyDamaged;
     public AnimationCurve coinCurve;
@@ -29,21 +33,21 @@ public class Enemy : MonoBehaviour
         enemyDamaged=false;
     }
 
-    public (int, bool) FixedUpdateMovement(int direction, bool enemyDamaged, Vector3 originalPosition)
+    public (int, bool) FixedUpdateMovement(int direction, bool enemyDamaged, Vector3 originalPosition, Vector3 rayOffsetDirUpw)
     {
 
         direction=CheckCollisions(direction, true); //colisiones por detras
         direction=CheckCollisions(direction, false); //coliiones por delante
         UpdateBodyRotation(direction);
  
-        enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged);
+        enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged,rayOffsetDirUpw);
         direction= ActiveAndRecolocateEnemy(direction, enemyDamaged, originalPosition);
         return (direction,enemyDamaged);
     }
 
     public int CheckCollisions(int dir, bool backward=false) //=false es que si no le damos el valor de entrada lo one como false
     {
-        Vector3 rayOrigin= transform.position+rayOffset;
+        Vector3 rayOrigin= transform.position+rayOffsetOriginSides;
         Vector3 rayDirection= Vector3.zero;
         if(!backward)         
             rayDirection=Vector3.right*dir;
@@ -90,12 +94,13 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public bool CheckUpwardsCollisionWithPlayer(bool eDamaged) //Colisiones por arriba 
+    public bool CheckUpwardsCollisionWithPlayer(bool eDamaged, Vector3 rayOffsetDirUpw) //Colisiones por arriba 
     {        
-        Vector3 rayOrigin=transform.position;
-        Vector3 rayDirection=Vector3.up;       
-        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHeight, Color.yellow);
-        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHeight)) 
+
+        Vector3 rayOrigin=transform.position+rayOffsetOriginUpwards;
+        Vector3 rayDirection=Vector3.zero+rayOffsetDirUpw;
+        Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyHead, Color.yellow);
+        if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyHead)) 
         {
             if (hitInfo.transform.tag =="Player")
             {

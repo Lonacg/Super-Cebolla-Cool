@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -10,8 +11,9 @@ public class Player : MonoBehaviour
     - - - - - - - - - - - - - - - - - - - - - - - - - - - */
     [Header("Parámetros")]
     public int lives;
-    public int coins;
+    public int coins=0;
     public int maxCoins;
+    public TextMeshProUGUI coinsLabel;
     public enum State {
         normal,
         big,
@@ -88,6 +90,7 @@ public class Player : MonoBehaviour
         InputListener();
         PlayerMovement();
         PlayerRotation();
+        coinsLabel.text= $"{coins}";
     }
 
     private void FixedUpdate()
