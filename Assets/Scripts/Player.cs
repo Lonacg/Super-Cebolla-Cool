@@ -6,6 +6,9 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
+    public delegate void PlayerDie(); 
+    public static event PlayerDie OnPlayerDie;
+
     /*
         Parámetros
     - - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -107,7 +110,7 @@ public class Player : MonoBehaviour
     private void OnCollisionStay(Collision collision)
     {
         CollisionListener(collision.collider);
-        BlockCollisionListener(collision);
+        //BlockCollisionListener(collision);
         EnemyCollisionListener(collision);
         WaterCollisionListener(collision.collider);
     }
@@ -117,7 +120,7 @@ public class Player : MonoBehaviour
         CoinCollisionListener(collider);
         HoleCollisionListener(collider);
         PowerUpCollisionListener(collider);
-        BombCollisionListener(collider);
+        //BombCollisionListener(collider);
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -171,11 +174,7 @@ public class Player : MonoBehaviour
                 else
                     currentSpeed = 0;
 
-                rb.velocity = new Vector3(
-                    currentSpeed,
-                    rb.velocity.y,
-                    rb.velocity.z
-                );
+                rb.velocity = new Vector3(currentSpeed, rb.velocity.y, rb.velocity.z);
             }
         }
     }
@@ -183,24 +182,16 @@ public class Player : MonoBehaviour
     private void PlayerMovement()
     {
         if (!highSpeedKey)
-            MovementDynamic(
-                0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration
-            );
+            MovementDynamic(0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration);
         else
-            MovementDynamic(
-                0, highSpeed, highSpeedAcceleration, highSpeedDeceleration
-            );
+            MovementDynamic(0, highSpeed, highSpeedAcceleration, highSpeedDeceleration);
 
         if (HitDirection.x < 0 && currentSpeed < 0)
             currentSpeed = 0;
         if (HitDirection.x > 0 && currentSpeed > 0)
             currentSpeed = 0;
 
-        rb.velocity = new Vector3(
-            currentSpeed,
-            rb.velocity.y,
-            rb.velocity.z
-        );
+        rb.velocity = new Vector3(currentSpeed, rb.velocity.y, rb.velocity.z);
     }
 
     private void MovementDynamic(
@@ -277,20 +268,12 @@ public class Player : MonoBehaviour
         {
             if (fireKey)
             {
-                if (
-                    onionModel.rotation.eulerAngles.y == 90 ||
-                    onionModel.rotation.eulerAngles.y == 270
-                )
+                if (onionModel.rotation.eulerAngles.y == 90 || onionModel.rotation.eulerAngles.y == 270)
                 {
-                    Vector3 respawn = new Vector3(
-                        transform.position.x - onionModel.transform.forward.x,
-                        transform.position.y,
-                        transform.position.z
-                    );
+                    Vector3 respawn = new Vector3(transform.position.x - onionModel.transform.forward.x,transform.position.y,transform.position.z);
                     GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity);
                     Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
                 }
-
                 bulletAvailable = false;
                 fireRateCounter = 0;
             }
@@ -298,7 +281,7 @@ public class Player : MonoBehaviour
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    void BombCollisionListener(Collider collider)
+    /*void BombCollisionListener(Collider collider)
     {
         if (collider.CompareTag("Bomb"))
         {
@@ -316,9 +299,9 @@ public class Player : MonoBehaviour
         if (collision.transform.tag == "Block")
         {
             if (HitDirection.y > 0 && HitDirection.x == 0)
-                collision.gameObject.GetComponent<Block>().ChangeBlockState(gameObject);
+                collision.gameObject.GetComponent<OLDBlock>().ChangeBlockState(gameObject);
         }
-    }
+    }*/
 
     void CoinCollisionListener(Collider collider)
     {
@@ -385,6 +368,13 @@ public class Player : MonoBehaviour
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
     void PlayerIsDead(string cause)
     {
+        if (OnPlayerDie!=null)
+            OnPlayerDie();
+    }
+
+    
+    /*void PlayerIsDead(string cause)
+    {
         lives -= 1;
         if (lives <= 0)
         {
@@ -397,7 +387,7 @@ public class Player : MonoBehaviour
             switch (cause)
             {
                 case "Hole":
-                    StartCoroutine(PlayerRespawn(1.6f));
+                    StartCoroutine(PlayerRespawn(0f));
                     break;
                 case "Enemy":
                     StartCoroutine(PlayerRespawn(0));
@@ -407,7 +397,7 @@ public class Player : MonoBehaviour
                     break;
             }
         }
-    }
+    }*/
 
     void PlayerIsNormal(GameObject enemy)
     {
@@ -423,7 +413,7 @@ public class Player : MonoBehaviour
         transform.localScale = Vector3.one;
 
         // Parameters (if there are)
-        bulletFireRate = 0.8f;
+        bulletFireRate = 0.1f;
 
         if (returning)
             Debug.Log("El jugador ha vuelto al modo grande...");
@@ -443,12 +433,12 @@ public class Player : MonoBehaviour
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    IEnumerator PlayerRespawn(float time)
+    /*IEnumerator PlayerRespawn(float time)
     {
         yield return new WaitForSeconds(time);
         playerState = State.normal;
         gameObject.transform.position = new Vector3(-5.5f, 4, 0);
-    }
+    }*/
 
     IEnumerator Invencible(GameObject enemy)
     {

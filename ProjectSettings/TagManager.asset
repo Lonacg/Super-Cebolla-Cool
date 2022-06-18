@@ -23,6 +23,8 @@ TagManager:
   - Enemy
   - Powerup
   - Bomb
+  - CoinBlock
+  - PowerupBlock
   layers:
   - Default
   - TransparentFX

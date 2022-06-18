@@ -4,24 +4,21 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // public ParticleSystem particles;
-    public GameObject particles;
+    public GameObject coinParticles;
 
     void Update()
     {
-        transform.Rotate(Vector3.up * Time.deltaTime * 120.8f);
+        transform.Rotate(Vector3.up * Time.deltaTime * 250f);
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Player")
-            StartCoroutine( CoinDestroy() );
+        {
+            Instantiate(coinParticles, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
     }
 
-    IEnumerator CoinDestroy()
-    {
-        yield return new WaitForEndOfFrame();
-        Instantiate(particles, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+
 }

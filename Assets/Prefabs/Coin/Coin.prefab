@@ -59,7 +59,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5e3c30b6c4f4d74d91c6712ff7d7f36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particles: {fileID: 583505932985932437, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
+  coinParticles: {fileID: 6623696431756871221, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
 --- !u!1001 &457003862044743288
 PrefabInstance:
   m_ObjectHideFlags: 0

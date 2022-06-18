@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     public float speed=1.5f;
     protected int direction;
     protected int lastDirection;
-    //protected Vector3 rayOffset;
     protected Vector3 rayOffsetOriginSides;
     protected Vector3 rayOffsetOriginUpwards;
     protected Vector3 rayOffsetDirUpw;
@@ -21,7 +20,6 @@ public class Enemy : MonoBehaviour
     protected Vector3 originalPosition;
     protected bool enemyDamaged;
     public AnimationCurve coinCurve;
-    public AnimationCurve enemyCurve;
 
     public virtual void StartEnemy()
     {
@@ -146,7 +144,6 @@ public class Enemy : MonoBehaviour
         GameObject coin=Instantiate(coinPrefab, transform.position,Quaternion.identity);
         Vector3 coinOriginalPosition=coin.transform.position;
         Vector3 coinDesiredPosition=coin.transform.position+Vector3.up*2;
-        Vector3 enemyOriginalPosition=transform.position;
 
         float elapsedTime=0;
         float animationTime=1;
@@ -166,9 +163,7 @@ public class Enemy : MonoBehaviour
 
             elapsedTime+=Time.deltaTime;
             yield return 0;
-        }
-
-        
+        }        
         Destroy(transform.gameObject);
         yield return 0;
     }

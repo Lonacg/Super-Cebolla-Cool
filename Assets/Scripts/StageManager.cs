@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 
 public class StageManager : MonoBehaviour
 {
-    public float currentTime;
+    public float timeToPlay=400;
+    public int restOfTime;
+
     public TextMeshProUGUI timeLabel;
 
 
@@ -17,6 +21,7 @@ public class StageManager : MonoBehaviour
     public GameObject confetiParticlesPrefab;
 
     public bool hasWon=false;
+    public bool hasDie=false;
     private bool finalAnimationActive=false;
 
     private float heightPlayer=0.5f;
@@ -26,12 +31,15 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
-        currentTime=400;
     }
 
     void Update()
     {
-        TimerCountdown();
+        if(hasWon==false)
+        {
+            restOfTime= TimerCountdown();
+        }
+        timeLabel.text= $"{restOfTime}";
 
     }
     
@@ -39,21 +47,39 @@ public class StageManager : MonoBehaviour
     private void OnEnable()
     {
         FinalFlag.OnPlayerWin += OnPlayerWin;
+        Player.OnPlayerDie+=OnPlayerDie;
     }
 
     private void OnDisable()
     {
         FinalFlag.OnPlayerWin -= OnPlayerWin;
+        Player.OnPlayerDie-=OnPlayerDie;
+
     }
 
-    public void OnPlayerWin(bool playerHasWin)
+    public void OnPlayerDie()
     {
+        /*CORRUTINA: 
+            - PARAR EL TIEMPO
+            - OSCURECER PANTALLA HACIA EL CENTRO
+            - PONER MUSICA DE DERROTA
+            - CARGAR LA ESCENA: SceneManager.LoadScene("SCCGameScene");
+            - REANUDAR EL TIEMPO
+
+        */
+        SceneManager.LoadScene("SCCGameScene");
+        Time.timeScale=1;
+
+    }
+    public bool OnPlayerWin()
+    {
+        hasWon=true;
         player.GetComponent<Player>().enabled = false;
         player.GetComponent<Rigidbody>().velocity=Vector3.zero;
         player.GetComponent<Rigidbody>().useGravity=false;
 
         finalFlag.transform.gameObject.GetComponent<Collider>().enabled = false;
-        //PARAR EL CONTADOR DE TIEMPO
+
         //LANZAR DESDE AQUI EL SONIDO DE VICTORIA
         heightPlayer=player.transform.localScale.y;
         if(finalAnimationActive==false)
@@ -61,21 +87,15 @@ public class StageManager : MonoBehaviour
             finalAnimationActive=true;
             StartCoroutine(PlayerGoingDown());
         }
+        return hasWon;
     }
 
 
-
-
-
-    public void TimerCountdown()
+    public int TimerCountdown()
     {
-        currentTime=currentTime - Time.deltaTime;        
-        timeLabel.text= $"{Mathf.RoundToInt(currentTime)}";
-        if(Mathf.RoundToInt(currentTime)==0)
-        {
-            //ACTIVAR AQUI MUERTE DE PLAYER Y RESET
-        }
-
+        timeToPlay=timeToPlay - Time.deltaTime;
+        restOfTime= Mathf.RoundToInt(timeToPlay);
+        return restOfTime;
     }
 
 
@@ -136,9 +156,6 @@ public class StageManager : MonoBehaviour
         yield return 0;
     }
 
-
-
-
     IEnumerator Fireworks()
     {
         yield return new WaitForSeconds(0.5f); 
@@ -166,49 +183,4 @@ public class StageManager : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /*
-    public GameObject playerGameObject;
-    public GameObject fishermanGo;
-    public float timeToRespawn; 
-
-    private Player player;
-
-    void Start()
-    {
-        player = playerGameObject.GetComponent<Player>();
-        StartCoroutine( FishermanRespawn() );
-    }
-
-    IEnumerator FishermanRespawn()
-    {
-        yield return new WaitForSeconds(5.2f);
-        Instantiate(fishermanGo);
-    }
-    */
 }
