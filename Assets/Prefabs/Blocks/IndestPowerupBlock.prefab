@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 9203462323177478161}
   - component: {fileID: 3634401624675793182}
   - component: {fileID: 5802875273612706540}
-  - component: {fileID: 6245495969786054517}
+  - component: {fileID: 4315653119942739540}
   m_Layer: 0
-  m_Name: IndestCoinBlock
+  m_Name: IndestPowerupBlock
   m_TagString: CoinBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   brickPrefab: {fileID: 0}
   coinParticles: {fileID: 0}
   waterPrefab: {fileID: 0}
---- !u!114 &6245495969786054517
+--- !u!114 &4315653119942739540
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,14 +76,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 9203462323177478160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56f802f4593121a4ca8340ce6e3b76c9, type: 3}
+  m_Script: {fileID: 11500000, guid: aaac99386f6ce9d4c97d0070d2f0d940, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPrefab: {fileID: 4467207352088894866, guid: 4a13e7bc53abf9945a2181aff9b07b3d, type: 3}
-  coinParticles: {fileID: 6623696431756871221, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
-  redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
   modelBlock: {fileID: 9203462324569606990}
-  parentBlocks: {fileID: 0}
+  redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
+  waterDropPrefab: {fileID: 7592742896794223922, guid: 3cbb844f57da2c84b9f5f7df6ce3270b, type: 3}
+  poopPrefab: {fileID: 5713574708285654399, guid: 45b4e78057f5b894aaca77d1ac9292a0, type: 3}
 --- !u!1 &9203462324569606990
 GameObject:
   m_ObjectHideFlags: 0

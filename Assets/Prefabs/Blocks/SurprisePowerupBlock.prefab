@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1284866987045265683
+--- !u!1 &1880982545178612789
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,78 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4034640372769350626}
+  - component: {fileID: 1880982545178612790}
+  - component: {fileID: 1880982545178612777}
+  - component: {fileID: 1880982545178612776}
   m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
+  m_Name: blockModel
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4034640372769350626
+--- !u!4 &1880982545178612790
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1284866987045265683}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5175643333559365741}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5389705658283746015
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5175643333559365741}
-  - component: {fileID: 584823229296656216}
-  - component: {fileID: 3712163178764471493}
-  m_Layer: 0
-  m_Name: ModelWaterDrop
-  m_TagString: GotaAgua
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5175643333559365741
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5389705658283746015}
+  m_GameObject: {fileID: 1880982545178612789}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4034640372769350626}
-  m_Father: {fileID: 5871078010111835996}
+  m_Children: []
+  m_Father: {fileID: 1880982546116757251}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &584823229296656216
+--- !u!33 &1880982545178612777
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5389705658283746015}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &3712163178764471493
+  m_GameObject: {fileID: 1880982545178612789}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1880982545178612776
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5389705658283746015}
+  m_GameObject: {fileID: 1880982545178612789}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -93,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c7dbc89977f97264c89ea1ca3b2cd224, type: 2}
+  - {fileID: 2100000, guid: 37f3d527f78feeb469cdcf9606f9406a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -115,7 +83,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &7592742896794223922
+--- !u!1 &1880982546116757250
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,54 +91,78 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5871078010111835996}
-  - component: {fileID: 1632823929697157252}
-  - component: {fileID: 5716714848258656151}
+  - component: {fileID: 1880982546116757251}
+  - component: {fileID: 8613719703284354957}
+  - component: {fileID: 3177923768194934265}
+  - component: {fileID: 3276406770028126855}
   m_Layer: 0
-  m_Name: WaterDrop
-  m_TagString: WaterDrop
+  m_Name: SurprisePowerupBlock
+  m_TagString: PowerupBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5871078010111835996
+--- !u!4 &1880982546116757251
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7592742896794223922}
+  m_GameObject: {fileID: 1880982546116757250}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.047, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5175643333559365741}
+  - {fileID: 1880982545178612790}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1632823929697157252
-SphereCollider:
+--- !u!65 &8613719703284354957
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7592742896794223922}
+  m_GameObject: {fileID: 1880982546116757250}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5716714848258656151
+--- !u!114 &3177923768194934265
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7592742896794223922}
-  m_Enabled: 1
+  m_GameObject: {fileID: 1880982546116757250}
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1995ca1260296ee458d62f8a789d09b1, type: 3}
+  m_Script: {fileID: 11500000, guid: f7f205b9c2121314c809b556a88add38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blockType: 2
+  coinPrefab: {fileID: 4467207352088894866, guid: 4a13e7bc53abf9945a2181aff9b07b3d, type: 3}
+  niordoPrefab: {fileID: 5713574708285654399, guid: 45b4e78057f5b894aaca77d1ac9292a0, type: 3}
+  structMaterial: {fileID: 2100000, guid: b60d908ab8c4f3348af7cf8bbf7b651a, type: 2}
+  brickPrefab: {fileID: 0}
+  coinParticles: {fileID: 583505932985932437, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
+  waterPrefab: {fileID: 7592742896794223922, guid: 3cbb844f57da2c84b9f5f7df6ce3270b, type: 3}
+--- !u!114 &3276406770028126855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880982546116757250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaac99386f6ce9d4c97d0070d2f0d940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelBlock: {fileID: 1880982545178612789}
+  redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
+  waterDropPrefab: {fileID: 7592742896794223922, guid: 3cbb844f57da2c84b9f5f7df6ce3270b, type: 3}
+  poopPrefab: {fileID: 5713574708285654399, guid: 45b4e78057f5b894aaca77d1ac9292a0, type: 3}

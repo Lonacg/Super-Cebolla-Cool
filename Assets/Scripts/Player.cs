@@ -347,7 +347,7 @@ public class Player : MonoBehaviour
 
     void PowerUpCollisionListener(Collider collider)
     {
-        if (collider.CompareTag("Abono"))
+        if (collider.CompareTag("Poop")) //caca
         {
             Destroy(collider.gameObject);
             if (playerState != State.super)
@@ -357,7 +357,7 @@ public class Player : MonoBehaviour
 
     void WaterCollisionListener(Collider collider)
     {
-         if (collider.CompareTag("GotaAgua"))
+         if (collider.CompareTag("WaterDrop")) //gota de agua
         {
             Destroy(collider.gameObject);
             if (playerState == State.normal)

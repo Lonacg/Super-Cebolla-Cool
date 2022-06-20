@@ -110,6 +110,10 @@ public class Enemy : MonoBehaviour
         return eDamaged;
     }
 
+
+
+
+
     public int ActiveAndRecolocateEnemy(int dir, bool eDamaged, Vector3 oPosition)
     {
         float currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);

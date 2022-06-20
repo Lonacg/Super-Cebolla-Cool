@@ -93,9 +93,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1059610190015619568}
   - component: {fileID: 728712076276135364}
+  - component: {fileID: 8185758247964333197}
   m_Layer: 0
-  m_Name: Compost
-  m_TagString: Abono
+  m_Name: Poop
+  m_TagString: Poop
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -129,3 +130,15 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8185758247964333197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713574708285654399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1995ca1260296ee458d62f8a789d09b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

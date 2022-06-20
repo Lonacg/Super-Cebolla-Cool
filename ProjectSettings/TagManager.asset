@@ -4,17 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - RedBlock
-  - SurpriseBlock
-  - IndestructibleBrickBlock
-  - DestructibleBrickBlock
-  - GotaAgua
-  - Abono
   - Floor
   - Wall
   - Coin
   - Bullet
-  - BrickBlock
   - Block
   - Mushroom
   - Turtle
@@ -25,6 +18,13 @@ TagManager:
   - Bomb
   - CoinBlock
   - PowerupBlock
+  - DestructibleBlock
+  - ParentBlocks
+  - WaterDrop
+  - Poop
+  - Undefined
+  - GotaAgua
+  - Abono
   layers:
   - Default
   - TransparentFX

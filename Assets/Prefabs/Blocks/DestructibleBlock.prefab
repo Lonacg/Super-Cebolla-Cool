@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 3319557692899066400}
   m_Layer: 0
   m_Name: DestructibleBlock
-  m_TagString: Block
+  m_TagString: DestructibleBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -162,5 +162,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31114f8d46f96ee488a3958c006a5305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   blockParticles: {fileID: 6623696431756871221, guid: 00facea9c0fcb4248a2e64da9fee3fcd, type: 3}

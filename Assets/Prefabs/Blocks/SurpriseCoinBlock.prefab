@@ -162,8 +162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f802f4593121a4ca8340ce6e3b76c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   coinPrefab: {fileID: 4467207352088894866, guid: 4a13e7bc53abf9945a2181aff9b07b3d, type: 3}
   coinParticles: {fileID: 6623696431756871221, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
   redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
-  modelCoinBlock: {fileID: 1880982545178612789}
+  modelBlock: {fileID: 1880982545178612789}
+  parentBlocks: {fileID: 0}

@@ -31,6 +31,7 @@ public class StageManager : MonoBehaviour
 
     void Start()
     {
+        
     }
 
     void Update()
@@ -100,7 +101,7 @@ public class StageManager : MonoBehaviour
 
 
 
-    IEnumerator PlayerGoingDown()
+    IEnumerator PlayerGoingDown() //En la palmera de victoria
     {
         Vector3 desiredPosition = new Vector3(236.75f,1+heightPlayer,0);
         float elapsedTime=0;

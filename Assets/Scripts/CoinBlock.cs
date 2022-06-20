@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class CoinBlock : Block
 {
-    public GameObject player;
     public GameObject coinPrefab;
     public GameObject coinParticles;
     public GameObject redBlockPrefab;
-    public GameObject modelCoinBlock;
+    public GameObject modelBlock;
+    private GameObject parentBlocks; //el padre donde queremos que instancie el bloque
 
 
     void Start()
     {
         player=GameObject.FindWithTag("Player");
+        parentBlocks=GameObject.FindWithTag("ParentBlocks");
+        
     }
 
     void Update()
@@ -30,8 +32,10 @@ public class CoinBlock : Block
 
     public override void DoYourLastJob()
     {
-        GameObject redBlock=Instantiate(redBlockPrefab, transform.position,Quaternion.identity);
-        modelCoinBlock.transform.gameObject.SetActive(false);
+        transform.gameObject.GetComponent<BoxCollider>().enabled=false; //Desactivo el colider del bloque sorpresa para que no choque con el rojo
+        modelBlock.transform.gameObject.SetActive(false);  //desactivo el modelo del sorpresa para que no se vea, , no se puede borrar hasta que no se acabe la rutina de GiveCoin
+        GameObject redBlock=Instantiate(redBlockPrefab, transform.position,Quaternion.identity, parentBlocks.transform); //instancio el rojo
+        
     }
 
     IEnumerator GiveCoin()
@@ -49,25 +53,21 @@ public class CoinBlock : Block
             //float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
             if(Mathf.RoundToInt(coin.transform.position.y*100f)<Mathf.RoundToInt(coinDesiredPosition.y*100f) && coinGoingDown==false)
             {
-                Debug.Log("subiendo?");
                 coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,elapsedTime/animationTime);
             }
 
             else if(Mathf.RoundToInt(coin.transform.position.y*100f)>Mathf.RoundToInt(coinOriginalPosition.y*100f))
             {
-                Debug.Log("bajando?");
-
                 coinGoingDown=true;
                 coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinOriginalPosition,elapsedTime/animationTime);
             }
             else
             {
-                Debug.Log("se acabó");
                 player.GetComponent<Player>().coins++;
                 Instantiate(coinParticles, coin.transform.position, Quaternion.identity);
                 Destroy(coin);
                 Destroy(transform.gameObject);
-
+                bouncing=false;
                 yield break;
             }
 

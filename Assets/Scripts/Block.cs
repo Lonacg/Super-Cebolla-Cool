@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    protected GameObject player;
 
     protected bool bouncing=false;
+    protected bool destroying=false;
 
     public void BackwardCollisiion() //Colisiones por abajo
     {        
@@ -14,14 +16,25 @@ public class Block : MonoBehaviour
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection, Color.blue);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,1)) 
         {
-            if (hitInfo.transform.tag =="Player" && bouncing==false)
-                StartCoroutine(Bounce());  
+            Debug.Log("choque con: " + hitInfo.transform.tag);
+            Debug.Log("ejecutando bouncing "+ bouncing);
+            if (hitInfo.transform.tag =="Player" && bouncing==false && destroying==false)
+            {                
+                if(player.transform.localScale.y==1 && transform.gameObject.tag=="DestructibleBlock") //este if No deberia hacerse asi porque es la clase base... pero es mas rapido 
+                {
+                    destroying=true;
+                    DestroyBlock();
+                }
+                bouncing=true;
+                StartCoroutine(Bounce());
+                
+            }
+
         }
 
     }
     IEnumerator Bounce()
     {
-        bouncing=true;
         float elapsedTime=0;
         float animationTime=0.5f;
         bool blockGoingDown=false;
@@ -39,21 +52,17 @@ public class Block : MonoBehaviour
                         DoYourFirstJob();
                     blockGoingDown=true;
                     transform.position=Vector3.Lerp(transform.position, originalPosition,elapsedTime/animationTime);
-                    Debug.Log(transform.position);
                 }
-            
 
             else
-            {
-                bouncing=false;
-                DoYourLastJob();
+            {                
+                DoYourLastJob();               
                 yield break;
             }
             elapsedTime+=Time.deltaTime;
             yield return 0;
         }
-        bouncing=false;
-        DoYourLastJob();       
+        DoYourLastJob();
         yield return 0;
     }
 
@@ -66,11 +75,14 @@ public class Block : MonoBehaviour
 
     public virtual void DoYourLastJob()
     {
-        
+        bouncing=false;
     }
 
 
+    public virtual void DestroyBlock()
+    {
 
+    }
 
 
 
