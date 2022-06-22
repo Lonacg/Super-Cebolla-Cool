@@ -49,7 +49,7 @@ public class CoinBlock : Block
         bool coinGoingDown=false;
         while(elapsedTime<animationTime)
         {
-
+            if(coin==null) break;
             //float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
             if(Mathf.RoundToInt(coin.transform.position.y*100f)<Mathf.RoundToInt(coinDesiredPosition.y*100f) && coinGoingDown==false)
             {

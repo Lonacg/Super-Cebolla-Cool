@@ -166,4 +166,3 @@ MonoBehaviour:
   coinParticles: {fileID: 6623696431756871221, guid: 7a7f809cd0f56254bb3d730778120a7d, type: 3}
   redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
   modelBlock: {fileID: 1880982545178612789}
-  parentBlocks: {fileID: 0}

@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 {
     public delegate void PlayerDie(); 
     public static event PlayerDie OnPlayerDie;
+    public GameObject hair;
 
     /*
         Parámetros
@@ -85,7 +86,7 @@ public class Player : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody>();
         onionModel = transform.GetChild(0);
-        playerState = State.normal;
+        playerState = State.big;
     }
 
     private void Update()
@@ -112,14 +113,18 @@ public class Player : MonoBehaviour
         CollisionListener(collision.collider);
         //BlockCollisionListener(collision);
         EnemyCollisionListener(collision);
-        WaterCollisionListener(collision.collider);
+        //PowerupCollisionListener(collision.collider);
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        PowerupCollisionListener(collision);
     }
 
     private void OnTriggerEnter(Collider collider)
     {
         CoinCollisionListener(collider);
         HoleCollisionListener(collider);
-        PowerUpCollisionListener(collider);
+        //PowerUpCollisionListener(collider);
         //BombCollisionListener(collider);
     }
 
@@ -254,7 +259,7 @@ public class Player : MonoBehaviour
 
     private void PlayerFiring()
     {
-        if (playerState == State.normal)
+        if (playerState != State.super )
             return;
 
         if (!bulletAvailable)
@@ -319,7 +324,7 @@ public class Player : MonoBehaviour
     void HoleCollisionListener(Collider collider)
     {
         if (collider.transform.tag == "Hole")
-            PlayerIsDead("Hole");
+            PlayerIsDead();
     }
 
     void EnemyCollisionListener(Collision collision)
@@ -330,13 +335,15 @@ public class Player : MonoBehaviour
         if (HitDirection.x != 0 || HitDirection.y >= 0)
         {
             if (playerState == State.normal)
-                PlayerIsDead("Enemy");
+                PlayerIsDead();
 
             if (playerState == State.big)
+
                 PlayerIsNormal(collision.gameObject);
+                
 
             if (playerState == State.super)
-                PlayerIsBig(true);
+                PlayerIsBig(collision.gameObject);
 
             return;
         }
@@ -345,7 +352,7 @@ public class Player : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce / 2.5f, ForceMode.Impulse);
     }
 
-    void PowerUpCollisionListener(Collider collider)
+    /*void PowerUpCollisionListener(Collider collider)
     {
         if (collider.CompareTag("Poop")) //caca
         {
@@ -353,20 +360,28 @@ public class Player : MonoBehaviour
             if (playerState != State.super)
                 PlayerIsSuper();
         }
-    }
+    }*/
 
-    void WaterCollisionListener(Collider collider)
+    void PowerupCollisionListener(Collision collision)
     {
-         if (collider.CompareTag("WaterDrop")) //gota de agua
+        if(collision.transform.tag!="Untagged")
+            Debug.Log("PLAYER: " + collision.transform.tag);
+        if (collision.transform.tag=="WaterDrop") //gota de agua
         {
-            Destroy(collider.gameObject);
+            Destroy(collision.gameObject);
             if (playerState == State.normal)
                 PlayerIsBig();
+        }
+        if (collision.transform.tag=="Poop") //caca
+        {
+            Destroy(collision.gameObject);
+            if (playerState != State.super)
+                PlayerIsSuper();
         }
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
-    void PlayerIsDead(string cause)
+    void PlayerIsDead()
     {
         if (OnPlayerDie!=null)
             OnPlayerDie();
@@ -404,32 +419,38 @@ public class Player : MonoBehaviour
         playerState = State.normal;
         transform.localScale = new Vector3(1, 0.5f, 1);
         StartCoroutine( Invencible(enemy) );
-        Debug.Log("El jugador ha vuelto al estado normal...");
+        //Debug.Log("El jugador ha vuelto al estado normal...");
     }
 
-    void PlayerIsBig(bool returning = false)
+    //void PlayerIsBig(bool returning = false)
+    void PlayerIsBig(GameObject enemy=null)
     {
+        hair.SetActive(false);
         playerState = State.big;
         transform.localScale = Vector3.one;
+        if(enemy!=null)
+            StartCoroutine( Invencible(enemy) );
 
         // Parameters (if there are)
-        bulletFireRate = 0.1f;
+        //bulletFireRate = 0.1f;
 
-        if (returning)
+        /*if (returning)
             Debug.Log("El jugador ha vuelto al modo grande...");
         else
-            Debug.Log("El jugador evoluciona al modo grande...");
+            Debug.Log("El jugador evoluciona al modo grande...");*/
     }
 
     void PlayerIsSuper()
     {
+        hair.SetActive(true);
+
         playerState = State.super;
         transform.localScale = Vector3.one;
 
         // Parameters (if there are)
-        bulletFireRate = 0.2f;
+        //bulletFireRate = 0.2f;
 
-        Debug.Log("El jugador evoluciona al modo abono...");
+        //Debug.Log("El jugador evoluciona al modo abono...");
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
@@ -446,11 +467,12 @@ public class Player : MonoBehaviour
 
         while (counter < 3)
         {
+            if(enemy==null) break;
             Physics.IgnoreCollision(enemy.GetComponent<Collider>(), GetComponent<Collider>());
             counter += Time.deltaTime;
             yield return null;
         }
-
+        if(enemy==null) yield break;
         Physics.IgnoreCollision(enemy.GetComponent<Collider>(), GetComponent<Collider>(), false);
     }
 

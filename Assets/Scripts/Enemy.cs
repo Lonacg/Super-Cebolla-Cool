@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    protected GameObject onion;
-    
+    public bool playerDetectec=false;
+
+    protected GameObject onion;    
     protected Transform enemyModel;
     public GameObject coinPrefab;
     public float speed=1.5f;
@@ -39,6 +40,17 @@ public class Enemy : MonoBehaviour
         UpdateBodyRotation(direction);
  
         enemyDamaged=CheckUpwardsCollisionWithPlayer(enemyDamaged,rayOffsetDirUpw);
+        /*if (playerDetectec) //DETECCION DE COLISION CON ON COLLIDER ENTER (se producen fallos con la tortuga)
+        {
+            float onionHeight=onion.transform.localScale.y;
+            if (onion.transform.position.y-onionHeight<transform.position.y+enemyHeight)
+            {
+                enemyDamaged=true;
+            }
+            else enemyDamaged=false;
+        }*/
+
+
         direction= ActiveAndRecolocateEnemy(direction, enemyDamaged, originalPosition);
         return (direction,enemyDamaged);
     }
@@ -54,7 +66,8 @@ public class Enemy : MonoBehaviour
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection*enemyWidth, Color.magenta);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,enemyWidth)) 
         {
-            if (hitInfo.transform.tag!="Player")
+            //Debug.Log(hitInfo.transform.tag);
+            if (hitInfo.transform.tag!="Player" && hitInfo.transform.tag!="StartLimit")
             {
                 dir= dir*-1;      
             }
@@ -64,7 +77,7 @@ public class Enemy : MonoBehaviour
                 {
                     dir= dir*-1; //cambio de direccion si player le toca por detras
                 }
-                Debug.Log("Ataque hecho a player");                
+                //Debug.Log("Ataque hecho a player");                
             }
         }
         return dir;
@@ -110,6 +123,10 @@ public class Enemy : MonoBehaviour
         return eDamaged;
     }
 
+    public void PlayerCollision()
+    {
+
+    }
 
 
 
@@ -134,9 +151,17 @@ public class Enemy : MonoBehaviour
     }
 
 
-    public void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision collision)
     {
-        if(other.gameObject.tag=="Bullet")
+        /*if(collision.gameObject.tag=="Player")
+        { 
+            playerDetectec=true;
+        }
+        else
+        {
+            playerDetectec=false;
+        }*/
+        if(collision.gameObject.tag=="Bullet")
         { 
             StartCoroutine(GiveCoin());
         }
@@ -155,6 +180,7 @@ public class Enemy : MonoBehaviour
         while(elapsedTime<animationTime)
         {
             float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
+            if(coin==null) break;
             if(coin.transform.position.y<coinDesiredPosition.y && coinGoingDown==false)
                 coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,tCoin);
             else
@@ -163,7 +189,7 @@ public class Enemy : MonoBehaviour
                 coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinOriginalPosition,tCoin);
             }
             //transform.position=Vector3.Lerp(transform.position,enemyOriginalPosition+new Vector3(2,1,0),elapsedTime/animationTime);
-            transform.Rotate(Vector3.forward * Time.deltaTime*3 * 120.8f);
+            transform.Rotate(Vector3.forward * Time.deltaTime*360);
 
             elapsedTime+=Time.deltaTime;
             yield return 0;

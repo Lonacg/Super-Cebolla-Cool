@@ -16,8 +16,6 @@ public class Block : MonoBehaviour
         Debug.DrawLine(rayOrigin,rayOrigin+rayDirection, Color.blue);
         if (Physics.Raycast(rayOrigin, rayDirection, out RaycastHit hitInfo,1)) 
         {
-            Debug.Log("choque con: " + hitInfo.transform.tag);
-            Debug.Log("ejecutando bouncing "+ bouncing);
             if (hitInfo.transform.tag =="Player" && bouncing==false && destroying==false)
             {                
                 if(player.transform.localScale.y==1 && transform.gameObject.tag=="DestructibleBlock") //este if No deberia hacerse asi porque es la clase base... pero es mas rapido 

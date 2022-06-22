@@ -23,8 +23,7 @@ TagManager:
   - WaterDrop
   - Poop
   - Undefined
-  - GotaAgua
-  - Abono
+  - StartLimit
   layers:
   - Default
   - TransparentFX

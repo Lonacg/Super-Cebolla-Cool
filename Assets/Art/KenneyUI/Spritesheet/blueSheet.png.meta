@@ -302,7 +302,7 @@ TextureImporter:
       name: blue_button02.png
       rect:
         serializedVersion: 2
-        x: 191
+        x: 190
         y: 207
         width: 190
         height: 49
@@ -371,7 +371,7 @@ TextureImporter:
         height: 45
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 10, y: 10, z: 10, w: 10}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
@@ -742,7 +742,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -750,10 +750,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      blue_sliderUp.png: -9067302685625973426
+      blue_button13.png: -571734535538798343
       blue_button05.png: 2273862516554000364
       blue_button08.png: -2135702716234782943
       blue_circle.png: -956581802588695278
+      blue_sliderUp.png: -9067302685625973426
       blue_panel.png: 2994987114903804698
       blue_button12.png: 3552386328965880685
       blue_button00.png: 1064096351177103804
@@ -774,7 +775,6 @@ TextureImporter:
       blue_sliderLeft.png: 4553364362862187114
       blue_sliderDown.png: -2849257791659735815
       blue_button06.png: 6794513968505892719
-      blue_button13.png: -571734535538798343
       blue_boxCheckmark.png: 7344171009905078346
   spritePackingTag: 
   pSDRemoveMatte: 0

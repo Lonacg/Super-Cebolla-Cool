@@ -41,6 +41,8 @@ public class StageManager : MonoBehaviour
             restOfTime= TimerCountdown();
         }
         timeLabel.text= $"{restOfTime}";
+        if (player.transform.position.x>=263) 
+            SceneManager.LoadScene("MainMenu");
 
     }
     
@@ -170,10 +172,10 @@ public class StageManager : MonoBehaviour
     {
         playerModel.transform.rotation=Quaternion.Euler(0,90,0);
         float elapsedTime=0;
-        Vector3 desiredPosition=new Vector3(262f,heightPlayer,0);
-        while(player.transform.position.x<262f)
+        Vector3 desiredPosition=new Vector3(268f,heightPlayer,0);
+        while(player.transform.position.x<268f)
         {
-            player.transform.position=Vector3.Lerp(player.transform.position,desiredPosition,elapsedTime/50);
+            player.transform.position=Vector3.Lerp(player.transform.position,desiredPosition,elapsedTime/53);
             elapsedTime+=Time.deltaTime;
             yield return 0;
         }

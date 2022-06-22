@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4315653119942739540}
   m_Layer: 0
   m_Name: IndestPowerupBlock
-  m_TagString: CoinBlock
+  m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -81,8 +81,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modelBlock: {fileID: 9203462324569606990}
   redBlockPrefab: {fileID: 1082626522133612211, guid: efbce3ba8d1a77d489671b723d78b241, type: 3}
-  waterDropPrefab: {fileID: 7592742896794223922, guid: 3cbb844f57da2c84b9f5f7df6ce3270b, type: 3}
-  poopPrefab: {fileID: 5713574708285654399, guid: 45b4e78057f5b894aaca77d1ac9292a0, type: 3}
+  waterDropPrefab: {fileID: 4587443028462280680, guid: 9f97870c55ee97641aebbf605dd313c5, type: 3}
+  poopPrefab: {fileID: 1195622991244523549, guid: bc181d1f5762f904dbde7a6703445907, type: 3}
 --- !u!1 &9203462324569606990
 GameObject:
   m_ObjectHideFlags: 0
