@@ -364,8 +364,6 @@ public class Player : MonoBehaviour
 
     void PowerupCollisionListener(Collision collision)
     {
-        if(collision.transform.tag!="Untagged")
-            Debug.Log("PLAYER: " + collision.transform.tag);
         if (collision.transform.tag=="WaterDrop") //gota de agua
         {
             Destroy(collision.gameObject);

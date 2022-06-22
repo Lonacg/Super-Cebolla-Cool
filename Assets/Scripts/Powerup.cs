@@ -36,10 +36,6 @@ public class Powerup : MonoBehaviour
 
     int OnCollisionEnter(Collision collision)
     {
-        //if(collision.transform.tag!="Untagged")
-        Debug.Log("POWERUP " + collision.transform.tag);
-        Debug.Log("EL OTRO "+ collision.transform.position.y);
-        Debug.Log("EL "+ transform.position.y);
         if (Mathf.RoundToInt(collision.transform.position.y*100)>=Mathf.RoundToInt(transform.position.y*100) && collision.transform.tag!="StartLimit"&& collision.transform.tag!="Player"&& collision.transform.tag!="DestructibleBlock"&& collision.transform.tag!="Block")
             direction=direction*(-1);
 

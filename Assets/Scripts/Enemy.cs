@@ -180,14 +180,15 @@ public class Enemy : MonoBehaviour
         while(elapsedTime<animationTime)
         {
             float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
-            if(coin==null) break;
-            if(coin.transform.position.y<coinDesiredPosition.y && coinGoingDown==false)
-                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,tCoin);
-            else
+            if(coin==null) yield break;
+            if(Mathf.RoundToInt(coin.transform.position.y*100)<Mathf.RoundToInt(coinDesiredPosition.y*100) && coinGoingDown==false)
+                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,elapsedTime/animationTime);
+            else if(Mathf.RoundToInt(coin.transform.position.y*100f)>Mathf.RoundToInt(coinOriginalPosition.y*100f))
             {
                 coinGoingDown=true;
-                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinOriginalPosition,tCoin);
+                coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinOriginalPosition,elapsedTime/animationTime);
             }
+            else yield break;
             //transform.position=Vector3.Lerp(transform.position,enemyOriginalPosition+new Vector3(2,1,0),elapsedTime/animationTime);
             transform.Rotate(Vector3.forward * Time.deltaTime*360);
 
