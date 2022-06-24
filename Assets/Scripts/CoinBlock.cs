@@ -10,6 +10,8 @@ public class CoinBlock : Block
     public GameObject modelBlock;
     private GameObject parentBlocks; //el padre donde queremos que instancie el bloque
 
+    public delegate void CoinDestroying(); 
+    public static event CoinDestroying OnCoinDestroying;
 
     void Start()
     {
@@ -66,6 +68,8 @@ public class CoinBlock : Block
                 player.GetComponent<Player>().coins++;
                 Instantiate(coinParticles, coin.transform.position, Quaternion.identity);
                 Destroy(coin);
+                if (OnCoinDestroying!=null)
+                    OnCoinDestroying();
                 Destroy(transform.gameObject);
                 bouncing=false;
                 yield break;

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9203462323177478161}
   - component: {fileID: 3634401624675793182}
-  - component: {fileID: 5802875273612706540}
   - component: {fileID: 6245495969786054517}
   m_Layer: 0
   m_Name: IndestCoinBlock
@@ -48,25 +47,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5802875273612706540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9203462323177478160}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7f205b9c2121314c809b556a88add38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  blockType: 1
-  coinPrefab: {fileID: 0}
-  niordoPrefab: {fileID: 0}
-  structMaterial: {fileID: 0}
-  brickPrefab: {fileID: 0}
-  coinParticles: {fileID: 0}
-  waterPrefab: {fileID: 0}
 --- !u!114 &6245495969786054517
 MonoBehaviour:
   m_ObjectHideFlags: 0

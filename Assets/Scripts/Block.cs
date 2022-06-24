@@ -5,6 +5,8 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     protected GameObject player;
+    public delegate void BlockBouncing(); 
+    public static event BlockBouncing OnBlockBouncing;
 
     protected bool bouncing=false;
     protected bool destroying=false;
@@ -24,6 +26,8 @@ public class Block : MonoBehaviour
                     DestroyBlock();
                 }
                 bouncing=true;
+                if (OnBlockBouncing!=null)
+                    OnBlockBouncing();
                 StartCoroutine(Bounce());
                 
             }

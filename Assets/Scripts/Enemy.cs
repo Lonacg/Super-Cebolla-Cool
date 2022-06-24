@@ -20,7 +20,16 @@ public class Enemy : MonoBehaviour
     protected float enemyHead;
     protected Vector3 originalPosition;
     protected bool enemyDamaged;
-    public AnimationCurve coinCurve;
+    protected bool hasDied=false;
+
+
+    public delegate void EnemyDyingByJump(); 
+    public static event EnemyDyingByJump OnEnemyDyingByJump;
+
+    public delegate void EnemyDyingByShut(); 
+    public static event EnemyDyingByShut OnEnemyDyingByShut;
+
+
 
     public virtual void StartEnemy()
     {
@@ -115,6 +124,12 @@ public class Enemy : MonoBehaviour
         {
             if (hitInfo.transform.tag =="Player")
             {
+                if (OnEnemyDyingByJump!=null && hasDied==false)
+                {
+                    hasDied=true;
+                    OnEnemyDyingByJump();
+                }
+
                 eDamaged=true;
             }
         }
@@ -135,7 +150,7 @@ public class Enemy : MonoBehaviour
     {
         float currentDistanceWithPlayer= Vector3.Magnitude(transform.position-onion.transform.position);
         float distanceFromOriginToPlayer= Vector3.Magnitude(originalPosition-onion.transform.position);        
-        if(currentDistanceWithPlayer<=20 || distanceFromOriginToPlayer<=20) 
+        if(currentDistanceWithPlayer<=22 || distanceFromOriginToPlayer<=22) 
         {
             transform.Translate(Vector3.right*dir*speed*Time.deltaTime); //si player esta cerca del enemigo, este se mueve
         }
@@ -164,6 +179,8 @@ public class Enemy : MonoBehaviour
         if(collision.gameObject.tag=="Bullet")
         { 
             StartCoroutine(GiveCoin());
+            if (OnEnemyDyingByShut!=null)
+                OnEnemyDyingByShut();
         }
     }
 
@@ -179,7 +196,6 @@ public class Enemy : MonoBehaviour
         bool coinGoingDown=false;
         while(elapsedTime<animationTime)
         {
-            float tCoin=coinCurve.Evaluate(elapsedTime/animationTime);
             if(coin==null) yield break;
             if(Mathf.RoundToInt(coin.transform.position.y*100)<Mathf.RoundToInt(coinDesiredPosition.y*100) && coinGoingDown==false)
                 coin.transform.position=Vector3.LerpUnclamped(coin.transform.position, coinDesiredPosition,elapsedTime/animationTime);

@@ -8,8 +8,22 @@ using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
-    public float timeToPlay=400;
-    public int restOfTime;
+
+    public delegate void Last100Seg(); 
+    public static event Last100Seg OnLast100Seg;
+
+    public delegate void Fireworks(); 
+    public static event Fireworks OnFireworks;
+
+    public delegate void VictoryTurn(); 
+    public static event VictoryTurn OnVictoryTurn;
+
+    public delegate void VictoryJump(); 
+    public static event VictoryJump OnVictoryJump;
+
+
+    private float timeToPlay=400;
+    private int restOfTime;
 
     public TextMeshProUGUI timeLabel;
 
@@ -20,12 +34,12 @@ public class StageManager : MonoBehaviour
     public GameObject finalFlag;
     public GameObject confetiParticlesPrefab;
 
-    public bool hasWon=false;
-    public bool hasDie=false;
+    private bool hasWon=false;
+    //public bool hasDied=false;
     private bool finalAnimationActive=false;
 
     private float heightPlayer=0.5f;
-
+    private bool warning=false;
 
 
 
@@ -39,6 +53,12 @@ public class StageManager : MonoBehaviour
         if(hasWon==false)
         {
             restOfTime= TimerCountdown();
+            if(restOfTime==100f && warning==false)
+            {
+                warning=true;
+                if (OnLast100Seg!=null)
+                    OnLast100Seg();
+            }
         }
         timeLabel.text= $"{restOfTime}";
         if (player.transform.position.x>=263) 
@@ -49,18 +69,18 @@ public class StageManager : MonoBehaviour
 
     private void OnEnable()
     {
-        FinalFlag.OnPlayerWin += OnPlayerWin;
-        Player.OnPlayerDie+=OnPlayerDie;
+        FinalFlag.OnPlayerWinning += OnPlayerWinning;
+        Player.OnPlayerDying+=OnPlayerDying;
     }
 
     private void OnDisable()
     {
-        FinalFlag.OnPlayerWin -= OnPlayerWin;
-        Player.OnPlayerDie-=OnPlayerDie;
+        FinalFlag.OnPlayerWinning -= OnPlayerWinning;
+        Player.OnPlayerDying-=OnPlayerDying;
 
     }
 
-    public void OnPlayerDie()
+    public void OnPlayerDying()
     {
         /*CORRUTINA: 
             - PARAR EL TIEMPO
@@ -70,11 +90,19 @@ public class StageManager : MonoBehaviour
             - REANUDAR EL TIEMPO
 
         */
-        SceneManager.LoadScene("SCCGameScene");
-        Time.timeScale=1;
+    StartCoroutine(WaitToDie());
 
     }
-    public bool OnPlayerWin()
+    IEnumerator WaitToDie()
+    {
+        player.transform.gameObject.GetComponent<Player>().enabled=false;
+        yield return new WaitForSeconds(1.25f);
+        SceneManager.LoadScene("SCCGameScene");
+        Time.timeScale=1;
+        yield return 0;
+    }
+
+    public bool OnPlayerWinning()
     {
         hasWon=true;
         player.GetComponent<Player>().enabled = false;
@@ -120,6 +148,8 @@ public class StageManager : MonoBehaviour
 
     IEnumerator Turning()
     {
+        if (OnVictoryTurn!=null)
+            OnVictoryTurn();
         Vector3 desiredPosition = new Vector3(238.25f,1+heightPlayer,0);
         Quaternion desiredRotation= Quaternion.Euler(0,180,0);
         float elapsedTime=0;
@@ -137,6 +167,8 @@ public class StageManager : MonoBehaviour
 
     IEnumerator Jumping()
     {
+        if (OnVictoryJump!=null)
+            OnVictoryJump();
         Rigidbody rigidbody= player.GetComponent<Rigidbody>();
         rigidbody.useGravity=true;
         rigidbody.AddForce(new Vector3(2,3.5f,0)*2, ForceMode.Impulse);
@@ -155,14 +187,16 @@ public class StageManager : MonoBehaviour
         }
         player.GetComponent<Rigidbody>().velocity=Vector3.zero;
 
-        StartCoroutine(Fireworks());
+        StartCoroutine(LaunchFireworks());
         yield return 0;
     }
 
-    IEnumerator Fireworks()
+    IEnumerator LaunchFireworks()
     {
         yield return new WaitForSeconds(0.5f); 
         GameObject fireworks=Instantiate(confetiParticlesPrefab, player.transform.position, Quaternion.identity);
+        if (OnFireworks!=null)
+            OnFireworks();
         yield return new WaitForSeconds(2); 
         StartCoroutine(GoingOut());
         yield return 0;       

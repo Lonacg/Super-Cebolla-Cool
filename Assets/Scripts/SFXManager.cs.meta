@@ -1,0 +1,26 @@
+fileFormatVersion: 2
+guid: 1e7daf76213b8ae4aa5903f760476539
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - on2BlockDestroyed: {fileID: 8300000, guid: b3d6ae77260b262418cbee52361a15a4, type: 3}
+  - on3Block: {instanceID: 0}
+  - on4Shot: {instanceID: 0}
+  - on5EnemyDyingByShut: {instanceID: 0}
+  - on6EnemyDyingByJump: {instanceID: 0}
+  - on7PowerupLeaving: {instanceID: 0}
+  - on8Jump: {instanceID: 0}
+  - on9Victory: {instanceID: 0}
+  - on10PlayerDying: {instanceID: 0}
+  - on12CoinDestroying: {instanceID: 0}
+  - on13BulletDestoyingByWall: {instanceID: 0}
+  - on15PlayerGrowingUp: {instanceID: 0}
+  - on16PlayerDecreasing: {instanceID: 0}
+  - on18PlayerRunning: {instanceID: 0}
+  - audioSource: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -6,8 +6,34 @@ using TMPro;
 
 public class Player : MonoBehaviour
 {
-    public delegate void PlayerDie(); 
-    public static event PlayerDie OnPlayerDie;
+    public delegate void PlayerDying(); 
+    public static event PlayerDying OnPlayerDying;
+
+    public delegate void Shot(); 
+    public static event Shot OnShot;
+
+    public delegate void Jump(); 
+    public static event Jump OnJump;
+
+    public delegate void PlayerGrowingUp(); 
+    public static event PlayerGrowingUp OnPlayerGrowingUp;
+
+    public delegate void PlayerDecreasing(); 
+    public static event PlayerDecreasing OnPlayerDecreasing;
+
+    public delegate void PlayerRunning(); 
+    public static event PlayerRunning OnPlayerRunning;
+
+
+
+
+
+
+
+
+
+
+
     public GameObject hair;
 
     /*
@@ -72,6 +98,8 @@ public class Player : MonoBehaviour
 
     private bool bulletAvailable;
     private float fireRateCounter;
+    private bool dying=false;
+
     
     /*
         Inputs
@@ -164,10 +192,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            if (
-                onionModel.rotation.eulerAngles.y != 90 &&
-                onionModel.rotation.eulerAngles.y != 270
-            )
+            if (onionModel.rotation.eulerAngles.y != 90 && onionModel.rotation.eulerAngles.y != 270)
             {
                 if (Mathf.Abs(currentSpeed) > 0)
                 {
@@ -189,7 +214,13 @@ public class Player : MonoBehaviour
         if (!highSpeedKey)
             MovementDynamic(0, normalSpeed, normalSpeedAcceleration, normalSpeedDeceleration);
         else
+        {
             MovementDynamic(0, highSpeed, highSpeedAcceleration, highSpeedDeceleration);
+            if(HitDirection.x==0 && rb.velocity.magnitude>5)
+                if (OnPlayerRunning!=null)
+                    OnPlayerRunning();
+        }
+            
 
         if (HitDirection.x < 0 && currentSpeed < 0)
             currentSpeed = 0;
@@ -247,6 +278,8 @@ public class Player : MonoBehaviour
         if (jumpKey && HitDirection.y < 0 && rb.velocity.y <= 0)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            if (OnJump!=null)
+                OnJump();
             isJumping  = true;
         }
         
@@ -277,6 +310,8 @@ public class Player : MonoBehaviour
                 {
                     Vector3 respawn = new Vector3(transform.position.x - onionModel.transform.forward.x,transform.position.y,transform.position.z);
                     GameObject bullet = Instantiate(bulletPrefab, respawn, Quaternion.identity);
+                    if (OnShot!=null)
+                        OnShot();
                     Physics.IgnoreCollision(bullet.GetComponent<Collider>(), GetComponent<Collider>());
                 }
                 bulletAvailable = false;
@@ -324,9 +359,11 @@ public class Player : MonoBehaviour
     void HoleCollisionListener(Collider collider)
     {
         if (collider.transform.tag == "Hole")
+        {
             PlayerIsDead();
+        }
+            
     }
-
     void EnemyCollisionListener(Collision collision)
     {
         if (collision.transform.tag != "Enemy")
@@ -334,17 +371,24 @@ public class Player : MonoBehaviour
 
         if (HitDirection.x != 0 || HitDirection.y >= 0)
         {
-            if (playerState == State.normal)
+            if (playerState == State.normal && dying==false)
+            {
+                dying=true;
                 PlayerIsDead();
-
-            if (playerState == State.big)
-
+            }  
+            else if (playerState == State.big)
+            {
                 PlayerIsNormal(collision.gameObject);
-                
+                if (OnPlayerDecreasing!=null)
+                    OnPlayerDecreasing();
+            }
 
-            if (playerState == State.super)
+            else if (playerState == State.super)
+            {
                 PlayerIsBig(collision.gameObject);
-
+                if (OnPlayerDecreasing!=null)
+                    OnPlayerDecreasing();
+            }                
             return;
         }
 
@@ -367,22 +411,31 @@ public class Player : MonoBehaviour
         if (collision.transform.tag=="WaterDrop") //gota de agua
         {
             Destroy(collision.gameObject);
+            if (OnPlayerGrowingUp!=null)
+                    OnPlayerGrowingUp();
             if (playerState == State.normal)
+            {
                 PlayerIsBig();
+            }                
         }
-        if (collision.transform.tag=="Poop") //caca
+        else if (collision.transform.tag=="Poop") //caca
         {
             Destroy(collision.gameObject);
+            if (OnPlayerGrowingUp!=null)
+                OnPlayerGrowingUp();
             if (playerState != State.super)
+            {                
                 PlayerIsSuper();
+            }
+                
         }
     }
 
     /* - - - - - - - - - - - - - - - - - - - - - - - - - - */
     void PlayerIsDead()
     {
-        if (OnPlayerDie!=null)
-            OnPlayerDie();
+        if (OnPlayerDying!=null)
+            OnPlayerDying();
     }
 
     
@@ -466,6 +519,7 @@ public class Player : MonoBehaviour
         while (counter < 3)
         {
             if(enemy==null) break;
+    
             Physics.IgnoreCollision(enemy.GetComponent<Collider>(), GetComponent<Collider>());
             counter += Time.deltaTime;
             yield return null;

@@ -7,6 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+
+    public delegate void PressingPauseButton(); 
+    public static event PressingPauseButton OnPressingPauseButton;
+
+    public delegate void PressingContinueButton(); 
+    public static event PressingContinueButton OnPressingContinueButton;
+
+
     public GameObject pauseView;
     public GameObject ingameView;
     void Awake()
@@ -19,6 +27,8 @@ public class UIManager : MonoBehaviour
 
     public void OnPauseButton()
     {
+        if (OnPressingPauseButton!=null)
+            OnPressingPauseButton();
         StartCoroutine(FadeCanvasGroup(pauseView, from:0, to:1));
         StartCoroutine(FadeCanvasGroup(ingameView, from:1, to:0));
         Time.timeScale=0;
@@ -27,6 +37,8 @@ public class UIManager : MonoBehaviour
     
     public void OnContinueButton()
     {
+        if (OnPressingContinueButton!=null)
+            OnPressingContinueButton();
         StartCoroutine(FadeCanvasGroup(pauseView, from:1, to:0));
         StartCoroutine(FadeCanvasGroup(ingameView, from:0, to:1));
         //controlsView.SetActive(false);

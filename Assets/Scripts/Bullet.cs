@@ -20,6 +20,10 @@ public class Bullet : MonoBehaviour
     private float elapsedTime;
     private int bouncesCounter;
 
+
+    public delegate void BulletDestoyingByWall(); 
+    public static event BulletDestoyingByWall OnBulletDestoyingByWall;
+
     void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -55,7 +59,15 @@ public class Bullet : MonoBehaviour
         // COLLISION
         CollisionListener(collision.collider);
         if (HitDirection.x != 0)
+        {
+            if(collision.transform.tag=="Untagged" ||collision.transform.tag=="Block" ||collision.transform.tag=="DestructibleBlock")
+            {
+                if (OnBulletDestoyingByWall!=null)
+                    OnBulletDestoyingByWall();
+            }
             Destroy(gameObject);
+        }
+            
 
         // BOUNCES COUNTER
         BulletBounces();
@@ -77,10 +89,7 @@ public class Bullet : MonoBehaviour
     private void BulletDisplacement()
     {
         if (velocity != 0)
-            rb.velocity = new Vector3(
-                -initialDirection.x * (initialVelocity + velocity),
-                rb.velocity.y,
-                rb.velocity.z);
+            rb.velocity = new Vector3(-initialDirection.x * (initialVelocity + velocity), rb.velocity.y, rb.velocity.z);
     }
 
     private void BulletDuration()

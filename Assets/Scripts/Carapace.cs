@@ -13,6 +13,9 @@ public class Carapace : MonoBehaviour
     private float carapaceHeight;
     private bool enemyDamaged=false;
 
+    public delegate void EnemyDyingByJump(); 
+    public static event EnemyDyingByJump OnEnemyDyingByJump;
+
     void Start()
     {
         elapsedTime=0; 
@@ -39,7 +42,9 @@ public class Carapace : MonoBehaviour
             if(enemyDamaged&& eTime>1) // Muerte parcial
             {         
                 eTime=0;
-                ParcialDeath(carap, turt);       
+                ParcialDeath(carap, turt);
+                if (OnEnemyDyingByJump!=null)
+                    OnEnemyDyingByJump();      
             }   
         }
         else //Vuelve a ser tortuga
